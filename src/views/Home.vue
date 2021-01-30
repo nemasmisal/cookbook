@@ -1,16 +1,15 @@
 <template>
   <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <img src="../assets/home-title-365x252.jpg">
+    <h1>Open your Cookbook and turn your wishes true</h1>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 
 @Options({
   components: {
-    HelloWorld
   }
 })
 export default class Home extends Vue {}

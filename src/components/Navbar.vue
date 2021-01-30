@@ -1,6 +1,10 @@
 <template>
- <p>Home Page</p>
- <p>{{msg}}</p>
+ <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/login">Login</router-link> |
+    <router-link to="/register">Register</router-link> |
+    <router-link to="/about">About</router-link>
+  </div>
 </template>
 
 <script lang="ts">
@@ -18,6 +22,6 @@ export default class HelloWorld extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus">
-h3
-  margin 40px 0 0
+#nav
+ background #ff6347
 </style>
