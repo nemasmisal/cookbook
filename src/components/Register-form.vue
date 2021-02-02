@@ -1,13 +1,12 @@
 <template>
   <h3>Provide some info about you so we know you too !</h3>
-  <form>
+  <form @submit.prevent="handleSubmit">
     <label for="name">How should we call you?</label>
     <input type="text" name="name" placeholder="Currly broccolli?" v-model="name">
     <label for="email">E-Mail</label>
     <input type="email" name="email" id="email" placeholder="email@example.com" v-model="email">
     <label for="password">Password</label>
     <input type="password" name="password" id="password" v-model="password">
-    <div>Password must be at least 5 symbols</div>
     <label for="repeatPassword">Repeat password</label>
     <input type="password" name="repeatPassword" id="repeatPassword" v-model="repeatPassword">
     <button type="submit">Create an Account</button>
@@ -16,11 +15,20 @@
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
+import AuthService from "@/core/services/auth-service";
 export default class RegisterForm extends Vue {
   name = '';
   email= '';
   password = '';
   repeatPassword = '';
+
+async handleSubmit() {
+const body = { username: this.name, email: this.email, password: this.password };
+console.log(body);
+const userId = await AuthService.register(body);
+console.log(userId);
+this.$router.push('/')
+}
 }
 </script>
 

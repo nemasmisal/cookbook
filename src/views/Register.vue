@@ -13,5 +13,5 @@ import RegisterForm from "../components/Register-form.vue";
     RegisterForm
   }
 })
-export default class Home extends Vue {}
+export default class Register extends Vue {}
 </script>
