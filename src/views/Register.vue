@@ -1,5 +1,17 @@
 <template>
   <div class="register">
-    <h1>This is an register page</h1>
+    <RegisterForm />
   </div>
 </template>
+
+<script lang="ts">
+import { Options, Vue } from "vue-class-component";
+import RegisterForm from "../components/Register-form.vue";
+
+@Options({
+  components: {
+    RegisterForm
+  }
+})
+export default class Home extends Vue {}
+</script>
