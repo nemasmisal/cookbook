@@ -1,6 +1,6 @@
-import { createStore } from "vuex";
+import { createStore } from 'vuex';
 import RecipeService from '@/core/services/recipe-service';
-import AuthService from "@/core/services/auth-service";
+import AuthService from '@/core/services/auth-service';
 export default createStore({
   state: {
     auth: {
@@ -13,17 +13,17 @@ export default createStore({
   mutations: {
    login: async (state, payload) => {
     const res = await AuthService.login(payload);
-    console.log(res);
     state.auth = { ...res };
    },
-   logout: (state) => {
+   logout: async state => {
+    const res = await AuthService.logout(); 
     state.auth = { username: '', email:'', id: '' }
    },
    register: async (state, payload) => {
     const res = await AuthService.register(payload);
     state.auth = { ...res }
    },
-   getAllRecipes: async (state) => {
+   getAllRecipes: async state => {
      const res:[] = await RecipeService.getAllRecipes();
     state.recipes = [ ...res ];
    }
@@ -34,6 +34,9 @@ export default createStore({
     },
     logout({ commit }) {
       commit('logout');
+    },
+    register({ commit }, payload) {
+      commit('register', payload);
     },
     getAllRecipes({ commit }) {
       commit('getAllRecipes');

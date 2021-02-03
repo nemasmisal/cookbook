@@ -9,16 +9,14 @@
 </template>
 
 <script lang="ts">
-//import authService from '@/core/services/auth-service';
 import store from '@/store';
-import { Vue } from 'vue-class-component'
+import { Vue } from 'vue-class-component';
 export default class LoginForm extends Vue {
   email = '';
   password = '';
 
-  async handleSubmit() {
+  handleSubmit() {
     const credentials = { email: this.email, password: this.password };
-    //const credentials = await authService.login(body);
     store.dispatch('login', credentials)
     this.$router.push('/');
   }

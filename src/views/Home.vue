@@ -11,7 +11,7 @@ import { Options, Vue } from "vue-class-component";
 import RecipeComponent from "@/components/Recipe.vue";
 @Options({
   components: {
-    RecipeComponent,
+    RecipeComponent
   }
 })
 export default class Home extends Vue {}

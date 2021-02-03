@@ -1,32 +1,14 @@
+import BaseFetch from './baseFetch';
 class AuthService {
-  private BASE_URL = "http://localhost:8081/api/auth/"
-  private headers = {
-    post (body: any) {
-      return { method: 'POST',
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify(body) 
-       }
-    }
-  }
+  private AUTH_URL = 'auth/';
   async register(body: any) {
-    try {
-      const _res = await fetch(this.BASE_URL + 'register', this.headers.post(body));
-     const res = await _res.json();
-     return res;
-    } catch (error) {
-      console.log(error);
-    }
+    return BaseFetch.baseHttp(this.AUTH_URL + 'register', 'post', body);
   }
   async login(body: any) {
-    try {
-      const _res = await fetch(this.BASE_URL + 'login', this.headers.post(body));
-      const res = await _res.json();
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-
+    return BaseFetch.baseHttp( this.AUTH_URL + 'login', 'post', body);
+  }
+  async logout() {
+    return BaseFetch.baseHttp(this.AUTH_URL + 'logout', 'get', null);
   }
 }
-
 export default new AuthService();
