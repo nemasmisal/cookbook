@@ -32,17 +32,21 @@ a
     cursor pointer
 button
   background secondary
+  margin 5px auto
   padding 5px 10px
   border 2px solid primary
   border-radius 7px
   color primary
   font-weight bold
-input
+input, textarea, select 
   border 1px solid secondary
   padding 5px 10px
+  margin 5px 0
   border-radius 3px
   text-align center
-
+  width 80%
+form 
+  margin-top 2em
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased

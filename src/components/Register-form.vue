@@ -15,20 +15,18 @@
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
-import AuthService from "@/core/services/auth-service";
+import Store from '@/store';
 export default class RegisterForm extends Vue {
   name = '';
   email= '';
   password = '';
   repeatPassword = '';
 
-async handleSubmit() {
-const body = { username: this.name, email: this.email, password: this.password };
-console.log(body);
-const userId = await AuthService.register(body);
-console.log(userId);
-this.$router.push('/')
-}
+  async handleSubmit() {
+    const credentials = { username: this.name, email: this.email, password: this.password };
+    Store.dispatch('register', credentials);
+    this.$router.push('/');
+  }
 }
 </script>
 

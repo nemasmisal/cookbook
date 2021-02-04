@@ -20,6 +20,12 @@ const routes: Array<RouteRecordRaw> = [
       import("../views/Register.vue")
   },
   {
+    path: "/create",
+    name: "Create-recipe",
+    component: () =>
+      import("../views/Create-recipe.vue")
+  },
+  {
     path: "/about",
     name: "About",
     component: () =>

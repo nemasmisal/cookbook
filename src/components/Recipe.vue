@@ -8,8 +8,8 @@
     <div class="card-content">
       <p>Description: {{ recipe.description }}</p>
       <p>Ingrediants:</p>
-      <ul>
-        <li v-for="ing in recipe.ingrediants" :key="ing">{{ ing }}</li>
+      <ul v-if="recipe.ingrediants?.length > 0">
+        <li v-for="ing in recipe.ingrediants" :key="ing.id">{{ ing.quantity }}: {{ ing.productName }}</li>
       </ul>
       <p>Author: {{ recipe.author.username }}</p>
     </div>
@@ -19,10 +19,16 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import store from "@/store";
-@Options({})
+@Options({
+  watch: {
+    recipes: function(_, newValue) {
+      console.log(newValue)
+    }
+  }
+})
 export default class Recipe extends Vue {
   allRecipes = () => store.state.recipes;
-
+  
   created() {
     store.dispatch("getAllRecipes");
   }
@@ -41,11 +47,12 @@ export default class Recipe extends Vue {
   width 100%
 .card-title 
   position absolute
-  bottom 100px
+  top 8px
   left 0
   max-width 100%
-  padding 24px
-  color #fff
+  padding 10px
+  color black
+  background white
   font-weight bolder
   font-size 30px
   filter blur(1px)
