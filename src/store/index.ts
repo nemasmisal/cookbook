@@ -49,6 +49,14 @@ export default createStore({
    create: async (state, payload) => {
      const res = await RecipeService.create(payload);
      state.recipes = [...state.recipes, res];
+   },
+   update: async (state, payload) => {
+     const res = await RecipeService.update(payload);
+     state.recipes = [...state.recipes, res];
+   },
+   remove: async (state, payload) => {
+     const res = await RecipeService.remove(payload);
+     state.recipes = state.recipes.filter(r => r._id !== payload.id)
    }
   },
   actions: {
@@ -66,6 +74,9 @@ export default createStore({
     },
     create({ commit }, payload) {
       commit('create', payload);
+    },
+    update({ commit }, payload) {
+      commit('update', payload);
     }
   },
   modules: {}

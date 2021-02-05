@@ -41,7 +41,10 @@ import { IRecipe } from '@/core/models';
 class Props {
   existingRecipe!:IRecipe
 }
-@Options({})
+
+@Options({
+  emits: ['handleSubmit']
+})
 export default class RecipeForm extends Vue.with(Props) {
   quantity = '';
   productName = '';
@@ -51,9 +54,10 @@ export default class RecipeForm extends Vue.with(Props) {
     type: 'Public',
     imgUrl: '',
     author: '',
-    ingrediants: []
+    ingrediants: [],
+    _id: ''
   } 
-
+  
   async handleSubmit() {
     const { id } = Store.state.auth;
     const credentials = {
@@ -62,10 +66,11 @@ export default class RecipeForm extends Vue.with(Props) {
       type: this.recipe.type,
       imgUrl: this.recipe.imgUrl,
       ingrediants: this.recipe.ingrediants,
-      author: id
+      author: id,
+      _id: this.recipe._id
     };
-    Store.dispatch('create', credentials);
-    this.$router.push('/');
+    
+    this.$emit('handleSubmit',credentials)
   }
   handleIngrediant() {
     const current = {

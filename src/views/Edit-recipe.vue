@@ -1,5 +1,5 @@
 <template>
- <RecipeForm :existingRecipe="recipe"/>
+ <RecipeForm :existingRecipe="recipe" @handleSubmit="updateRecipe"/>
 </template>
 
 <script lang="ts">
@@ -7,16 +7,25 @@ import { IRecipe } from "@/core/models";
 import store from "@/store";
 import { Options, Vue } from "vue-class-component";
 import RecipeForm from "@/components/Recipe-form.vue";
+import Store from "@/store";
 @Options({
   components: {
     RecipeForm
   }
 })
 export default class Edit extends Vue {
- recipe: IRecipe | undefined;
-created() {
+  recipe: IRecipe | undefined;
+  get recipeId () {
     const { id } = this.$router.currentRoute.value.params
-    this.recipe = store.state.recipes.find(r => r._id === id);
+    return id
+  }
+  created() {
+    this.recipe = store.state.recipes.find(r => r._id === this.recipeId);
+    }
+  updateRecipe(payload: IRecipe) {
+    console.log('from edit', payload);
+    Store.dispatch('update', payload);
+    this.$router.push('/');
   }
 }
 </script>

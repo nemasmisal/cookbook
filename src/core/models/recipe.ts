@@ -11,4 +11,5 @@ export interface IRecipe {
   type: string;
   ingrediants: Ingrediant[];
   imgUrl: string;
+  _id: string;
 }
