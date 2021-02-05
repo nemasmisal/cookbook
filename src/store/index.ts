@@ -55,7 +55,9 @@ export default createStore({
      state.recipes = [...state.recipes, res];
    },
    remove: async (state, payload) => {
+     console.log(payload)
      const res = await RecipeService.remove(payload);
+     console.log(res)
      state.recipes = state.recipes.filter(r => r._id !== payload.id)
    }
   },
@@ -77,6 +79,9 @@ export default createStore({
     },
     update({ commit }, payload) {
       commit('update', payload);
+    },
+    remove({ commit }, payload) {
+      commit('remove', payload);
     }
   },
   modules: {}

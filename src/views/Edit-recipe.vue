@@ -23,7 +23,6 @@ export default class Edit extends Vue {
     this.recipe = store.state.recipes.find(r => r._id === this.recipeId);
     }
   updateRecipe(payload: IRecipe) {
-    console.log('from edit', payload);
     Store.dispatch('update', payload);
     this.$router.push('/');
   }

@@ -13,11 +13,12 @@
       </ul>
       <p>Author: {{ recipe.author.username }}</p>
       <template v-if="author === recipe.author.username">
-    <router-link :to="{name: 'Edit-recipe', params: { id: recipe._id }}">
-      <i class="large material-icons">mode_edit</i>
-    </router-link>
-
-      <i class="large material-icons">cancel</i>
+        <router-link :to="{name: 'Edit-recipe', params: { id: recipe._id }}">
+          <i class="large material-icons">mode_edit</i>
+        </router-link>
+        <button class="removeBtn" @click="removeRecipe(recipe._id)">
+          <i class="large material-icons">cancel</i>
+        </button>
       </template>
       <template v-else>
       <i class="large material-icons">star_border</i>
@@ -40,6 +41,10 @@ import store from "@/store";
 export default class Recipe extends Vue {
   created() {
     store.dispatch("getAllRecipes");
+  }
+  removeRecipe(id: string) {
+    console.log(id)
+    store.dispatch('remove',{ id });
   }
   get recipes() {
     return store.state.recipes;
@@ -71,4 +76,9 @@ export default class Recipe extends Vue {
   filter blur(1px)
 .card-content
   padding 10px 0
+.removeBtn
+  background none
+  margin 0
+  border none
+  color none
 </style>
