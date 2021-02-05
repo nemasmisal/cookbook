@@ -9,9 +9,20 @@
       <p>Description: {{ recipe.description }}</p>
       <p>Ingrediants:</p>
       <ul v-if="recipe.ingrediants?.length > 0">
-        <li v-for="ing in recipe.ingrediants" :key="ing.id">{{ ing.quantity }}: {{ ing.productName }}</li>
+        <li v-for="ing in recipe.ingrediants" :key="ing.id">{{ ing.quantity }} : {{ ing.productName }}</li>
       </ul>
       <p>Author: {{ recipe.author.username }}</p>
+      <template v-if="author === recipe.author.username">
+    <router-link :to="{name: 'Edit-recipe', params: { id: recipe._id }}">
+      <i class="large material-icons">mode_edit</i>
+    </router-link>
+
+      <i class="large material-icons">cancel</i>
+      </template>
+      <template v-else>
+      <i class="large material-icons">star_border</i>
+      </template>
+      <i class="large material-icons">share</i>
     </div>
   </div>
 </template>
@@ -22,23 +33,25 @@ import store from "@/store";
 @Options({
   watch: {
     recipes: function(_, newValue) {
-      console.log(newValue)
+      return
     }
   }
 })
 export default class Recipe extends Vue {
-  allRecipes = () => store.state.recipes;
-  
   created() {
     store.dispatch("getAllRecipes");
   }
-
   get recipes() {
-    return this.allRecipes();
+    return store.state.recipes;
+  }
+  get author () {
+    return store.state.auth.username;
   }
 }
 </script>
 <style scoped lang="stylus">
+.material-icons
+  color #ff6347
 .card 
   width 100%
   position relative

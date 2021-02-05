@@ -6,8 +6,8 @@
     <router-link to="/" @click="handleLogout">Logout</router-link>
     </template>
     <template v-else>
-    <router-link to="/login" v-if="!auth.id">Login</router-link>
-    <router-link to="/register" v-if="!auth.id">Register</router-link>
+    <router-link to="/login">Login</router-link>
+    <router-link to="/register">Register</router-link>
     </template>
     <router-link to="/about">About</router-link>
   </div>

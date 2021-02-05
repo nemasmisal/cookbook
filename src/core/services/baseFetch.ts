@@ -7,7 +7,7 @@ class BaseFetch {
     withBody(body: any, method: string) {
       return {
         method: method.toUpperCase(),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Headers": true },
         body: JSON.stringify(body)
       }
     }

@@ -7,6 +7,7 @@ interface Auth {
   email: string;
 }
 interface Recipe {
+  _id: string;
   name: string;
   type: string;
   description: string;
@@ -35,11 +36,11 @@ export default createStore({
    },
    logout: async state => {
     const res = await AuthService.logout(); 
-    state.auth = { username: '', email:'', id: '' }
+    state.auth = { username: '', email:'', id: '' };
    },
    register: async (state, payload) => {
     const res = await AuthService.register(payload);
-    state.auth = { ...res }
+    state.auth = { ...res };
    },
    getAllRecipes: async state => {
      const res:[] = await RecipeService.getAllRecipes();
@@ -47,7 +48,7 @@ export default createStore({
    },
    create: async (state, payload) => {
      const res = await RecipeService.create(payload);
-     state.recipes = [...state.recipes, res]
+     state.recipes = [...state.recipes, res];
    }
   },
   actions: {
