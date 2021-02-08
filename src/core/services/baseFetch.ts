@@ -2,13 +2,14 @@ interface Headers {
   withBody: Function;
 }
 class BaseFetch {
-  private BASE_URL = "http://localhost:8081/api/"
+  private BASE_URL = "api/"
   private headers: Headers = {
     withBody(body: any, method: string) {
       return {
         method: method.toUpperCase(),
         headers: { "Content-Type": "application/json", "Access-Control-Allow-Headers": true },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        credentials: "include"
       }
     }
   }

@@ -2,17 +2,23 @@
   <div class="home">
     <img src="../assets/home-title-365x252.jpg" />
     <h1>Open your Cookbook and turn your wishes true</h1>
-    <RecipeComponent />
+    <h2>Top Recipes</h2>
+    <RecipeListComponent />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import RecipeComponent from "@/components/Recipe.vue";
+import RecipeListComponent from "@/components/Recipe-list.vue";
 @Options({
   components: {
-    RecipeComponent
+    RecipeListComponent
   }
 })
 export default class Home extends Vue {}
 </script>
+<style lang="stylus" scoped>
+h1,
+h2
+  margin 10px auto
+</style>

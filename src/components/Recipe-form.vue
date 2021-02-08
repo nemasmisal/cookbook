@@ -39,7 +39,7 @@ import Store from '@/store';
 import { IRecipe } from '@/core/models';
 
 class Props {
-  existingRecipe!:IRecipe
+  existingRecipe!: IRecipe
 }
 
 @Options({
@@ -56,8 +56,8 @@ export default class RecipeForm extends Vue.with(Props) {
     author: '',
     ingrediants: [],
     _id: ''
-  } 
-  
+  }
+
   async handleSubmit() {
     const { id } = Store.state.auth;
     const credentials = {
@@ -69,8 +69,8 @@ export default class RecipeForm extends Vue.with(Props) {
       author: id,
       _id: this.recipe._id
     };
-    
-    this.$emit('handleSubmit',credentials)
+
+    this.$emit('handleSubmit', credentials);
   }
   handleIngrediant() {
     const current = {
@@ -87,7 +87,7 @@ export default class RecipeForm extends Vue.with(Props) {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
 .ingrediants
   margin 0
 textarea
