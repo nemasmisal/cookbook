@@ -6,10 +6,15 @@
     <textarea name="description" id="description" cols="30" rows="10" placeholder="Yammy mmm" v-model="recipe.description"></textarea>
     <label for="imgUrl">Cover link</label>
     <input type="text" name="imgUrl" id="imgUrl" placeholder="https://image-from-another-page.jpeg" v-model="recipe.imgUrl"/>
-    <div>
-      <form @submit.prevent="handleIngrediant" class="ingrediants">
+    <div class="ingrediants">
+      <form @submit.prevent="handleIngrediant">
         <label for="ingrediants">Ingrediants</label>
-        <input type="number" name="quantity" id="quantity" placeholder="Quantity or grams" v-model="quantity"/>
+        <input type="number" name="quantity" id="quantity" placeholder="Quantity" v-model="quantity"/>
+        <div class="radio">
+        <input type="radio" name="index" value="gr" v-model="picked">gr
+        <input type="radio" name="index" value="kg" v-model="picked">kg
+        <input type="radio" name="index" value="ml" v-model="picked">ml
+        </div>
         <input type="text" name="productName" id="productName" placeholder="Eggs" v-model="productName"/>
         <button type="submit">Add new ingrediant</button>
       </form>
@@ -48,6 +53,7 @@ class Props {
 export default class RecipeForm extends Vue.with(Props) {
   quantity = '';
   productName = '';
+  picked = '';
   recipe: IRecipe = this.existingRecipe || {
     name: '',
     description: '',
@@ -75,12 +81,13 @@ export default class RecipeForm extends Vue.with(Props) {
   handleIngrediant() {
     const current = {
       id: this.recipe.ingrediants.length,
-      quantity: Number(this.quantity),
+      quantity: (this.quantity + this.picked),
       productName: this.productName
     }
     this.recipe.ingrediants.push(current);
     this.quantity = '';
     this.productName = '';
+    this.picked = '';
   }
   removeIngr(id: string) {
     this.recipe.ingrediants = this.recipe.ingrediants.filter(ing => Number(ing.id) !== Number(id));
@@ -90,6 +97,19 @@ export default class RecipeForm extends Vue.with(Props) {
 <style lang="stylus" scoped>
 .ingrediants
   margin 0
+  display block
+  > form
+    > button
+        display block
+.radio
+  input 
+    width 30px
+li
+  border 1px solid #ff6347
+  width 85%
+  max-width 400px
+  margin 5px auto
+  border-radius 4px
 textarea
   text-align left
 select
@@ -102,15 +122,15 @@ label
   display block
   margin-top 5px
 .type
-  display flex
-  justify-content center
   width 80%
   margin 10px auto
   > label
-      align-self center
+      width 100%
   > select
-      display flex
-      margin 0
-      margin-left 10px
+      margin 5px auto
+      padding 5px
       width 130px
+      text-align left
+      > option
+          padding 5px
 </style>

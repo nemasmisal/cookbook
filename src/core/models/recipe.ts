@@ -1,6 +1,6 @@
 interface Ingrediant {
   id: number;
-  quantity: number;
+  quantity: string;
   productName: string;
 }
 

@@ -27,17 +27,20 @@ html
   text-decoration none
   list-style: none;
 a
+  color white
+  font-weight  bold
   margin 0.2em
   &:hover
     cursor pointer
 button
   background secondary
   margin 5px auto
-  padding 5px 10px
-  border 2px solid primary
+  padding 8px 10px
+  border 2px solid white
   border-radius 7px
-  color primary
+  color white
   font-weight bold
+  outline none
 input, textarea, select 
   border 1px solid secondary
   padding 5px 10px
@@ -45,12 +48,20 @@ input, textarea, select
   border-radius 3px
   text-align center
   width 80%
+  max-width 400px
+label
+  max-width 450px
+  margin 0 auto
+  padding 5px 10px
 form 
+  width 100%
   margin-top 2em
+  display inline-block
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
   text-align center
   margin 0 auto
+  max-width 960px
 </style>

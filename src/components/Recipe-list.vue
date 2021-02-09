@@ -5,28 +5,33 @@
       <img :src="recipe.imgUrl" />
     </div>
     <div class="card-content">
-      <p>Description: {{ recipe.description }} <span class="large material-icons" @click="toggleReveal(recipe._id)">more_vert</span></p>
-      <p>Ingrediants:</p>
-      <ul v-if="recipe.ingrediants?.length > 0">
-        <li v-for="ing in recipe.ingrediants" :key="ing.id">{{ ing.quantity }} : {{ ing.productName }}</li>
-      </ul>
       <p>Author: {{ recipe.author.username }}</p>
+      <button class="iconBtn"><i class="large material-icons" @click="toggleReveal(recipe._id)">more_vert</i></button>
+      <div class="card-reveal hidden" :ref="recipe._id">
+        <h3>Description:</h3>
+        <p>{{ recipe.description }}</p>
+        <h3>Ingrediants:</h3>
+        <ul v-if="recipe.ingrediants?.length > 0">
+          <li v-for="ing in recipe.ingrediants" :key="ing.id"><span class="quantity">{{ ing.quantity }}</span> : {{ ing.productName }}</li>
+        </ul>
+        <button class="iconBtn"><i class="material-icons" @click="toggleReveal(recipe._id)">close</i></button>
+      </div>
       <template v-if="username === recipe.author.username">
         <router-link :to="{name: 'Edit-recipe', params: { id: recipe._id }}">
           <i class="large material-icons">mode_edit</i>
         </router-link>
-        <button class="removeBtn" @click="removeRecipe(recipe._id)">
+        <button class="iconBtn" @click="removeRecipe(recipe._id)">
           <i class="large material-icons">cancel</i>
         </button>
       </template>
       <template v-else>
+        <button class="iconBtn">
         <i class="large material-icons">star_border</i>
+        </button>
       </template>
+      <button class="iconBtn">
       <i class="large material-icons">share</i>
-      <div class="card-reveal hidden" :ref="recipe._id">
-      <span>Card Title<i class="material-icons" @click="toggleReveal(recipe._id)">close</i></span>
-      <p>Here is some more information about this product that is only revealed once clicked on.</p>
-    </div>
+      </button>
     </div>
   </div>
 </template>
@@ -64,9 +69,10 @@ export default class RecipeList extends Vue {
   color #ff6347
 .card 
   width 100%
+  max-width 450px
+  margin 0 auto
   position relative
   background #e5e4e2
-  z-index 1
 .card img 
   width 100%
 .card-title 
@@ -80,11 +86,14 @@ export default class RecipeList extends Vue {
   filter blur(1px)
 .card-content
   padding 10px
-.removeBtn
+.iconBtn
   background none
   margin 0
+  outline none
   border none
   color none
+  :hover
+    cursor pointer
 .card-reveal
   position absolute
   top 0
@@ -93,10 +102,12 @@ export default class RecipeList extends Vue {
   width 86%
   background-color #fff
   height 90%
+  display grid
+.quantity
+  color red
 .hidden
   left -100%
   opacity 0
-  transition opacity 0.5s linear
 .vissible
   opacity 1
   transition opacity 0.5s linear
