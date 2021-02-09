@@ -1,18 +1,25 @@
 <template>
   <Navbar />
+  <Toast :msg="globalMsg"/>
   <router-view />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Navbar from "@/components/Navbar.vue";
-
+import Toast from "@/components/Toast.vue";
+import store from "./store";
 @Options({
   components: {
-    Navbar
+    Navbar,
+    Toast
   }
 })
-export default class App extends Vue{}
+export default class App extends Vue {
+  get globalMsg() {
+    return store.state.msg;
+  }
+}
 </script>
 
 <style lang="stylus">
@@ -59,6 +66,8 @@ form
   display inline-block
 .material-icons
   vertical-align middle
+.error 
+  border 2px solid red
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased

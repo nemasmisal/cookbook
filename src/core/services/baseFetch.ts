@@ -1,3 +1,4 @@
+import store from '@/store/';
 interface Headers {
   withBody: Function;
 }
@@ -17,9 +18,12 @@ class BaseFetch {
     try {
       const _res = await fetch(this.BASE_URL + endpoint, body ? this.headers.withBody(body, method) : null);
       const res = await _res.json();
+      if(!_res.ok) {
+        return store.dispatch('globalError', res);
+      }
       return res;
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   }
 }

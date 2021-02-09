@@ -1,6 +1,7 @@
 import { createStore } from 'vuex';
 import RecipeService from '@/core/services/recipe-service';
 import AuthService from '@/core/services/auth-service';
+import Router from '@/router/index';
 interface Auth {
   username: string;
   id: string;
@@ -15,9 +16,11 @@ interface Recipe {
   imgUrl: string;
   ingrediants: [];
 }
+
 interface State {
   auth: Auth;
-  recipes: Recipe[]
+  recipes: Recipe[];
+  msg: string
 }
 const state: State = {
   auth: {
@@ -25,14 +28,17 @@ const state: State = {
     id: '',
     email: ''
   },
-  recipes: []
+  recipes: [],
+  msg: ''
 }
 export default createStore({
   state,
   mutations: {
    login: async (state, payload) => {
     const res = await AuthService.login(payload);
+    if(!res) { return }
     state.auth = { ...res };
+    Router.push('/');
    },
    logout: async state => {
     const res = await AuthService.logout(); 
@@ -57,6 +63,12 @@ export default createStore({
    remove: async (state, payload) => {
      const res = await RecipeService.remove(payload);
      state.recipes = state.recipes.filter(r => r._id !== payload.id)
+   },
+   globalMsg: (state, { msg }) => {
+     state.msg = msg;
+     setTimeout(() => {
+       state.msg = ''
+     },1500)
    }
   },
   actions: {
@@ -80,6 +92,9 @@ export default createStore({
     },
     remove({ commit }, payload) {
       commit('remove', payload);
+    },
+    globalError({ commit }, payload) {
+      commit('globalMsg', payload)
     }
   },
   modules: {}
