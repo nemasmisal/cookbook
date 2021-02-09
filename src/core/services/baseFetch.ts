@@ -18,8 +18,11 @@ class BaseFetch {
     try {
       const _res = await fetch(this.BASE_URL + endpoint, body ? this.headers.withBody(body, method) : null);
       const res = await _res.json();
-      if(!_res.ok) {
+      if (!_res.ok) {
         return store.dispatch('globalError', res);
+      }
+      if (res.msg) {
+        store.dispatch('globalMsg', { msg: res.msg })
       }
       return res;
     } catch (err) {

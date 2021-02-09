@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <Toast :msg="globalMsg"/>
+  <Toast />
   <router-view />
 </template>
 
@@ -8,18 +8,13 @@
 import { Options, Vue } from "vue-class-component";
 import Navbar from "@/components/Navbar.vue";
 import Toast from "@/components/Toast.vue";
-import store from "./store";
 @Options({
   components: {
     Navbar,
     Toast
   }
 })
-export default class App extends Vue {
-  get globalMsg() {
-    return store.state.msg;
-  }
-}
+export default class App extends Vue {}
 </script>
 
 <style lang="stylus">

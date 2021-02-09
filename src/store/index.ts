@@ -20,7 +20,8 @@ interface Recipe {
 interface State {
   auth: Auth;
   recipes: Recipe[];
-  msg: string
+  msg: string;
+  err: string;
 }
 const state: State = {
   auth: {
@@ -29,7 +30,8 @@ const state: State = {
     email: ''
   },
   recipes: [],
-  msg: ''
+  msg: '',
+  err: ''
 }
 export default createStore({
   state,
@@ -38,37 +40,53 @@ export default createStore({
     const res = await AuthService.login(payload);
     if(!res) { return }
     state.auth = { ...res };
+    state.msg = 'successfully logged in';
     Router.push('/');
    },
    logout: async state => {
-    const res = await AuthService.logout(); 
+    await AuthService.logout();
+    state.msg = 'Successfully logged out';
     state.auth = { username: '', email:'', id: '' };
    },
    register: async (state, payload) => {
     const res = await AuthService.register(payload);
+    if(!res) { return }
+    state.msg = 'Successfully loged in';
     state.auth = { ...res };
    },
    getAllRecipes: async state => {
-     const res:[] = await RecipeService.getAllRecipes();
+    const res:[] = await RecipeService.getAllRecipes();
     state.recipes = [ ...res ];
    },
    create: async (state, payload) => {
      const res = await RecipeService.create(payload);
+     state.msg = 'Recipe created!';
      state.recipes = [...state.recipes, res];
    },
    update: async (state, payload) => {
      const res = await RecipeService.update(payload);
+     state.msg = 'Recipe updated!';
      state.recipes = [...state.recipes, res];
    },
    remove: async (state, payload) => {
      const res = await RecipeService.remove(payload);
+     state.msg = 'Recipe removed!';
      state.recipes = state.recipes.filter(r => r._id !== payload.id)
    },
    globalMsg: (state, { msg }) => {
      state.msg = msg;
      setTimeout(() => {
-       state.msg = ''
+       state.msg = '';
      },1500)
+   },
+   globalError: (state, { msg }) => {
+    state.err = msg;
+    setTimeout(() => {
+      state.err = '';
+    },1500)
+   },
+   clearMsg: state => {
+     state.msg = '';
    }
   },
   actions: {
@@ -93,8 +111,14 @@ export default createStore({
     remove({ commit }, payload) {
       commit('remove', payload);
     },
-    globalError({ commit }, payload) {
+    globalMsg({ commit }, payload) {
       commit('globalMsg', payload)
+    },
+    globalError({ commit }, payload) {
+      commit('globalError', payload);
+    },
+    clearMsg({ commit }) {
+      commit('clearMsg');
     }
   },
   modules: {}
