@@ -1,5 +1,4 @@
 <template>
-  <h3>Provide some info about you so we know you too !</h3>
   <form @submit.prevent="handleSubmit">
     <label for="name">How should we call you?</label>
     <input type="text" name="name" placeholder="Currly broccolli?" v-model="name">
@@ -31,8 +30,6 @@ export default class RegisterForm extends Vue {
 </script>
 
 <style scoped lang="stylus">
-form 
-  margin-top 2em
 input
   display block
   margin 5px auto

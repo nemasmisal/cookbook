@@ -57,6 +57,8 @@ form
   width 100%
   margin-top 2em
   display inline-block
+.material-icons
+  vertical-align middle
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
