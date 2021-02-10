@@ -53,6 +53,7 @@ export default createStore({
     if(!res) { return }
     state.msg = 'Successfully loged in';
     state.auth = { ...res };
+    Router.push('/');
    },
    getAllRecipes: async state => {
     const res:[] = await RecipeService.getAllRecipes();

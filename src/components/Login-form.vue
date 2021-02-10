@@ -1,9 +1,9 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <label for="email">E-mail</label>
-    <input type="email" name="email" placeholder="email@example.com" v-model="email" :class="{ 'error' : form.errors.email }">
+    <input type="email" name="email" placeholder="email@example.com" v-model="form.email" :class="{ 'error' : form.errors.email() }">
     <label for="password">Password</label>
-    <input type="password" name="password" v-model="password" :class="{ 'error' : form.errors.password }">
+    <input type="password" name="password" v-model="form.password" :class="{ 'error' : form.errors.password() }">
     <button type="submit">Login</button>
   </form>
 </template>
@@ -11,28 +11,25 @@
 <script lang="ts">
 import store from '@/store';
 import { Vue } from 'vue-class-component';
+
 export default class LoginForm extends Vue {
-  email = '';
-  password = '';
+   reqs = {
+    oneWorldPattern: new RegExp(/^[a-zA-Z1-9]{4,20}$/),
+    emailPattern: new RegExp(/^[a-zA-Z1-9_-]+@[a-zA-Z1-9]+\.{1}[a-zA-Z]+$/)
+  }
   form = {
+    email: '',
+    password: '',
     errors: {
-      email: false,
-      password: false
+      email: () => !this.reqs.emailPattern.test(this.form.email),
+      password:() => !this.reqs.oneWorldPattern.test(this.form.password),
     }
   }
-  validateInput() {
-    const reqs = {
-      emailPattern: new RegExp(/^[a-zA-Z1-9_-]+@[a-zA-Z1-9]+\.{1}[a-zA-Z]+$/),
-      emailMaxLength: 40,
-      passwordPattern: new RegExp(/^[a-zA-Z1-9]{4,20}$/)
-    }
-    this.form.errors.email = !reqs.emailPattern.test(this.email) || reqs.emailMaxLength < this.email.length;
-    this.form.errors.password = !reqs.passwordPattern.test(this.password);
-    return this.form.errors.email || this.form.errors.password
-  }
-  handleSubmit() {
-    if (this.validateInput()) { return };
-    const credentials = { email: this.email, password: this.password };
+
+handleSubmit() {
+    const result = Object.values(this.form.errors).find(f=> f());
+    if (result) { return };
+    const credentials = { email: this.form.email, password: this.form.password };
     store.dispatch('login', credentials);
   }
 }
