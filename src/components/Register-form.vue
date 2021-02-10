@@ -16,9 +16,9 @@
 import { Vue } from "vue-class-component";
 import Store from '@/store';
 export default class RegisterForm extends Vue {
-  reqs = {
-    oneWorldPattern: new RegExp(/^[a-zA-Z1-9]{4,20}$/),
-    emailPattern: new RegExp(/^[a-zA-Z1-9_-]+@[a-zA-Z1-9]+\.{1}[a-zA-Z]+$/)
+  patterns = {
+    oneWorld: new RegExp(/^[a-zA-Z1-9]{4,20}$/),
+    email: new RegExp(/^[a-zA-Z1-9_-]+@[a-zA-Z1-9]+\.{1}[a-zA-Z]+$/)
   }
   form = {
     name: '',
@@ -26,16 +26,16 @@ export default class RegisterForm extends Vue {
     password: '',
     repeatPassword: '',
     errors: {
-      name: () => !this.reqs.oneWorldPattern.test(this.form.name),
-      email: () => !this.reqs.emailPattern.test(this.form.email),
-      password:() => !this.reqs.oneWorldPattern.test(this.form.password),
-      repeatPassword: () => this.form.password !== this.form.repeatPassword || this.form.repeatPassword.length === 0,
+      name: () => !this.patterns.oneWorld.test(this.form.name),
+      email: () => !this.patterns.email.test(this.form.email),
+      password:() => !this.patterns.oneWorld.test(this.form.password),
+      repeatPassword: () => this.form.password !== this.form.repeatPassword || this.form.repeatPassword.length === 0
     }
   }
 
   async handleSubmit() {
-    const result = Object.values(this.form.errors).find(f=> f());
-    if(result) { return; }
+    const isInvalid = Object.values(this.form.errors).find(f=> f());
+    if(isInvalid) { return; }
     const credentials = { username: this.form.name, email: this.form.email, password: this.form.password };
     Store.dispatch('register', credentials);
   }

@@ -1,21 +1,21 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <label for="name">What is the name of your recipe?</label>
-    <input type="text" name="name" placeholder="Milkshake" v-model="recipe.name"/>
+    <input type="text" name="name" placeholder="Milkshake" v-model="recipe.name" :class="{ 'error' : formErrors.name() }"/>
     <label for="description">Short description</label>
-    <textarea name="description" id="description" cols="30" rows="10" placeholder="Yammy mmm" v-model="recipe.description"></textarea>
+    <textarea name="description" id="description" cols="30" rows="10" placeholder="Yammy mmm" v-model="recipe.description" :class="{ 'error' : formErrors.description() }"></textarea>
     <label for="imgUrl">Cover link</label>
-    <input type="text" name="imgUrl" id="imgUrl" placeholder="https://image-from-another-page.jpeg" v-model="recipe.imgUrl"/>
+    <input type="text" name="imgUrl" id="imgUrl" placeholder="https://image-from-another-page.jpeg" v-model="recipe.imgUrl" :class="{ 'error' : formErrors.imgUrl() }"/>
     <div class="ingrediants">
       <form @submit.prevent="handleIngrediant">
         <label for="ingrediants">Ingrediants</label>
-        <input type="number" name="quantity" id="quantity" placeholder="Quantity" v-model="quantity"/>
+        <input type="number" name="quantity" id="quantity" placeholder="Quantity" v-model="quantity" :class="{ 'error' : formErrors.ingrediants() }"/>
         <div class="radio">
         <input type="radio" name="index" value="gr" v-model="picked">gr
         <input type="radio" name="index" value="kg" v-model="picked">kg
         <input type="radio" name="index" value="ml" v-model="picked">ml
         </div>
-        <input type="text" name="productName" id="productName" placeholder="Eggs" v-model="productName"/>
+        <input type="text" name="productName" id="productName" placeholder="Eggs" v-model="productName" :class="{ 'error' : formErrors.ingrediants() }" />
         <button type="submit">Add new ingrediant</button>
       </form>
       <div>
@@ -30,7 +30,7 @@
     <div class="type">
       <label for="type">Type</label>
       <select name="type" id="type" size="2" v-model="recipe.type">
-        <option value="public" selected="selected">Public</option>
+        <option value="public">Public</option>
         <option value="private">Private</option>
       </select>
     </div>
@@ -51,6 +51,13 @@ class Props {
   emits: ['handleSubmit']
 })
 export default class RecipeForm extends Vue.with(Props) {
+  patterns = {
+    oneWorld: new RegExp(/^[a-zA-Z1-9]{4,20}$/),
+    email: new RegExp(/^[a-zA-Z1-9_-]+@[a-zA-Z1-9]+\.{1}[a-zA-Z]+$/),
+    description: new RegExp(/[a-zA-Z1-9.]{20,200}/),
+    imgUrl: new RegExp(/^https?:\/\/.*/),
+    productName: new RegExp(/^[a-zA-Z1-9\s]{4,20}$/)
+  }
   quantity = '';
   productName = '';
   picked = '';
@@ -63,8 +70,17 @@ export default class RecipeForm extends Vue.with(Props) {
     ingrediants: [],
     _id: ''
   }
+  formErrors = {
+    name: () => !this.patterns.oneWorld.test(this.recipe.name),
+    description: () => !this.patterns.description.test(this.recipe.description),
+    imgUrl: () => !this.patterns.imgUrl.test(this.recipe.imgUrl),
+    productName: () => !this.patterns.productName.test(this.productName),
+    ingrediants: () => this.recipe.ingrediants.length === 0
+  }
 
   async handleSubmit() {
+    const isInvalid = Object.values(this.formErrors).find(f => f());
+    if (isInvalid) { return; }
     const { id } = Store.state.auth;
     const credentials = {
       name: this.recipe.name,
@@ -79,6 +95,7 @@ export default class RecipeForm extends Vue.with(Props) {
     this.$emit('handleSubmit', credentials);
   }
   handleIngrediant() {
+    if (!Number(this.quantity) || !this.patterns.productName.test(this.productName)) { return }
     const current = {
       id: this.recipe.ingrediants.length,
       quantity: (this.quantity + this.picked),

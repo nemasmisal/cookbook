@@ -22,13 +22,13 @@ export default class LoginForm extends Vue {
     password: '',
     errors: {
       email: () => !this.reqs.emailPattern.test(this.form.email),
-      password:() => !this.reqs.oneWorldPattern.test(this.form.password),
+      password:() => !this.reqs.oneWorldPattern.test(this.form.password)
     }
   }
 
 handleSubmit() {
-    const result = Object.values(this.form.errors).find(f=> f());
-    if (result) { return };
+    const isInvalid = Object.values(this.form.errors).find(f=> f());
+    if (isInvalid) { return };
     const credentials = { email: this.form.email, password: this.form.password };
     store.dispatch('login', credentials);
   }
