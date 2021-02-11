@@ -6,18 +6,27 @@
     </div>
     <div class="card-content">
       <p>Author: {{ recipe.author.username }}</p>
-      <button class="iconBtn"><i class="large material-icons" @click="toggleReveal(recipe._id)">more_vert</i></button>
+      <button class="iconBtn">
+        <i class="large material-icons" @click="toggleReveal(recipe._id)"
+          >more_vert</i
+        >
+      </button>
       <div class="card-reveal hidden" :ref="recipe._id">
         <h3>Description:</h3>
         <p>{{ recipe.description }}</p>
         <h3>Ingrediants:</h3>
         <ul v-if="recipe.ingrediants?.length > 0">
-          <li v-for="ing in recipe.ingrediants" :key="ing.id"><span class="quantity">{{ ing.quantity }}</span> : {{ ing.productName }}</li>
+          <li v-for="ing in recipe.ingrediants" :key="ing.id">
+            <span class="quantity">{{ ing.quantity }}</span> :
+            {{ ing.productName }}
+          </li>
         </ul>
-        <button class="iconBtn"><i class="material-icons" @click="toggleReveal(recipe._id)">close</i></button>
+        <button class="iconBtn">
+          <i class="material-icons" @click="toggleReveal(recipe._id)">close</i>
+        </button>
       </div>
       <template v-if="username === recipe.author.username">
-        <router-link :to="{name: 'Edit-recipe', params: { id: recipe._id }}">
+        <router-link :to="{ name: 'Edit-recipe', params: { id: recipe._id } }">
           <i class="large material-icons">mode_edit</i>
         </router-link>
         <button class="iconBtn" @click="removeRecipe(recipe._id)">
@@ -26,11 +35,11 @@
       </template>
       <template v-else>
         <button class="iconBtn">
-        <i class="large material-icons">star_border</i>
+          <i class="large material-icons">star_border</i>
         </button>
       </template>
       <button class="iconBtn">
-      <i class="large material-icons">share</i>
+        <i class="large material-icons">share</i>
       </button>
     </div>
   </div>
@@ -41,20 +50,23 @@ import { Options, Vue } from "vue-class-component";
 import store from "@/store";
 @Options({
   watch: {
-    recipes: value => { return value }
+    recipes: (oldV, newV) => {
+      return;
+    }
   }
 })
 export default class RecipeList extends Vue {
-  
   created() {
     store.dispatch("getAllRecipes");
   }
   removeRecipe(id: string) {
-    store.dispatch('remove', { id });
+    store.dispatch("remove", { id });
   }
-  toggleReveal(id:string) {
+  toggleReveal(id: string) {
     const el: HTMLDivElement = this.$refs[id] as HTMLDivElement;
-    el.classList.contains('hidden')? el.classList.replace('hidden', 'vissible'):el.classList.replace('vissible', 'hidden');
+    el.classList.contains("hidden")
+      ? el.classList.replace("hidden", "vissible")
+      : el.classList.replace("vissible", "hidden");
   }
   get recipes() {
     return store.state.recipes;
@@ -67,15 +79,15 @@ export default class RecipeList extends Vue {
 <style scoped lang="stylus">
 .material-icons
   color #ff6347
-.card 
+.card
   width 100%
   max-width 450px
   margin 0 auto
   position relative
   background #e5e4e2
-.card img 
+.card img
   width 100%
-.card-title 
+.card-title
   display block
   line-height 32px
   padding 10px

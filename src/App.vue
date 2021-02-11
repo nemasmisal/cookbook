@@ -43,7 +43,7 @@ button
   color white
   font-weight bold
   outline none
-input, textarea, select 
+input, textarea, select
   border 1px solid secondary
   padding 5px 10px
   margin 5px 0
@@ -55,13 +55,13 @@ label
   max-width 450px
   margin 0 auto
   padding 5px 10px
-form 
+form
   width 100%
   margin-top 2em
   display inline-block
 .material-icons
   vertical-align middle
-.error 
+.error
   border 2px solid red
 #app
   font-family Avenir, Helvetica, Arial, sans-serif

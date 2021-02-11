@@ -1,13 +1,13 @@
 <template>
   <div v-if="message" class="msg toast">
-    {{message}}
+    {{ message }}
   </div>
   <div v-if="err" class="err toast">
-    {{err}}
+    {{ err }}
   </div>
 </template>
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import { Vue } from "vue-class-component";
 import store from "@/store/";
 
 class Props {
@@ -16,8 +16,8 @@ class Props {
 export default class Toast extends Vue.with(Props) {
   get message() {
     setTimeout(() => {
-      store.dispatch('clearMsg');
-    },1500)
+      store.dispatch("clearMsg");
+    }, 1500);
     return store.state.msg;
   }
   get err() {

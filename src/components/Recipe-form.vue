@@ -1,21 +1,56 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <label for="name">What is the name of your recipe?</label>
-    <input type="text" name="name" placeholder="Milkshake" v-model="recipe.name" :class="{ 'error' : formErrors.name() }"/>
+    <input
+      type="text"
+      name="name"
+      placeholder="Milkshake"
+      v-model="recipe.name"
+      :class="{ error: formErrors.name() }"
+    />
     <label for="description">Short description</label>
-    <textarea name="description" id="description" cols="30" rows="10" placeholder="Yammy mmm" v-model="recipe.description" :class="{ 'error' : formErrors.description() }"></textarea>
+    <textarea
+      name="description"
+      id="description"
+      cols="30"
+      rows="10"
+      placeholder="Yammy mmm"
+      v-model="recipe.description"
+      :class="{ error: formErrors.description() }"
+    ></textarea>
     <label for="imgUrl">Cover link</label>
-    <input type="text" name="imgUrl" id="imgUrl" placeholder="https://image-from-another-page.jpeg" v-model="recipe.imgUrl" :class="{ 'error' : formErrors.imgUrl() }"/>
+    <input
+      type="text"
+      name="imgUrl"
+      id="imgUrl"
+      placeholder="https://image-from-another-page.jpeg"
+      v-model="recipe.imgUrl"
+      :class="{ error: formErrors.imgUrl() }"
+    />
     <div class="ingrediants">
       <form @submit.prevent="handleIngrediant">
         <label for="ingrediants">Ingrediants</label>
-        <input type="number" name="quantity" id="quantity" placeholder="Quantity" v-model="quantity" :class="{ 'error' : formErrors.ingrediants() }"/>
+        <input
+          type="number"
+          name="quantity"
+          id="quantity"
+          placeholder="Quantity"
+          v-model="quantity"
+          :class="{ error: formErrors.ingrediants() }"
+        />
         <div class="radio">
-        <input type="radio" name="index" value="gr" v-model="picked">gr
-        <input type="radio" name="index" value="kg" v-model="picked">kg
-        <input type="radio" name="index" value="ml" v-model="picked">ml
+          <input type="radio" name="index" value="gr" v-model="picked" />gr
+          <input type="radio" name="index" value="kg" v-model="picked" />kg
+          <input type="radio" name="index" value="ml" v-model="picked" />ml
         </div>
-        <input type="text" name="productName" id="productName" placeholder="Eggs" v-model="productName" :class="{ 'error' : formErrors.ingrediants() }" />
+        <input
+          type="text"
+          name="productName"
+          id="productName"
+          placeholder="Eggs"
+          v-model="productName"
+          :class="{ error: formErrors.ingrediants() }"
+        />
         <button type="submit">Add new ingrediant</button>
       </form>
       <div>
@@ -39,48 +74,49 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import Store from '@/store';
-import { IRecipe } from '@/core/models';
+import { Options, Vue } from "vue-class-component";
+import Store from "@/store";
+import { IRecipe } from "@/core/models";
 
 class Props {
-  existingRecipe!: IRecipe
+  existingRecipe!: IRecipe;
 }
 
 @Options({
-  emits: ['handleSubmit']
+  emits: ["handleSubmit"]
 })
 export default class RecipeForm extends Vue.with(Props) {
   patterns = {
-    oneWorld: new RegExp(/^[a-zA-Z1-9]{4,20}$/),
-    email: new RegExp(/^[a-zA-Z1-9_-]+@[a-zA-Z1-9]+\.{1}[a-zA-Z]+$/),
-    description: new RegExp(/[a-zA-Z1-9.]{20,200}/),
+    oneWorld: new RegExp(/^[a-zA-Z0-9]{4,20}$/),
+    email: new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z1-9]+\.{1}[a-zA-Z]+$/),
+    description: new RegExp(/^(.{20,200})$/),
     imgUrl: new RegExp(/^https?:\/\/.*/),
-    productName: new RegExp(/^[a-zA-Z1-9\s]{4,20}$/)
-  }
-  quantity = '';
-  productName = '';
-  picked = '';
+    productName: new RegExp(/^[a-zA-Z0-9\s]{4,20}$/)
+  };
+  quantity = "";
+  productName = "";
+  picked = "";
   recipe: IRecipe = this.existingRecipe || {
-    name: '',
-    description: '',
-    type: 'Public',
-    imgUrl: '',
-    author: '',
+    name: "",
+    description: "",
+    type: "Public",
+    imgUrl: "",
+    author: "",
     ingrediants: [],
-    _id: ''
-  }
+    _id: ""
+  };
   formErrors = {
     name: () => !this.patterns.oneWorld.test(this.recipe.name),
     description: () => !this.patterns.description.test(this.recipe.description),
     imgUrl: () => !this.patterns.imgUrl.test(this.recipe.imgUrl),
-    productName: () => !this.patterns.productName.test(this.productName),
     ingrediants: () => this.recipe.ingrediants.length === 0
-  }
+  };
 
   async handleSubmit() {
     const isInvalid = Object.values(this.formErrors).find(f => f());
-    if (isInvalid) { return; }
+    if (isInvalid) {
+      return;
+    }
     const { id } = Store.state.auth;
     const credentials = {
       name: this.recipe.name,
@@ -92,22 +128,29 @@ export default class RecipeForm extends Vue.with(Props) {
       _id: this.recipe._id
     };
 
-    this.$emit('handleSubmit', credentials);
+    this.$emit("handleSubmit", credentials);
   }
   handleIngrediant() {
-    if (!Number(this.quantity) || !this.patterns.productName.test(this.productName)) { return }
+    if (
+      !Number(this.quantity) ||
+      !this.patterns.productName.test(this.productName)
+    ) {
+      return;
+    }
     const current = {
       id: this.recipe.ingrediants.length,
-      quantity: (this.quantity + this.picked),
+      quantity: this.quantity + this.picked,
       productName: this.productName
-    }
+    };
     this.recipe.ingrediants.push(current);
-    this.quantity = '';
-    this.productName = '';
-    this.picked = '';
+    this.quantity = "";
+    this.productName = "";
+    this.picked = "";
   }
   removeIngr(id: string) {
-    this.recipe.ingrediants = this.recipe.ingrediants.filter(ing => Number(ing.id) !== Number(id));
+    this.recipe.ingrediants = this.recipe.ingrediants.filter(
+      ing => Number(ing.id) !== Number(id)
+    );
   }
 }
 </script>
@@ -119,7 +162,7 @@ export default class RecipeForm extends Vue.with(Props) {
     > button
         display block
 .radio
-  input 
+  input
     width 30px
 li
   border 1px solid #ff6347

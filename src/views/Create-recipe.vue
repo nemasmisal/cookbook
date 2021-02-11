@@ -1,7 +1,7 @@
 <template>
-<ValidationInfo :props="props" />
-    <h1>Share your tasty ideas with others!</h1>
-    <RecipeForm @handleSubmit="registerRecipe"/>
+  <ValidationInfo :props="props" />
+  <h1>Share your tasty ideas with others!</h1>
+  <RecipeForm @handleSubmit="registerRecipe" />
 </template>
 
 <script lang="ts">
@@ -18,18 +18,32 @@ import Store from "@/store";
 })
 export default class CreateRecipe extends Vue {
   private requarements = [
-    { name: 'Name', reqs: ['min 4 characters', 'max 20 characters', 'Only english letters and/or numbers', 'No spaces,special characters allowed'] },
-    { name: 'Description', reqs: ['min 20 characters', 'max 200 characters',] },
-    { name: 'Cover link', reqs: ['starting with http:// or https://'] },
-    { name: 'Ingrediants', reqs: ['Quantity - only numbers','gr/kg/ml or empty for pieces'] },
-    { name: 'Type', reqs: ['Public - everyone can read it','Private - only you can see it'] },
+    {
+      name: "Name",
+      reqs: [
+        "min 4 characters",
+        "max 20 characters",
+        "Only english letters and/or numbers",
+        "No spaces,special characters allowed"
+      ]
+    },
+    { name: "Description", reqs: ["min 20 characters", "max 200 characters"] },
+    { name: "Cover link", reqs: ["starting with http:// or https://"] },
+    {
+      name: "Ingrediants",
+      reqs: ["Quantity - only numbers", "gr/kg/ml or empty for pieces"]
+    },
+    {
+      name: "Type",
+      reqs: ["Public - everyone can read it", "Private - only you can see it"]
+    }
   ];
   public get props() {
     return this.requarements;
   }
   registerRecipe(payload: IRecipe) {
-    Store.dispatch('create', payload);
-    this.$router.push('/');
+    Store.dispatch("create", payload);
+    this.$router.push("/");
   }
 }
 </script>

@@ -10,32 +10,27 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "Login",
-    component: () =>
-      import("../views/Login.vue")
+    component: () => import("../views/Login.vue")
   },
   {
     path: "/register",
     name: "Register",
-    component: () =>
-      import("../views/Register.vue")
+    component: () => import("../views/Register.vue")
   },
   {
     path: "/create",
     name: "Create-recipe",
-    component: () =>
-      import("../views/Create-recipe.vue")
+    component: () => import("../views/Create-recipe.vue")
   },
   {
     path: "/about",
     name: "About",
-    component: () =>
-      import("../views/About.vue")
+    component: () => import("../views/About.vue")
   },
   {
     path: "/edit/:id",
-    name: 'Edit-recipe',
-    component: () => 
-    import("../views/Edit-recipe.vue")
+    name: "Edit-recipe",
+    component: () => import("../views/Edit-recipe.vue")
   }
 ];
 

@@ -1,13 +1,13 @@
 <template>
- <div id="nav">
+  <div id="nav">
     <router-link to="/">Home</router-link>
     <template v-if="auth.id">
-    <router-link to="/create">Create</router-link>
-    <router-link to="/" @click="handleLogout">Logout</router-link>
+      <router-link to="/create">Create</router-link>
+      <router-link to="/" @click="handleLogout">Logout</router-link>
     </template>
     <template v-else>
-    <router-link to="/login">Login</router-link>
-    <router-link to="/register">Register</router-link>
+      <router-link to="/login">Login</router-link>
+      <router-link to="/register">Register</router-link>
     </template>
     <router-link to="/about">About</router-link>
   </div>
@@ -20,7 +20,7 @@ import { Options, Vue } from "vue-class-component";
 @Options({})
 export default class Navbar extends Vue {
   handleLogout() {
-    store.dispatch('logout');
+    store.dispatch("logout");
   }
   get auth() {
     return store.state.auth;

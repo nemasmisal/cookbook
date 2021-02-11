@@ -1,30 +1,31 @@
 <template>
   <div class="activator">
-  <button @click="toggleReveal">Need help?
-  <i class="large material-icons">mode_comment</i>
-  </button>
+    <button @click="toggleReveal">
+      Need help?
+      <i class="large material-icons">mode_comment</i>
+    </button>
   </div>
   <div class="reveal" v-if="reveal">
-  <template v-for="field in fields" :key="field">
-   <h2>{{field.name}}</h2>
-    <ol>
-      <li v-for="req in field.reqs" :key="req">{{req}}</li>
-    </ol>
-  </template>
+    <template v-for="field in fields" :key="field">
+      <h2>{{ field.name }}</h2>
+      <ol>
+        <li v-for="req in field.reqs" :key="req">{{ req }}</li>
+      </ol>
+    </template>
   </div>
 </template>
 <script lang="ts">
-import { Vue } from 'vue-class-component';
-import ValidationFields from '@/core/models/validation-fields';
+import { Vue } from "vue-class-component";
+import ValidationFields from "@/core/models/validation-fields";
 class Props {
-  props!: ValidationFields
+  props!: ValidationFields;
 }
 export default class ValidationInfo extends Vue.with(Props) {
-fields = this.props;
-reveal = false;
-toggleReveal(){
-  this.reveal = !this.reveal;
-}
+  fields = this.props;
+  reveal = false;
+  toggleReveal() {
+    this.reveal = !this.reveal;
+  }
 }
 </script>
 <style lang="stylus" scoped>
