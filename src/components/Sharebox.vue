@@ -28,10 +28,11 @@ export default class Sharebox extends Vue.with(Props) {
 .share
   background white
   margin 0 auto
-  position absolute
+  position fixed
   top 200px
   border 1px solid #ff6347
   border-radius 20px
   padding 10px
+  z-index 10
   
 </style>
