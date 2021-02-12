@@ -42,20 +42,21 @@ export default createStore({
         return;
       }
       state.auth = { ...res };
-      state.msg = "successfully logged in";
+      state.msg = "Successfully logged in";
       Router.push("/");
     },
     logout: async state => {
       await AuthService.logout();
       state.msg = "Successfully logged out";
       state.auth = { username: "", email: "", id: "" };
+      Router.push("/");
     },
     register: async (state, payload) => {
       const res = await AuthService.register(payload);
       if (!res) {
         return;
       }
-      state.msg = "Successfully loged in";
+      state.msg = "Successfully registered!";
       state.auth = { ...res };
       Router.push("/");
     },
@@ -67,17 +68,22 @@ export default createStore({
       const res = await RecipeService.create(payload);
       state.msg = "Recipe created!";
       state.recipes = [...state.recipes, res];
+      Router.push("/");
     },
-    updateRecipe: async (state, payload) => {
-      const res = await RecipeService.updateRecipe(payload);
+    update: async (state, payload) => {
+      const res = await RecipeService.update(payload);
       if (!res) {
         return;
       }
       state.msg = "Recipe updated!";
       state.recipes = [...state.recipes, res];
+      Router.push("/");
     },
     remove: async (state, payload) => {
       const res = await RecipeService.remove(payload);
+      if (!res) {
+        return;
+      }
       state.msg = "Recipe removed!";
       state.recipes = state.recipes.filter(r => r._id !== payload.id);
     },
@@ -85,13 +91,13 @@ export default createStore({
       state.msg = msg;
       setTimeout(() => {
         state.msg = "";
-      }, 1500);
+      }, 2000);
     },
     globalError: (state, { msg }) => {
       state.err = msg;
       setTimeout(() => {
         state.err = "";
-      }, 1500);
+      }, 2000);
     },
     clearMsg: state => {
       state.msg = "";
@@ -113,8 +119,8 @@ export default createStore({
     create({ commit }, payload) {
       commit("create", payload);
     },
-    updateRecipe({ commit }, payload) {
-      commit("updateRecipe", payload);
+    update({ commit }, payload) {
+      commit("update", payload);
     },
     remove({ commit }, payload) {
       commit("remove", payload);

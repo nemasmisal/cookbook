@@ -38,7 +38,7 @@
           <i class="large material-icons">star_border</i>
         </button>
       </template>
-      <button class="iconBtn">
+      <button class="iconBtn" @click="toggleSharebox(recipe._id)">
         <i class="large material-icons">share</i>
       </button>
     </div>
@@ -49,6 +49,7 @@
 import { Options, Vue } from "vue-class-component";
 import store from "@/store";
 @Options({
+  emits: ["toggleSharebox"],
   watch: {
     recipes: (oldV, newV) => {
       return;
@@ -67,6 +68,9 @@ export default class RecipeList extends Vue {
     el.classList.contains("hidden")
       ? el.classList.replace("hidden", "vissible")
       : el.classList.replace("vissible", "hidden");
+  }
+  toggleSharebox(id: string) {
+    this.$emit("toggleSharebox", id)
   }
   get recipes() {
     return store.state.recipes;

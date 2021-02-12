@@ -5,19 +5,27 @@
       <h1>Open your Cookbook and turn your wishes true</h1>
       <h2>Top Recipes</h2>
     </div>
-    <RecipeListComponent />
+    <ShareboxComponent @toggleSharebox="toggleSharebox" :id="recipeId"/>
+    <RecipeListComponent @toggleSharebox="toggleSharebox"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import RecipeListComponent from "@/components/Recipe-list.vue";
+import ShareboxComponent from "@/components/Sharebox.vue";
 @Options({
   components: {
-    RecipeListComponent
+    RecipeListComponent,
+    ShareboxComponent
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  recipeId = "";
+  toggleSharebox(id:string) {
+    this.recipeId = id || "";
+  }
+}
 </script>
 <style lang="stylus" scoped>
 h1,

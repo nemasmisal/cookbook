@@ -17,15 +17,13 @@ export default class Edit extends Vue {
   recipe: IRecipe | undefined;
   get recipeId() {
     const { id } = this.$router.currentRoute.value.params;
-    console.log(id);
     return id;
   }
   created() {
     this.recipe = store.state.recipes.find(r => r._id === this.recipeId);
   }
   updateRecipe(payload: IRecipe) {
-    Store.dispatch("updateRecipe", payload);
-    //this.$router.push('/');
+    Store.dispatch("update", payload);
   }
 }
 </script>

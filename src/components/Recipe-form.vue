@@ -69,7 +69,7 @@
         <option value="private">Private</option>
       </select>
     </div>
-    <button type="submit">Create new recipe</button>
+    <button type="submit">Submit</button>
   </form>
 </template>
 

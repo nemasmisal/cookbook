@@ -7,8 +7,8 @@ class RecipeService {
   create(body: any) {
     return BaseFetch.baseHttp(this.RECIPE_URL + "create", "post", body);
   }
-  updateRecipe(body: any) {
-    return BaseFetch.baseHttp(this.RECIPE_URL + "update", "post", body);
+  update(body: any) {
+    return BaseFetch.baseHttp(this.RECIPE_URL + "update", "put", body);
   }
   remove(body: any) {
     return BaseFetch.baseHttp(this.RECIPE_URL + "remove", "delete", body);

@@ -1,28 +1,22 @@
 import store from "@/store/";
-interface Headers {
-  withBody: Function;
-}
 class BaseFetch {
-  private BASE_URL = "api/";
-  private headers: Headers = {
-    withBody(body: any, method: string) {
-      return {
-        method: method.toUpperCase(),
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Headers": true
-        },
-        body: JSON.stringify(body),
-        credentials: "include"
-      };
-    }
+  private BASE_URL = "/api/";
+  private headers = (body: any, method: string) => {
+    return {
+      method: method.toUpperCase(),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Headers": "true"
+      },
+      body: JSON.stringify(body)
+    };
   };
   async baseHttp(endpoint: string, method: string, body: any) {
     try {
-      const headers = body ? this.headers.withBody(body, method) : null;
-      console.log(headers);
-      console.log(this.BASE_URL + endpoint);
-      const _res = await fetch(this.BASE_URL + endpoint, headers);
+      const _res = await fetch(
+        this.BASE_URL + endpoint,
+        body ? this.headers(body, method) : undefined
+      );
       if (!_res.ok) {
         return store.dispatch("globalError", _res);
       }
