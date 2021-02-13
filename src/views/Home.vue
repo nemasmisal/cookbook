@@ -6,8 +6,7 @@
       <h2>Top Recipes</h2>
     </div>
     <ShareboxComponent @toggleSharebox="toggleSharebox" :id="shareBoxId"/>
-    <RevealComponent :recipeId="revealId" @toggleReveal="toggleReveal" />
-    <RecipeListComponent @toggleSharebox="toggleSharebox" @toggleReveal="toggleReveal"/>
+    <RecipeListComponent @toggleSharebox="toggleSharebox" />
   </div>
 </template>
 
@@ -15,23 +14,17 @@
 import { Options, Vue } from "vue-class-component";
 import RecipeListComponent from "@/components/Recipe-list.vue";
 import ShareboxComponent from "@/components/Sharebox.vue";
-import RevealComponent from "@/components/Reveal.vue"
 
 @Options({
   components: {
     RecipeListComponent,
-    ShareboxComponent,
-    RevealComponent
+    ShareboxComponent
   }
 })
 export default class Home extends Vue {
   shareBoxId = "";
-  revealId = "";
   toggleSharebox(id:string) {
     this.shareBoxId = id || "";
-  }
-  toggleReveal(id: string) {
-    this.revealId = id || "";
   }
 }
 </script>

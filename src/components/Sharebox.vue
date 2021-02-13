@@ -2,10 +2,10 @@
   <div v-if="id" class="share">
     <h2>Share your favorite recipe !</h2>
     <ul >
-      <li><a href="https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/{{ id }}" class="fa fa-facebook"><i></i></a></li>
-      <li><a href="https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/{{ id }}&text=" class="fa fa-twitter"><i></i></a></li>
-      <li><a href="https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/{{ id }}&media=&description="
-          class="fa fa-pinterest"><i></i></a></li>
+      <li><a :href="'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/' + id">
+        <i class="material-icons">facebook</i>Facebook</a></li>
+      <li><a :href="'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/' + id + '&text='">Twitter</a></li>
+      <li><a :href="'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/' + id +'&media=&description='">Pinterest</a></li>
     </ul>
     <button @click="close()">Close</button>
   </div>
@@ -34,5 +34,6 @@ export default class Sharebox extends Vue.with(Props) {
   border-radius 20px
   padding 10px
   z-index 10
-  
+a
+  color black
 </style>

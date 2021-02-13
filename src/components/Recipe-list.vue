@@ -6,11 +6,7 @@
     </div>
     <div class="card-content">
       <p>Author: {{ recipe.author.username }}</p>
-      <button class="iconBtn">
-        <i class="large material-icons" @click="toggleReveal(recipe._id)"
-          >more_vert</i
-        >
-      </button>
+     
       <template v-if="username === recipe.author.username">
         <router-link :to="{ name: 'Edit-recipe', params: { id: recipe._id } }">
           <i class="large material-icons">mode_edit</i>
@@ -28,18 +24,18 @@
         <i class="large material-icons">share</i>
       </button>
     </div>
+      <RevealComponent :recipe="recipe" />
   </div>
 </template>
 
 <script lang="ts" scoped>
 import { Options, Vue } from "vue-class-component";
+import RevealComponent from "@/components/Reveal.vue";
 import store from "@/store";
 @Options({
-  emits: ["toggleSharebox","toggleReveal"],
-  watch: {
-    recipes: (oldV, newV) => {
-      return;
-    }
+  emits: ["toggleSharebox"],
+  components: {
+    RevealComponent
   }
 })
 export default class RecipeList extends Vue {
@@ -49,14 +45,11 @@ export default class RecipeList extends Vue {
   removeRecipe(id: string) {
     store.dispatch("remove", { id });
   }
-  toggleReveal(id: string) {
-    this.$emit('toggleReveal', id);
-  }
   toggleSharebox(id: string) {
     this.$emit("toggleSharebox", id);
   }
   get recipes() {
-    return store.state.recipes;
+    return [...store.state.recipes];
   }
   get username() {
     return store.state.auth.username;

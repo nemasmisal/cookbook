@@ -1,9 +1,11 @@
 <template>
+  <button class="iconBtn">
+    <i class="large material-icons" @click="toggleReveal()">more_vert</i>
+  </button>
   <transition name="reveal">
-    <div class="card-reveal" v-if="recipeId">
+    <div class="card-reveal" v-if="isVissible">
       <h3>Description:</h3>
-
-      <p>{{ recipe.description }}</p>
+      <h3>{{ recipe.description }}</h3>
       <h3>Ingrediants:</h3>
       <ul>
         <li v-for="ing in recipe.ingrediants" :key="ing.id">
@@ -11,35 +13,23 @@
           {{ ing.productName }}
         </li>
       </ul>
-      <button class="iconBtn">
-        <i class="material-icons" @click="toggleReveal()">close</i>
+      <button class="iconBtn" @click="toggleReveal()">
+        <i class="material-icons" >close</i>
       </button>
     </div>
   </transition>
 </template>
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import store from "@/store";
+import { IRecipe } from "@/core/models";
 class Props {
-  recipeId!: string;
+  recipe!: IRecipe;
 }
-@Options({
-  emits: ["toggleReveal"],
-  data() {
-    const recipe = store.state.recipes.find(r => r._id === this.recipeId) || {}
-    return { recipe }
-  },
-  watch: {
- 
-    recipeId: function(newV) {
-      this.recipe = store.state.recipes.find(r => r._id === newV);
-    }
-  }
-})
+@Options({})
 export default class Reveal extends Vue.with(Props) {
-
+  isVissible = false;
   toggleReveal() {
-    this.$emit("toggleReveal")
+    this.isVissible = !this.isVissible;
   }
 }
 </script>
@@ -57,11 +47,11 @@ export default class Reveal extends Vue.with(Props) {
 .reveal-leave-active
   transition all 1s ease
 .card-reveal
-  position fixed
+  position absolute
   width 100%
   max-width 450px
-  top 20%
-  left 10%
+  top 0
+  margin 0 auto
   padding 26px
   background-color #fff
   display grid
@@ -70,4 +60,14 @@ export default class Reveal extends Vue.with(Props) {
   border-radius 20px
 .quantity
   color red
+.iconBtn
+  background none
+  margin 0
+  outline none
+  border none
+  color none
+  :hover
+    cursor pointer
+.material-icons
+  color #ff6347
 </style>
