@@ -1,5 +1,5 @@
 <template>
-  <ValidationInfo :props="props" />
+  <ValidationInfo :fields="props" />
   <h1>Share your tasty ideas with others!</h1>
   <RecipeForm @handleSubmit="registerRecipe" />
 </template>

@@ -1,26 +1,33 @@
 <template>
-  <div v-if="id" class="share">
+  <button class="iconBtn" @click="toggleSharebox()">
+    <i class="large material-icons">share</i>
+  </button>
+  <div v-if="isVissible" class="share">
     <h2>Share your favorite recipe !</h2>
-    <ul >
-      <li><a :href="'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/' + id">
-        <i class="material-icons">facebook</i>Facebook</a></li>
-      <li><a :href="'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/' + id + '&text='">Twitter</a></li>
-      <li><a :href="'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/' + id +'&media=&description='">Pinterest</a></li>
+    <ul>
+      <li>
+        <a :href="'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/' + recipeId">
+          <i class="material-icons">facebook</i>Facebook</a>
+      </li>
+      <li>
+        <a :href="'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/' + recipeId + '&text='">Twitter</a>
+      </li>
+      <li>
+        <a :href="'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/' + recipeId + '&media=&description='">Pinterest</a>
+      </li>
     </ul>
-    <button @click="close()">Close</button>
+    <button @click="toggleSharebox()">Close</button>
   </div>
 </template>
 <script lang="ts">
-import { Options,Vue } from "vue-class-component";
+import { Vue } from "vue-class-component";
 class Props {
-  id!: string;
+  recipeId!: string;
 }
-@Options({
-  emits: ["toggleSharebox"]
-})
 export default class Sharebox extends Vue.with(Props) {
-  close() {
-    this.$emit("toggleSharebox")
+  isVissible = false;
+  toggleSharebox() {
+    this.isVissible = !this.isVissible;
   }
 }
 </script>

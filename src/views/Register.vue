@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <ValidationInfo :props="props" />
+    <ValidationInfo :fields="props" />
     <h3>Provide some info about you so we know you too !</h3>
     <RegisterForm />
   </div>

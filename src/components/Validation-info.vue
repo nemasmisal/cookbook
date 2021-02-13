@@ -16,12 +16,11 @@
 </template>
 <script lang="ts">
 import { Vue } from "vue-class-component";
-import ValidationFields from "@/core/models/validation-fields";
+import { ValidationFields } from "@/core/models/";
 class Props {
-  props!: ValidationFields;
+  fields!: ValidationFields;
 }
 export default class ValidationInfo extends Vue.with(Props) {
-  fields = this.props;
   reveal = false;
   toggleReveal() {
     this.reveal = !this.reveal;

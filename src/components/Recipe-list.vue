@@ -6,13 +6,12 @@
     </div>
     <div class="card-content">
       <p>Author: {{ recipe.author.username }}</p>
-     
       <template v-if="username === recipe.author.username">
         <router-link :to="{ name: 'Edit-recipe', params: { id: recipe._id } }">
-          <i class="large material-icons">mode_edit</i>
+          <i class="material-icons">mode_edit</i>
         </router-link>
         <button class="iconBtn" @click="removeRecipe(recipe._id)">
-          <i class="large material-icons">cancel</i>
+          <i class="material-icons">cancel</i>
         </button>
       </template>
       <template v-else>
@@ -20,22 +19,21 @@
           <i class="large material-icons">star_border</i>
         </button>
       </template>
-      <button class="iconBtn" @click="toggleSharebox(recipe._id)">
-        <i class="large material-icons">share</i>
-      </button>
     </div>
-      <RevealComponent :recipe="recipe" />
+    <RevealComponent :recipe="recipe" />
+    <ShareboxComponent :recipeId="recipe._id" />
   </div>
 </template>
 
 <script lang="ts" scoped>
 import { Options, Vue } from "vue-class-component";
+import ShareboxComponent from "@/components/Sharebox.vue";
 import RevealComponent from "@/components/Reveal.vue";
 import store from "@/store";
 @Options({
-  emits: ["toggleSharebox"],
   components: {
-    RevealComponent
+    RevealComponent,
+    ShareboxComponent
   }
 })
 export default class RecipeList extends Vue {
@@ -45,9 +43,6 @@ export default class RecipeList extends Vue {
   removeRecipe(id: string) {
     store.dispatch("remove", { id });
   }
-  toggleSharebox(id: string) {
-    this.$emit("toggleSharebox", id);
-  }
   get recipes() {
     return [...store.state.recipes];
   }
@@ -56,7 +51,7 @@ export default class RecipeList extends Vue {
   }
 }
 </script>
-<style scoped lang="stylus">
+<style lang="stylus">
 .material-icons
   color #ff6347
 .card

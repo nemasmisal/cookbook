@@ -1,4 +1,4 @@
-export default interface ValidationFields {
+export interface ValidationFields {
   name: string;
   reqs: string[];
 }

@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { IRecipe } from "@/core/models";
+import { IRecipe } from "@/core/models/recipe";
 import store from "@/store";
 import { Options, Vue } from "vue-class-component";
 import RecipeForm from "@/components/Recipe-form.vue";

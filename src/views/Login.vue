@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <ValidationInfo :props="props" />
+    <ValidationInfo :fields="props" />
     <h1>Please provide your credentials.</h1>
     <LoginForm />
   </div>

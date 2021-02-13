@@ -14,14 +14,14 @@
         </li>
       </ul>
       <button class="iconBtn" @click="toggleReveal()">
-        <i class="material-icons" >close</i>
+        <i class="material-icons">close</i>
       </button>
     </div>
   </transition>
 </template>
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { IRecipe } from "@/core/models";
+import { IRecipe } from "@/core/models/";
 class Props {
   recipe!: IRecipe;
 }
@@ -34,7 +34,7 @@ export default class Reveal extends Vue.with(Props) {
 }
 </script>
 <style lang="stylus" scoped>
-.reveal-enter-from 
+.reveal-enter-from
   opacity 0
 .reveal-enter-to
   opacity 1
@@ -60,14 +60,4 @@ export default class Reveal extends Vue.with(Props) {
   border-radius 20px
 .quantity
   color red
-.iconBtn
-  background none
-  margin 0
-  outline none
-  border none
-  color none
-  :hover
-    cursor pointer
-.material-icons
-  color #ff6347
 </style>
