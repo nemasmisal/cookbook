@@ -20,12 +20,13 @@
   </transition>
 </template>
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { IRecipe } from "@/core/models/";
+import { Vue } from "vue-class-component";
+import { Recipe } from "@/core/models";
+
 class Props {
-  recipe!: IRecipe;
+  recipe!: Recipe;
 }
-@Options({})
+
 export default class Reveal extends Vue.with(Props) {
   isVissible = false;
   toggleReveal() {
@@ -48,7 +49,7 @@ export default class Reveal extends Vue.with(Props) {
   transition all 1s ease
 .card-reveal
   position absolute
-  width 100%
+  width 75%
   max-width 450px
   top 0
   margin 0 auto

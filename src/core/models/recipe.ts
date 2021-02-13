@@ -4,7 +4,7 @@ interface Ingrediant {
   productName: string;
 }
 
-export interface IRecipe {
+export interface Recipe {
   name: string;
   description: string;
   author: string;

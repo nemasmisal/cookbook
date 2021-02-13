@@ -17,10 +17,10 @@ class BaseFetch {
         this.BASE_URL + endpoint,
         body ? this.headers(body, method) : undefined
       );
-      if (!_res.ok) {
-        return store.dispatch("globalError", _res);
-      }
       const res = await _res.json();
+      if (!_res.ok) {
+        return store.dispatch("globalError", { msg: res.msg });
+      }
       if (res.msg) {
         store.dispatch("globalMsg", { msg: res.msg });
       }

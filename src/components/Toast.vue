@@ -1,10 +1,14 @@
 <template>
-  <div v-if="message" class="msg toast">
-    {{ message }}
-  </div>
-  <div v-if="err" class="err toast">
-    {{ err }}
-  </div>
+  <transition name="fade">
+    <div v-if="message" class="msg toast">
+      {{ message }}
+    </div>
+  </transition>
+  <transition name="fade">
+    <div v-if="err" class="err toast">
+      {{ err }}
+    </div>
+  </transition>
 </template>
 <script lang="ts">
 import { Vue } from "vue-class-component";
@@ -26,6 +30,22 @@ export default class Toast extends Vue.with(Props) {
 }
 </script>
 <style lang="stylus" scoped>
+.fade-enter-from
+  opacity 0
+  transform translateY(-50px)
+.fade-enter-to
+  opacity 1
+  transform translateY(0)
+.fade-enter-active
+  transition all 0.3s ease
+.fade-leave-from
+  opacity 1
+  transform translateY(0)
+.fade-leave-to
+  opacity 0
+  transform translateY(-50px)
+.fade-leave-active
+  transition all 0.3s ease
 .toast
   width 150px
   border-radius 8px

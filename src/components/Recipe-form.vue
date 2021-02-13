@@ -76,10 +76,10 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Store from "@/store";
-import { IRecipe } from "@/core/models";
+import { Recipe } from "@/core/models";
 
 class Props {
-  existingRecipe!: IRecipe;
+  existingRecipe!: Recipe;
 }
 
 @Options({
@@ -96,7 +96,7 @@ export default class RecipeForm extends Vue.with(Props) {
   quantity = "";
   productName = "";
   picked = "";
-  recipe: IRecipe = this.existingRecipe || {
+  recipe: Recipe = this.existingRecipe || {
     name: "",
     description: "",
     type: "Public",
@@ -148,9 +148,8 @@ export default class RecipeForm extends Vue.with(Props) {
     this.picked = "";
   }
   removeIngr(id: string) {
-    this.recipe.ingrediants = this.recipe.ingrediants.filter(
-      ing => Number(ing.id) !== Number(id)
-    );
+    this.recipe.ingrediants = this.recipe.ingrediants
+    .filter(ing => Number(ing.id) !== Number(id));
   }
 }
 </script>

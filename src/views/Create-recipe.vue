@@ -8,7 +8,7 @@
 import { Options, Vue } from "vue-class-component";
 import RecipeForm from "@/components/Recipe-form.vue";
 import ValidationInfo from "@/components/Validation-info.vue";
-import { IRecipe } from "@/core/models";
+import { Recipe } from "@/core/models";
 import Store from "@/store";
 @Options({
   components: {
@@ -41,7 +41,7 @@ export default class CreateRecipe extends Vue {
   public get props() {
     return this.requarements;
   }
-  registerRecipe(payload: IRecipe) {
+  registerRecipe(payload: Recipe) {
     Store.dispatch("create", payload);
     this.$router.push("/");
   }

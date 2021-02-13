@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { IRecipe } from "@/core/models/recipe";
+import { Recipe } from "@/core/models/recipe";
 import store from "@/store";
 import { Options, Vue } from "vue-class-component";
 import RecipeForm from "@/components/Recipe-form.vue";
@@ -14,7 +14,7 @@ import Store from "@/store";
   }
 })
 export default class Edit extends Vue {
-  recipe: IRecipe | undefined;
+  recipe: Recipe | undefined;
   get recipeId() {
     const { id } = this.$router.currentRoute.value.params;
     return id;
@@ -22,7 +22,7 @@ export default class Edit extends Vue {
   created() {
     this.recipe = store.state.recipes.find(r => r._id === this.recipeId);
   }
-  updateRecipe(payload: IRecipe) {
+  updateRecipe(payload: Recipe) {
     Store.dispatch("update", payload);
   }
 }
