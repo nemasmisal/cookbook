@@ -6,8 +6,8 @@
     </div>
     <div class="card-content">
       <p>Author: {{ recipe.author.username }}</p>
-      <RevealComponent :recipe="recipe" />
       <ShareboxComponent :recipeId="recipe._id" />
+      <RevealComponent :recipe="recipe" />
       <template v-if="username === recipe.author.username">
         <router-link :to="{ name: 'Edit-recipe', params: { id: recipe._id } }">
           <i class="material-icons">mode_edit</i>

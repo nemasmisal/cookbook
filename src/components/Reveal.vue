@@ -5,7 +5,7 @@
   <transition name="reveal">
     <div class="card-reveal" v-if="isVissible">
       <h3>Description:</h3>
-      <h3>{{ recipe.description }}</h3>
+      <p>{{ recipe.description }}</p>
       <h3>Ingrediants:</h3>
       <ul>
         <li v-for="ing in recipe.ingrediants" :key="ing.id">
@@ -36,29 +36,29 @@ export default class Reveal extends Vue.with(Props) {
 </script>
 <style lang="stylus" scoped>
 .reveal-enter-from
-  opacity 0
+  transform translateY(100%)
 .reveal-enter-to
-  opacity 1
+  transform translateY(0%)
 .reveal-enter-active
   transition all 1s ease
 .reveal-leave-from
-  opacity 1
+  transform translateY(0%)
 .reveal-leave-to
-  opacity 0
+  transform translateY(100%)
 .reveal-leave-active
   transition all 1s ease
 .card-reveal
   position absolute
-  width 75%
-  max-width 450px
+  overflow-y auto
   top 0
+  left 0
+  width 86%
+  height 90%
+  max-width 450px
   margin 0 auto
   padding 26px
-  background-color #fff
+  background-color #e5e4e2
   display grid
-  z-index 10
-  border 2px solid #ff6347
-  border-radius 20px
 .quantity
   color red
 </style>
