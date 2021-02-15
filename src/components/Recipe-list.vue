@@ -1,28 +1,30 @@
 <template>
-  <div class="card" v-for="recipe in recipes" :key="recipe._id">
-    <div class="card-title">{{ recipe.name }}</div>
-    <div class="card-image">
-      <img :src="recipe.imgUrl" />
+  <transition-group tag="div" name="list">
+    <div class="card" v-for="recipe in recipes" :key="recipe._id">
+      <div class="card-title">{{ recipe.name }}</div>
+      <div class="card-image">
+        <img :src="recipe.imgUrl" />
+      </div>
+      <div class="card-content">
+        <p>Author: {{ recipe.author.username }}</p>
+        <ShareboxComponent :recipeId="recipe._id" />
+        <RevealComponent :recipe="recipe" />
+        <template v-if="username === recipe.author.username">
+          <router-link :to="{ name: 'Edit-recipe', params: { id: recipe._id } }">
+            <i class="material-icons">mode_edit</i>
+          </router-link>
+          <button class="iconBtn" @click="removeRecipe(recipe._id)">
+            <i class="material-icons">cancel</i>
+          </button>
+        </template>
+        <template v-else>
+          <button class="iconBtn">
+            <i class="large material-icons">star_border</i>
+          </button>
+        </template>
+      </div>
     </div>
-    <div class="card-content">
-      <p>Author: {{ recipe.author.username }}</p>
-      <ShareboxComponent :recipeId="recipe._id" />
-      <RevealComponent :recipe="recipe" />
-      <template v-if="username === recipe.author.username">
-        <router-link :to="{ name: 'Edit-recipe', params: { id: recipe._id } }">
-          <i class="material-icons">mode_edit</i>
-        </router-link>
-        <button class="iconBtn" @click="removeRecipe(recipe._id)">
-          <i class="material-icons">cancel</i>
-        </button>
-      </template>
-      <template v-else>
-        <button class="iconBtn">
-          <i class="large material-icons">star_border</i>
-        </button>
-      </template>
-    </div>
-  </div>
+  </transition-group>
 </template>
 
 <script lang="ts" scoped>
@@ -59,6 +61,8 @@ export default class RecipeList extends Vue {
   max-width 450px
   margin 0 auto
   position relative
+  overflow-x hidden
+  overflow-y hidden
   background #e5e4e2
 .card img
   width 100%
@@ -81,4 +85,12 @@ export default class RecipeList extends Vue {
   color none
   :hover
     cursor pointer
+  .list-enter-from
+    opaciti 0
+    transform scale(0.6)
+  .list-enter-to
+    opacity 1
+    transform scale(1)
+  .list-enter-active
+    transition all 1s ease
 </style>

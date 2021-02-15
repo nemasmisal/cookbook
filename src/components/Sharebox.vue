@@ -35,7 +35,7 @@ export default class Sharebox extends Vue.with(Props) {
 </script>
 <style lang="stylus" scoped>
 .share-enter-from
-  transform translateX(-100%)
+  transform translateX(100%)
 .share-enter-to
   transform translateX(0%)
 .share-enter-active

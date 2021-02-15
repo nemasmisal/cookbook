@@ -49,9 +49,9 @@ export default class Reveal extends Vue.with(Props) {
   transition all 1s ease
 .card-reveal
   position absolute
-  overflow-y auto
   top 0
   left 0
+  overflow-y auto
   width 86%
   height 90%
   max-width 450px

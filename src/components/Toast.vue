@@ -1,10 +1,10 @@
 <template>
-  <transition name="fade">
+  <transition name="msg">
     <div v-if="message" class="msg toast">
       {{ message }}
     </div>
   </transition>
-  <transition name="fade">
+  <transition name="err">
     <div v-if="err" class="err toast">
       {{ err }}
     </div>
@@ -30,21 +30,25 @@ export default class Toast extends Vue.with(Props) {
 }
 </script>
 <style lang="stylus" scoped>
-.fade-enter-from
+.err-leave-to
   opacity 0
   transform translateY(-50px)
-.fade-enter-to
-  opacity 1
-  transform translateY(0)
-.fade-enter-active
+.err-leave-active
   transition all 0.3s ease
-.fade-leave-from
+.err-enter-active
+  animation wobble 0.5s ease
+.msg-enter-to
   opacity 1
   transform translateY(0)
-.fade-leave-to
+.msg-enter-from
   opacity 0
   transform translateY(-50px)
-.fade-leave-active
+.msg-enter-active
+  transition all 0.3s ease
+.msg-leave-to
+  opacity 0
+  transform translateY(-50px)  
+.msg-leave-active
   transition all 0.3s ease
 .toast
   width 150px
@@ -59,4 +63,29 @@ export default class Toast extends Vue.with(Props) {
   background green
 .err
   background #ff6347
+@keyframes wobble 
+  0% { 
+    transform translateY(-20px)
+    opacity 0
+  } 
+  50% {
+    transform translateY(0)
+    opacity 1
+  }
+  60% {
+    transform translateX(8px)
+  }
+  70% {
+    transform translateX(-8px)
+  }
+  80% {
+    transform translateX(4px)
+  }
+  90% {
+    transform translateX(-4px)
+  }
+  100% {
+    transform translateX(0)
+  }
+
 </style>
