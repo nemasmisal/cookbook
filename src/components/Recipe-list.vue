@@ -18,9 +18,7 @@
           </button>
         </template>
         <template v-else>
-          <button class="iconBtn">
-            <i class="large material-icons">star_border</i>
-          </button>
+          <ReviewComponent :recipeId="recipe._id"/>
         </template>
       </div>
     </div>
@@ -31,11 +29,13 @@
 import { Options, Vue } from "vue-class-component";
 import ShareboxComponent from "@/components/Sharebox.vue";
 import RevealComponent from "@/components/Reveal.vue";
+import ReviewComponent from "@/components/Review.vue";
 import store from "@/store";
 @Options({
   components: {
     RevealComponent,
-    ShareboxComponent
+    ShareboxComponent,
+    ReviewComponent
   }
 })
 export default class RecipeList extends Vue {

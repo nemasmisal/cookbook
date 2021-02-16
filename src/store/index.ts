@@ -1,25 +1,25 @@
-import { createStore } from "vuex";
+import { createStore, Store } from "vuex";
 import RecipeService from "@/core/services/recipe-service";
 import AuthService from "@/core/services/auth-service";
+import ReviewService from "@/core/services/review-service";
 import Router from "@/router/index";
+import { Recipe } from "@/core/models";
+
 interface Auth {
   username: string;
   id: string;
   email: string;
 }
-interface Recipe {
-  _id: string;
-  name: string;
-  type: string;
-  description: string;
-  author: string;
-  imgUrl: string;
-  ingrediants: [];
+
+interface Review {
+  recipeId : string;
+  reviews: [];
 }
 
 interface State {
   auth: Auth;
   recipes: Recipe[];
+  reviews: Review[];
   msg: string;
   err: string;
 }
@@ -30,6 +30,7 @@ const state: State = {
     email: ""
   },
   recipes: [],
+  reviews: [],
   msg: "",
   err: ""
 };
@@ -101,6 +102,17 @@ export default createStore({
     },
     clearMsg: state => {
       state.msg = "";
+    },
+    getReviews: async (state, payload) => {
+      const existing = state.reviews.find(r => r.recipeId === payload.recipeId);
+      if(existing) { return }
+      const reviews = await ReviewService.getReviews(payload);
+      state.reviews = [...state.reviews,reviews];
+    },
+    addReview: async (state, payload) => {
+      const res = await ReviewService.addReview(payload);
+      if(!res) { return }
+      state.msg = "Review added";
     }
   },
   actions: {
@@ -133,6 +145,12 @@ export default createStore({
     },
     clearMsg({ commit }) {
       commit("clearMsg");
+    },
+    getReviews({ commit }, payload) {
+      commit("getReviews", payload);
+    },
+    addReview({ commit }, payload) {
+      commit("addReview", payload);
     }
   },
   modules: {}
