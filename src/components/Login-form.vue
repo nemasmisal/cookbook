@@ -46,7 +46,7 @@ export default class LoginForm extends Vue {
       email: this.form.email,
       password: this.form.password
     };
-    store.dispatch("login", credentials);
+    store.dispatch("auth/login", credentials);
   }
 }
 </script>

@@ -20,10 +20,10 @@ export default class Edit extends Vue {
     return id;
   }
   created() {
-    this.recipe = store.state.recipes.find(r => r._id === this.recipeId);
+    this.recipe = store.state.recipe.recipes.find((r:any) => r._id === this.recipeId);
   }
   updateRecipe(payload: Recipe) {
-    Store.dispatch("update", payload);
+    Store.dispatch("recipe/update", payload);
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link>
-    <template v-if="auth.id">
+    <template v-if="id">
       <router-link to="/create">Create</router-link>
       <router-link to="/" @click="handleLogout">Logout</router-link>
     </template>
@@ -19,11 +19,12 @@ import { Options, Vue } from "vue-class-component";
 
 @Options({})
 export default class Navbar extends Vue {
+  
   handleLogout() {
-    store.dispatch("logout");
+    store.dispatch("auth/logout");
   }
-  get auth() {
-    return store.state.auth;
+  get id() {
+    return store.state.auth.id;
   }
 }
 </script>

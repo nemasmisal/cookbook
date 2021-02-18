@@ -127,7 +127,6 @@ export default class RecipeForm extends Vue.with(Props) {
       author: id,
       _id: this.recipe._id
     };
-
     this.$emit("handleSubmit", credentials);
   }
   handleIngrediant() {

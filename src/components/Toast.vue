@@ -20,12 +20,12 @@ class Props {
 export default class Toast extends Vue.with(Props) {
   get message() {
     setTimeout(() => {
-      store.dispatch("clearMsg");
+      store.dispatch("msg/clearMsg");
     }, 1500);
-    return store.state.msg;
+    return store.state.msg.msg;
   }
   get err() {
-    return store.state.err;
+    return store.state.msg.err;
   }
 }
 </script>

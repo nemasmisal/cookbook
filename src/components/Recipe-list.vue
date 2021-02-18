@@ -40,13 +40,13 @@ import store from "@/store";
 })
 export default class RecipeList extends Vue {
   created() {
-    store.dispatch("getAllRecipes");
+    store.dispatch("recipe/getAllRecipes");
   }
   removeRecipe(id: string) {
-    store.dispatch("remove", { id });
+    store.dispatch("recipe/remove", { id });
   }
   get recipes() {
-    return [...store.state.recipes];
+    return store.state.recipe.recipes;
   }
   get username() {
     return store.state.auth.username;

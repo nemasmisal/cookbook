@@ -19,10 +19,10 @@ class BaseFetch {
       );
       const res = await _res.json();
       if (!_res.ok) {
-        return store.dispatch("globalError", { msg: res.msg });
+        return store.dispatch("msg/globalError", { msg: res.msg });
       }
       if (res.msg) {
-        store.dispatch("globalMsg", { msg: res.msg });
+        store.dispatch("msg/globalMsg", { msg: res.msg });
       }
       return res;
     } catch (err) {

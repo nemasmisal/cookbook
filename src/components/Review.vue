@@ -10,6 +10,12 @@
           <li v-for="review in reviews.reviews" :key="review._id">{{review.author.username}} : {{review.review}}</li>
         </ul>
         <p v-else>No reviews yet</p>
+        <template v-if="userId && canWriteReview">
+          <form @keypress.enter="addReview()">
+          <label>Short review, symbols left: {{symbolsLeft}}</label>
+          <textarea maxlength="60" v-model="textArea"></textarea>
+          </form>
+        </template>
         <button class="iconBtn" @click="toggleReview"><i class="material-icons">close</i></button>
       </div>
     </template>
@@ -18,17 +24,30 @@
 <script lang="ts">
 import store from "@/store";
 import { Vue } from "vue-class-component";
+import { Rev } from "@/store/modules/review"
 class Props {
   recipeId!: string;
 }
 export default class Review extends Vue.with(Props) {
-  created() {
-    store.dispatch("getReviews", { recipeId: this.recipeId });
-  }
   isVissible = false;
+  userId = store.state.auth.id;
+  textArea = "";
+  get canWriteReview() {
+    const res = this.reviews?.reviews.find((r: Rev) => r.author._id === this.userId);
+    return res ? false : true;
+  }
+  created() {
+    store.dispatch("reviews/getReviews", { recipeId: this.recipeId });
+  }
+  addReview() {
+    store.dispatch("reviews/addReview", { review: this.textArea, recipeId: this.recipeId, author: store.state.auth.id })
+    this.reviews.reviews.push({ author: { _id: this.userId, username: store.state.auth.username }, review: this.textArea })
+  }
+  get symbolsLeft() {
+    return 60 - Number(this.textArea.length);
+  }
   get reviews() {
-    const reviews = store.state.reviews.find(r => r.recipeId === this.recipeId);
-    return reviews;
+    return store.getters["reviews/recipeReviews"](this.recipeId);
   }
   toggleReview() {
     this.isVissible = !this.isVissible;
