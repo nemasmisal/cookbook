@@ -95,7 +95,7 @@ export default {
     const productName = ref(null);
     const picked = ref(null);
     const recipe =
-      props.existingRecipe ||
+      ref(props.existingRecipe) ||
       ref({
         name: '',
         description: '',
@@ -106,7 +106,7 @@ export default {
         _id: '',
       });
     const formErrors = {
-      name: () => !patterns.oneWord.test(recipe.value.name),
+      name: () => !patterns.oneWord.test(recipe?.value.name),
       description: () => !patterns.description.test(recipe.value.description),
       imgUrl: () => !patterns.imgUrl.test(recipe.value.imgUrl),
       ingrediants: () => recipe.value.ingrediants.length === 0,
