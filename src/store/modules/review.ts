@@ -5,34 +5,36 @@ interface Author {
   username: string;
   _id: string;
 }
-export interface Rev {
+interface Review {
   author: Author;
   review: string;
 }
-interface Review {
-  recipeId: string;
-  reviews: Rev[];
-}
 interface State {
-  reviews: Review[];
+  [key: string]: Review[];
 }
-const state: State = {
-  reviews: []
-}
+const state: State = {};
 
 const getters: GetterTree<State, any> = {
   recipeReviews(state) {
-    return (recipeId: string) => state.reviews.find((r: Review) => r.recipeId === recipeId);
+    console.log(state)
+    return (recipeId: string) => state[recipeId];
   }
 }
 const mutations: MutationTree<Review> = {
-  getReviews: async (state, payload) => {
-    const reviews = await ReviewService.getReviews(payload);
-    state.reviews = [...state.reviews, reviews];
+  getReviews: async (state, { recipeId }) => {
+    if (state.hasOwnProperty(recipeId)) {
+      console.log(state)
+      return;
+    }
+    console.log(state)
+    const reviews: Review = await ReviewService.getReviews({ recipeId });
+    Object.assign(state, { ...reviews });
+    console.log(state)
   },
-  addReview: async (state, payload) => {
-    const res = await ReviewService.addReview(payload);
+  addReview: async (state, { recipeId }) => {
+    const res: Review = await ReviewService.addReview({ recipeId });
     if (!res) { return }
+    console.log(state)
     rootState.dispatch("msg/globalMsg", { msg: "Review added" });
   }
 }

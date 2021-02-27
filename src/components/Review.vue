@@ -6,13 +6,13 @@
     <template v-if="isVissible">
       <div class="review">
         <h4>Reviews</h4>
-        <ul v-if="reviews().reviews.length">
-          <li v-for="review in reviews().reviews" :key="review._id">
+        <ul v-if="reviews.length">
+          <li v-for="review in reviews" :key="review._id">
             {{ review.author.username }} : {{ review.review }}
           </li>
         </ul>
         <p v-else>No reviews yet</p>
-        <template v-if="userId && canWriteReview()">
+        <template v-if="userId && canWriteReview">
           <form @keypress.enter="addReview()">
             <label>Short review, symbols left: {{ symbolsLeft() }}</label>
             <textarea maxlength="60" v-model="textArea"></textarea>
@@ -26,32 +26,25 @@
   </transition>
 </template>
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 export default {
-  props: { recipeId: { type: String } },
+  props: { recipeId: { type: String, required: true } },
   setup(props) {
     const store = useStore();
     store.dispatch('reviews/getReviews', { recipeId: props.recipeId });
-    const reviews = () => store.getters['reviews/recipeReviews'](props.recipeId);
+    const reviews = computed(() => store.getters['reviews/recipeReviews'](props.recipeId));
     const userId = store.state.auth.id;
     const isVissible = ref(false);
     const textArea = ref('');
-    const canWriteReview = () => {
-      const res = reviews().reviews.find(
-        (r) => r.author._id === userId
-      );
-      return res ? false : true;
-    };
+    const canWriteReview = computed(
+      () => !reviews.value.find((r) => r.author._id === userId)
+    );
     const addReview = () => {
       store.dispatch('reviews/addReview', {
         review: textArea.value,
         recipeId: props.recipeId,
         author: userId,
-      });
-      reviews().reviews.push({
-        author: { _id: userId, username: store.state.auth.username },
-        review: textArea.value,
       });
     };
     const symbolsLeft = () => {
@@ -61,7 +54,16 @@ export default {
     const toggleReview = () => {
       isVissible.value = !isVissible.value;
     };
-    return { reviews,textArea, userId, isVissible, canWriteReview, addReview, symbolsLeft, toggleReview };
+    return {
+      reviews,
+      textArea,
+      userId,
+      isVissible,
+      canWriteReview,
+      addReview,
+      symbolsLeft,
+      toggleReview,
+    };
   },
 };
 </script>
