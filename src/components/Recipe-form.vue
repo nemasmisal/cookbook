@@ -39,9 +39,9 @@
           :class="{ error: formErrors.ingrediants() }"
         />
         <div class="radio">
-          <input type="radio" name="index" value="gr" v-model="picked" />gr
-          <input type="radio" name="index" value="kg" v-model="picked" />kg
-          <input type="radio" name="index" value="ml" v-model="picked" />ml
+          <input type="radio" value="gr" v-model="picked" />gr
+          <input type="radio" value="kg" v-model="picked" />kg
+          <input type="radio" value="ml" v-model="picked" />ml
         </div>
         <input
           type="text"
