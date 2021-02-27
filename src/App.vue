@@ -3,20 +3,13 @@
   <Toast />
   <router-view />
 </template>
-
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Navbar from "@/components/Navbar.vue";
-import Toast from "@/components/Toast.vue";
-@Options({
-  components: {
-    Navbar,
-    Toast
-  }
-})
-export default class App extends Vue {}
+<script>
+import Navbar from '@/components/Navbar.vue';
+import Toast from '@/components/Toast.vue';
+export default {
+  components: { Navbar, Toast },
+};
 </script>
-
 <style lang="stylus">
 primary = #2c3e50
 secondary = #ff6347
