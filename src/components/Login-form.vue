@@ -18,37 +18,39 @@
     <button type="submit">Login</button>
   </form>
 </template>
-
-<script lang="ts">
-import store from "@/store";
-import { Vue } from "vue-class-component";
-
-export default class LoginForm extends Vue {
-  patterns = {
-    oneWorld: new RegExp(/^[a-zA-Z0-9]{4,20}$/),
-    email: new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9]+\.{1}[a-zA-Z]+$/)
-  };
-  form = {
-    email: "",
-    password: "",
-    errors: {
-      email: () => !this.patterns.email.test(this.form.email),
-      password: () => !this.patterns.oneWorld.test(this.form.password)
-    }
-  };
-
-  handleSubmit() {
-    const isInvalid = Object.values(this.form.errors).find(f => f());
-    if (isInvalid) {
-      return;
-    }
-    const credentials = {
-      email: this.form.email,
-      password: this.form.password
+<script>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+export default {
+  setup() {
+    const store = useStore();
+    const patterns = {
+      oneWord: new RegExp(/^[a-zA-Z0-9]{4,20}$/),
+      email: new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9]+\.{1}[a-zA-Z]+$/),
     };
-    store.dispatch("auth/login", credentials);
-  }
-}
+    const form = ref({
+      email: '',
+      password: '',
+      errors: {
+        email: () => !patterns.email.test(form.value.email),
+        password: () => !patterns.oneWord.test(form.value.password),
+      },
+    });
+
+    const handleSubmit = () => {
+      const isInvalid = Object.values(form.value.errors).find((f) => f());
+      if (isInvalid) {
+        return;
+      }
+      const credentials = {
+        email: form.value.email,
+        password: form.value.password,
+      };
+      store.dispatch('auth/login', credentials);
+    };
+    return { form, handleSubmit };
+  },
+};
 </script>
 
 <style scoped lang="stylus">

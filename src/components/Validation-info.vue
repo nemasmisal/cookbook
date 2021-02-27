@@ -6,28 +6,28 @@
     </button>
   </div>
   <transition name="validation-info">
-  <div class="info" v-if="reveal">
-    <template v-for="field in fields" :key="field">
-      <h2>{{ field.name }}</h2>
-      <ol>
-        <li v-for="req in field.reqs" :key="req">{{ req }}</li>
-      </ol>
-    </template>
-  </div>
+    <div class="info" v-if="reveal">
+      <template v-for="field in fields" :key="field">
+        <h2>{{ field.name }}</h2>
+        <ol>
+          <li v-for="req in field.reqs" :key="req">{{ req }}</li>
+        </ol>
+      </template>
+    </div>
   </transition>
 </template>
-<script lang="ts">
-import { Vue } from "vue-class-component";
-import { ValidationFields } from "@/core/models/";
-class Props {
-  fields!: ValidationFields;
-}
-export default class ValidationInfo extends Vue.with(Props) {
-  reveal = false;
-  toggleReveal() {
-    this.reveal = !this.reveal;
-  }
-}
+<script>
+import { ref } from 'vue';
+export default {
+  props: { fields: { type: Object } },
+  setup() {
+    const reveal = ref(false);
+    const toggleReveal = () => {
+      reveal.value = !reveal.value;
+    };
+    return { reveal, toggleReveal };
+  },
+};
 </script>
 <style lang="stylus" scoped>
 .validation-info-enter-from

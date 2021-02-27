@@ -7,32 +7,54 @@
       <h2>Share your favorite recipe !</h2>
       <ul>
         <li>
-          <a :href="'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/' + recipeId">
-            <i class="material-icons">facebook</i>Facebook</a>
+          <a
+            :href="
+              'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/' +
+                recipeId
+            "
+          >
+            <i class="material-icons">facebook</i>Facebook</a
+          >
         </li>
         <li>
-          <a :href="'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/' + recipeId + '&text='">Twitter</a>
+          <a
+            :href="
+              'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/' +
+                recipeId +
+                '&text='
+            "
+            >Twitter</a
+          >
         </li>
         <li>
-          <a :href="'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/' + recipeId + '&media=&description='">Pinterest</a>
+          <a
+            :href="
+              'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/' +
+                recipeId +
+                '&media=&description='
+            "
+            >Pinterest</a
+          >
         </li>
       </ul>
       <button @click="toggleSharebox()">Close</button>
     </div>
   </transition>
 </template>
-<script lang="ts">
-import { Vue } from "vue-class-component";
-class Props {
-  recipeId!: string;
-}
-export default class Sharebox extends Vue.with(Props) {
-  isVissible = false;
-  toggleSharebox() {
-    this.isVissible = !this.isVissible;
-  }
-}
+<script>
+import { ref } from 'vue';
+export default {
+  props: { recipeId: { type: String } },
+  setup() {
+    const isVissible = ref(false);
+    const toggleSharebox = () => {
+      isVissible.value = !isVissible.value;
+    };
+    return { isVissible, toggleSharebox };
+  },
+};
 </script>
+
 <style lang="stylus" scoped>
 .share-enter-from
   transform translateX(100%)

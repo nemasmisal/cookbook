@@ -36,43 +36,46 @@
     <button type="submit">Create an Account</button>
   </form>
 </template>
-
-<script lang="ts">
-import { Vue } from "vue-class-component";
-import Store from "@/store";
-export default class RegisterForm extends Vue {
-  patterns = {
-    oneWorld: new RegExp(/^[a-zA-Z0-9]{4,20}$/),
-    email: new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9]+\.{1}[a-zA-Z]+$/)
-  };
-  form = {
-    name: "",
-    email: "",
-    password: "",
-    repeatPassword: "",
-    errors: {
-      name: () => !this.patterns.oneWorld.test(this.form.name),
-      email: () => !this.patterns.email.test(this.form.email),
-      password: () => !this.patterns.oneWorld.test(this.form.password),
-      repeatPassword: () =>
-        this.form.password !== this.form.repeatPassword ||
-        this.form.repeatPassword.length === 0
-    }
-  };
-
-  async handleSubmit() {
-    const isInvalid = Object.values(this.form.errors).find(f => f());
-    if (isInvalid) {
-      return;
-    }
-    const credentials = {
-      username: this.form.name,
-      email: this.form.email,
-      password: this.form.password
+<script>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+export default {
+  setup() {
+    const store = useStore();
+    const patterns = {
+      oneWorld: new RegExp(/^[a-zA-Z0-9]{4,20}$/),
+      email: new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9]+\.{1}[a-zA-Z]+$/),
     };
-    Store.dispatch("register", credentials);
-  }
-}
+    const form = ref({
+      name: '',
+      email: '',
+      password: '',
+      repeatPassword: '',
+      errors: {
+        name: () => !patterns.oneWorld.test(form.value.name),
+        email: () => !patterns.email.test(form.value.email),
+        password: () => !patterns.oneWorld.test(form.value.password),
+        repeatPassword: () =>
+          form.value.password !== form.value.repeatPassword ||
+          form.value.repeatPassword.length === 0,
+      },
+    });
+
+    const handleSubmit = async () => {
+      const isInvalid = Object.values(form.value.errors).find((f) => f());
+      if (isInvalid) {
+        return;
+      }
+      const credentials = {
+        username: form.value.name,
+        email: form.value.email,
+        password: form.value.password,
+      };
+      store.dispatch('register', credentials);
+    };
+    return { handleSubmit, form };
+  },
+};
 </script>
 
 <style scoped lang="stylus">
