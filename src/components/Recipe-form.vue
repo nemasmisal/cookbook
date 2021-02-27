@@ -94,19 +94,20 @@ export default {
     const quantity = ref(null);
     const productName = ref(null);
     const picked = ref(null);
-    const recipe =
-      ref(props.existingRecipe) ||
-      ref({
-        name: '',
-        description: '',
-        type: 'Public',
-        imgUrl: '',
-        author: '',
-        ingrediants: [],
-        _id: '',
-      });
+    const recipe = props.existingRecipe
+      ? ref(props.existingRecipe)
+      : ref({
+          name: '',
+          description: '',
+          type: 'Public',
+          imgUrl: '',
+          author: '',
+          ingrediants: [],
+          _id: '',
+        });
+    console.log(recipe);
     const formErrors = {
-      name: () => !patterns.oneWord.test(recipe?.value.name),
+      name: () => !patterns.oneWord.test(recipe.value.name),
       description: () => !patterns.description.test(recipe.value.description),
       imgUrl: () => !patterns.imgUrl.test(recipe.value.imgUrl),
       ingrediants: () => recipe.value.ingrediants.length === 0,

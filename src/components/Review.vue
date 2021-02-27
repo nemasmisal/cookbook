@@ -1,59 +1,71 @@
 <template>
   <button class="iconBtn" @click="toggleReview()">
-     <i class="large material-icons">star_border</i>
+    <i class="large material-icons">star_border</i>
   </button>
   <transition name="reviews">
     <template v-if="isVissible">
       <div class="review">
         <h4>Reviews</h4>
-        <ul v-if="reviews.reviews.length">
-          <li v-for="review in reviews.reviews" :key="review._id">{{review.author.username}} : {{review.review}}</li>
+        <ul v-if="reviews().reviews.length">
+          <li v-for="review in reviews().reviews" :key="review._id">
+            {{ review.author.username }} : {{ review.review }}
+          </li>
         </ul>
         <p v-else>No reviews yet</p>
-        <template v-if="userId && canWriteReview">
+        <template v-if="userId && canWriteReview()">
           <form @keypress.enter="addReview()">
-          <label>Short review, symbols left: {{symbolsLeft}}</label>
-          <textarea maxlength="60" v-model="textArea"></textarea>
+            <label>Short review, symbols left: {{ symbolsLeft() }}</label>
+            <textarea maxlength="60" v-model="textArea"></textarea>
           </form>
         </template>
-        <button class="iconBtn" @click="toggleReview"><i class="material-icons">close</i></button>
+        <button class="iconBtn" @click="toggleReview">
+          <i class="material-icons">close</i>
+        </button>
       </div>
     </template>
   </transition>
 </template>
-<script lang="ts">
-import store from "@/store";
-import { Vue } from "vue-class-component";
-import { Rev } from "@/store/modules/review"
-class Props {
-  recipeId!: string;
-}
-export default class Review extends Vue.with(Props) {
-  isVissible = false;
-  userId = store.state.auth.id;
-  textArea = "";
-  get canWriteReview() {
-    const res = this.reviews?.reviews.find((r: Rev) => r.author._id === this.userId);
-    return res ? false : true;
-  }
-  created() {
-    store.dispatch("reviews/getReviews", { recipeId: this.recipeId });
-  }
-  addReview() {
-    store.dispatch("reviews/addReview", { review: this.textArea, recipeId: this.recipeId, author: store.state.auth.id })
-    this.reviews.reviews.push({ author: { _id: this.userId, username: store.state.auth.username }, review: this.textArea })
-  }
-  get symbolsLeft() {
-    return 60 - Number(this.textArea.length);
-  }
-  get reviews() {
-    return store.getters["reviews/recipeReviews"](this.recipeId);
-  }
-  toggleReview() {
-    this.isVissible = !this.isVissible;
-  }
-}
+<script>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+export default {
+  props: { recipeId: { type: String } },
+  setup(props) {
+    const store = useStore();
+    store.dispatch('reviews/getReviews', { recipeId: props.recipeId });
+    const reviews = () => store.getters['reviews/recipeReviews'](props.recipeId);
+    const userId = store.state.auth.id;
+    const isVissible = ref(false);
+    const textArea = ref('');
+    const canWriteReview = () => {
+      const res = reviews().reviews.find(
+        (r) => r.author._id === userId
+      );
+      return res ? false : true;
+    };
+    const addReview = () => {
+      store.dispatch('reviews/addReview', {
+        review: textArea.value,
+        recipeId: props.recipeId,
+        author: userId,
+      });
+      reviews().reviews.push({
+        author: { _id: userId, username: store.state.auth.username },
+        review: textArea.value,
+      });
+    };
+    const symbolsLeft = () => {
+      return 60 - Number(textArea.value.length);
+    };
+
+    const toggleReview = () => {
+      isVissible.value = !isVissible.value;
+    };
+    return { reviews,textArea, userId, isVissible, canWriteReview, addReview, symbolsLeft, toggleReview };
+  },
+};
 </script>
+script>
 <style lang="stylus" scoped>
 .reviews-enter-from
   transform translateX(100%)
