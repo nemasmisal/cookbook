@@ -1,17 +1,17 @@
-import store from "@/store/";
+import store from '@/store/';
 class BaseFetch {
-  private BASE_URL = "/api/";
-  private headers = (body: any, method: string) => {
+  BASE_URL = '/api/';
+  headers = (body, method) => {
     return {
       method: method.toUpperCase(),
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Headers": "true"
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Headers': 'true',
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     };
   };
-  async baseHttp(endpoint: string, method: string, body: any) {
+  async baseHttp(endpoint, method, body) {
     try {
       const _res = await fetch(
         this.BASE_URL + endpoint,
@@ -19,10 +19,10 @@ class BaseFetch {
       );
       const res = await _res.json();
       if (!_res.ok) {
-        return store.dispatch("msg/globalError", { msg: res.msg });
+        return store.dispatch('msg/globalError', { msg: res.msg });
       }
       if (res.msg) {
-        store.dispatch("msg/globalMsg", { msg: res.msg });
+        store.dispatch('msg/globalMsg', { msg: res.msg });
       }
       return res;
     } catch (err) {
