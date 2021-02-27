@@ -19,20 +19,18 @@
     </div>
   </transition>
 </template>
-<script lang="ts">
-import { Vue } from "vue-class-component";
-import { Recipe } from "@/core/models";
-
-class Props {
-  recipe!: Recipe;
-}
-
-export default class Reveal extends Vue.with(Props) {
-  isVissible = false;
-  toggleReveal() {
-    this.isVissible = !this.isVissible;
-  }
-}
+<script>
+import { ref } from 'vue';
+export default {
+  props: { recipe: { type: Object } },
+  setup() {
+    const isVissible = ref(false);
+    const toggleReveal = () => {
+      isVissible.value = !isVissible.value;
+    };
+    return { isVissible, toggleReveal };
+  },
+};
 </script>
 <style lang="stylus" scoped>
 .reveal-enter-from
