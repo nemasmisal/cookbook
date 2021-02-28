@@ -105,7 +105,6 @@ export default {
           ingrediants: [],
           _id: '',
         });
-    console.log(recipe);
     const formErrors = {
       name: () => !patterns.oneWord.test(recipe.value.name),
       description: () => !patterns.description.test(recipe.value.description),

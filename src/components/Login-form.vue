@@ -6,35 +6,25 @@
       name="email"
       placeholder="email@example.com"
       v-model="v$.emailField.$model"
-      @blur="v$.emailField.$touch"
     />
-    <template v-if="v$.emailField.$dirty">
-      <div
-        class="error"
-        v-for="error of v$.emailField.$silentErrors"
-        :key="error.$message"
-      >
-        {{ error.$message }}
-      </div>
-    </template>
+    <InputErrMsgTemp
+      :errorsObj="v$.emailField.$silentErrors"
+      v-if="v$.emailField.$dirty"
+    />
     <label for="password">Password</label>
     <input type="password" name="password" v-model="v$.password.$model" />
-    <template v-if="v$.password.$dirty">
-      <div
-        class="error"
-        v-for="error of v$.password.$silentErrors"
-        :key="error.$message"
-      >
-        {{ error.$message }}
-      </div>
-    </template>
-    <button type="submit">Login</button>
+    <InputErrMsgTemp
+      :errorsObj="v$.password.$silentErrors"
+      v-if="v$.password.$dirty"
+    />
+    <button type="submit" :disabled="v$.$invalid">Login</button>
   </form>
 </template>
 <script>
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
+import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
 import {
   required,
   email,
@@ -43,6 +33,7 @@ import {
   helpers,
 } from '@vuelidate/validators';
 export default {
+  components: { InputErrMsgTemp },
   setup() {
     const store = useStore();
     const emailField = ref('');
@@ -52,7 +43,7 @@ export default {
       (value) => /^[a-zA-Z0-9]+$/.test(value)
     );
     const rules = computed(() => ({
-      emailField: { required, email },
+      emailField: { required, email, $autoDirty: true },
       password: {
         required,
         maxLength: maxLength(21),
@@ -62,13 +53,10 @@ export default {
     }));
     const v$ = useVuelidate(rules, { emailField, password });
     const handleSubmit = () => {
-      const isInvalid = Object.values(form.value.errors).find((f) => f());
-      if (isInvalid) {
-        return;
-      }
+      if (v$.value.$invalid) return;
       const credentials = {
-        email: form.value.email,
-        password: form.value.password,
+        email: emailField.value,
+        password: password.value,
       };
       store.dispatch('auth/login', credentials);
     };
