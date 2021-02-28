@@ -2,7 +2,7 @@ import RecipeService from "@/core/services/recipe-service";
 import Router from "@/router/index";
 import rootState from "../index";
 
-
+const state = {};
 const getters = {
   recipes: state => state.recipes
 }
@@ -53,7 +53,7 @@ const mutations = {
 
 export default {
   namespaced: true,
-  state: state,
+  state,
   getters,
   actions,
   mutations
