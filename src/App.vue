@@ -56,6 +56,13 @@ form
   vertical-align middle
 .error
   border 2px solid red
+  display block
+  margin 5px auto
+  padding 5px
+  border-radius 3px
+  text-align center
+  width 80%
+  max-width 400px
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased

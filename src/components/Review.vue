@@ -34,17 +34,17 @@ export default {
     const store = useStore();
     store.dispatch('reviews/getReviews', { recipeId: props.recipeId });
     const reviews = computed(() => store.getters['reviews/recipeReviews'](props.recipeId));
-    const userId = store.state.auth.id;
+    const userId = computed(() => store.state.auth.id); 
     const isVissible = ref(false);
     const textArea = ref('');
     const canWriteReview = computed(
-      () => !reviews.value.find((r) => r.author._id === userId)
+      () => !reviews.value.find((r) => r.author._id === userId.value)
     );
     const addReview = () => {
       store.dispatch('reviews/addReview', {
         review: textArea.value,
         recipeId: props.recipeId,
-        author: userId,
+        author: userId.value,
       });
     };
     const symbolsLeft = () => {
@@ -67,7 +67,6 @@ export default {
   },
 };
 </script>
-script>
 <style lang="stylus" scoped>
 .reviews-enter-from
   transform translateX(100%)

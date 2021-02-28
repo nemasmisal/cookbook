@@ -5,38 +5,62 @@
       type="email"
       name="email"
       placeholder="email@example.com"
-      v-model="form.email"
-      :class="{ error: form.errors.email() }"
+      v-model="v$.emailField.$model"
+      @blur="v$.emailField.$touch"
     />
+    <template v-if="v$.emailField.$dirty">
+      <div
+        class="error"
+        v-for="error of v$.emailField.$silentErrors"
+        :key="error.$message"
+      >
+        {{ error.$message }}
+      </div>
+    </template>
     <label for="password">Password</label>
-    <input
-      type="password"
-      name="password"
-      v-model="form.password"
-      :class="{ error: form.errors.password() }"
-    />
+    <input type="password" name="password" v-model="v$.password.$model" />
+    <template v-if="v$.password.$dirty">
+      <div
+        class="error"
+        v-for="error of v$.password.$silentErrors"
+        :key="error.$message"
+      >
+        {{ error.$message }}
+      </div>
+    </template>
     <button type="submit">Login</button>
   </form>
 </template>
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
+import useVuelidate from '@vuelidate/core';
+import {
+  required,
+  email,
+  maxLength,
+  minLength,
+  helpers,
+} from '@vuelidate/validators';
 export default {
   setup() {
     const store = useStore();
-    const patterns = {
-      oneWord: new RegExp(/^[a-zA-Z0-9]{4,20}$/),
-      email: new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9]+\.{1}[a-zA-Z]+$/),
-    };
-    const form = ref({
-      email: '',
-      password: '',
-      errors: {
-        email: () => !patterns.email.test(form.value.email),
-        password: () => !patterns.oneWord.test(form.value.password),
+    const emailField = ref('');
+    const password = ref('');
+    const passPattern = helpers.withMessage(
+      'Allowed characters: A-Z,0-9',
+      (value) => /^[a-zA-Z0-9]+$/.test(value)
+    );
+    const rules = computed(() => ({
+      emailField: { required, email },
+      password: {
+        required,
+        maxLength: maxLength(21),
+        minLength: minLength(4),
+        passPattern,
       },
-    });
-
+    }));
+    const v$ = useVuelidate(rules, { emailField, password });
     const handleSubmit = () => {
       const isInvalid = Object.values(form.value.errors).find((f) => f());
       if (isInvalid) {
@@ -48,7 +72,7 @@ export default {
       };
       store.dispatch('auth/login', credentials);
     };
-    return { form, handleSubmit };
+    return { handleSubmit, v$, emailField, password };
   },
 };
 </script>
