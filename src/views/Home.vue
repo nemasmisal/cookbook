@@ -9,17 +9,13 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import RecipeListComponent from "@/components/Recipe-list.vue";
-
-@Options({
-  components: {
-    RecipeListComponent
-  }
-})
-export default class Home extends Vue {}
+<script>
+import RecipeListComponent from '@/components/Recipe-list.vue';
+export default {
+  components: { RecipeListComponent },
+};
 </script>
+
 <style lang="stylus" scoped>
 h1,
 h2

@@ -3,20 +3,13 @@
   <Toast />
   <router-view />
 </template>
-
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Navbar from "@/components/Navbar.vue";
-import Toast from "@/components/Toast.vue";
-@Options({
-  components: {
-    Navbar,
-    Toast
-  }
-})
-export default class App extends Vue {}
+<script>
+import Navbar from '@/components/Navbar.vue';
+import Toast from '@/components/Toast.vue';
+export default {
+  components: { Navbar, Toast },
+};
 </script>
-
 <style lang="stylus">
 primary = #2c3e50
 secondary = #ff6347
@@ -63,6 +56,13 @@ form
   vertical-align middle
 .error
   border 2px solid red
+  display block
+  margin 5px auto
+  padding 5px
+  border-radius 3px
+  text-align center
+  width 80%
+  max-width 400px
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased

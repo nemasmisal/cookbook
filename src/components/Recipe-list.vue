@@ -1,6 +1,6 @@
 <template>
   <transition-group tag="div" name="list">
-    <div class="card" v-for="recipe in recipes" :key="recipe._id">
+    <div class="card" v-for="recipe in recipes()" :key="recipe._id">
       <div class="card-title">{{ recipe.name }}</div>
       <div class="card-image">
         <img :src="recipe.imgUrl" />
@@ -9,8 +9,10 @@
         <p>Author: {{ recipe.author.username }}</p>
         <ShareboxComponent :recipeId="recipe._id" />
         <RevealComponent :recipe="recipe" />
-        <template v-if="username === recipe.author.username">
-          <router-link :to="{ name: 'Edit-recipe', params: { id: recipe._id } }">
+        <template v-if="username() === recipe.author.username">
+          <router-link
+            :to="{ name: 'Edit-recipe', params: { id: recipe._id } }"
+          >
             <i class="material-icons">mode_edit</i>
           </router-link>
           <button class="iconBtn" @click="removeRecipe(recipe._id)">
@@ -18,41 +20,34 @@
           </button>
         </template>
         <template v-else>
-          <ReviewComponent :recipeId="recipe._id"/>
+          <ReviewComponent :recipeId="recipe._id" />
         </template>
       </div>
     </div>
   </transition-group>
 </template>
+<script>
+import ShareboxComponent from '@/components/Sharebox.vue';
+import RevealComponent from '@/components/Reveal.vue';
+import ReviewComponent from '@/components/Review.vue';
+import { useStore } from 'vuex';
+export default {
+  components: { ShareboxComponent, RevealComponent, ReviewComponent },
+  setup() {
+    const store = useStore();
+    store.dispatch('recipe/getAllRecipes');
 
-<script lang="ts" scoped>
-import { Options, Vue } from "vue-class-component";
-import ShareboxComponent from "@/components/Sharebox.vue";
-import RevealComponent from "@/components/Reveal.vue";
-import ReviewComponent from "@/components/Review.vue";
-import store from "@/store";
-@Options({
-  components: {
-    RevealComponent,
-    ShareboxComponent,
-    ReviewComponent
-  }
-})
-export default class RecipeList extends Vue {
-  created() {
-    store.dispatch("recipe/getAllRecipes");
-  }
-  removeRecipe(id: string) {
-    store.dispatch("recipe/remove", { id });
-  }
-  get recipes() {
-    return store.state.recipe.recipes;
-  }
-  get username() {
-    return store.state.auth.username;
-  }
-}
+    const removeRecipe = (id) => {
+      store.dispatch('recipe/remove', { id });
+    };
+    const recipes = () => store.state.recipe.recipes;
+
+    const username = () => store.state.auth.username;
+    return { recipes, username, removeRecipe };
+  },
+};
 </script>
+
 <style lang="stylus">
 .material-icons
   color #ff6347

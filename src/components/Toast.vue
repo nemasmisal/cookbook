@@ -1,34 +1,35 @@
 <template>
   <transition name="msg">
-    <div v-if="message" class="msg toast">
-      {{ message }}
+    <div v-if="message()" class="msg toast">
+      {{ message() }}
     </div>
   </transition>
   <transition name="err">
-    <div v-if="err" class="err toast">
-      {{ err }}
+    <div v-if="err()" class="err toast">
+      {{ err() }}
     </div>
   </transition>
 </template>
-<script lang="ts">
-import { Vue } from "vue-class-component";
-import store from "@/store/";
-
-class Props {
-  msg!: string;
-}
-export default class Toast extends Vue.with(Props) {
-  get message() {
-    setTimeout(() => {
-      store.dispatch("msg/clearMsg");
-    }, 1500);
-    return store.state.msg.msg;
-  }
-  get err() {
-    return store.state.msg.err;
-  }
-}
+<script>
+import { useStore } from 'vuex';
+export default {
+  props: { msg: { type: String } },
+  setup() {
+    const store = useStore();
+    const message = () => {
+      setTimeout(() => {
+        store.dispatch('msg/clearMsg');
+      }, 1500);
+      return store.state.msg.msg;
+    };
+    const err = () => {
+      return store.state.msg.err;
+    };
+    return { message, err };
+  },
+};
 </script>
+
 <style lang="stylus" scoped>
 .err-leave-to
   opacity 0
@@ -47,7 +48,7 @@ export default class Toast extends Vue.with(Props) {
   transition all 0.3s ease
 .msg-leave-to
   opacity 0
-  transform translateY(-50px)  
+  transform translateY(-50px)
 .msg-leave-active
   transition all 0.3s ease
 .toast
@@ -63,11 +64,11 @@ export default class Toast extends Vue.with(Props) {
   background green
 .err
   background #ff6347
-@keyframes wobble 
-  0% { 
+@keyframes wobble
+  0% {
     transform translateY(-20px)
     opacity 0
-  } 
+  }
   50% {
     transform translateY(0)
     opacity 1
@@ -87,5 +88,4 @@ export default class Toast extends Vue.with(Props) {
   100% {
     transform translateX(0)
   }
-
 </style>

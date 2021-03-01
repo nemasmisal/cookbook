@@ -39,9 +39,9 @@
           :class="{ error: formErrors.ingrediants() }"
         />
         <div class="radio">
-          <input type="radio" name="index" value="gr" v-model="picked" />gr
-          <input type="radio" name="index" value="kg" v-model="picked" />kg
-          <input type="radio" name="index" value="ml" v-model="picked" />ml
+          <input type="radio" value="gr" v-model="picked" />gr
+          <input type="radio" value="kg" v-model="picked" />kg
+          <input type="radio" value="ml" v-model="picked" />ml
         </div>
         <input
           type="text"
@@ -72,86 +72,99 @@
     <button type="submit">Submit</button>
   </form>
 </template>
-
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Store from "@/store";
-import { Recipe } from "@/core/models";
-
-class Props {
-  existingRecipe!: Recipe;
-}
-
-@Options({
-  emits: ["handleSubmit"]
-})
-export default class RecipeForm extends Vue.with(Props) {
-  patterns = {
-    oneWorld: new RegExp(/^[a-zA-Z0-9]{4,20}$/),
-    email: new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z1-9]+\.{1}[a-zA-Z]+$/),
-    description: new RegExp(/^(.{20,200})$/),
-    imgUrl: new RegExp(/^https?:\/\/.*/),
-    productName: new RegExp(/^[a-zA-Z0-9\s]{4,20}$/)
-  };
-  quantity = "";
-  productName = "";
-  picked = "";
-  recipe: Recipe = this.existingRecipe || {
-    name: "",
-    description: "",
-    type: "Public",
-    imgUrl: "",
-    author: "",
-    ingrediants: [],
-    _id: ""
-  };
-  formErrors = {
-    name: () => !this.patterns.oneWorld.test(this.recipe.name),
-    description: () => !this.patterns.description.test(this.recipe.description),
-    imgUrl: () => !this.patterns.imgUrl.test(this.recipe.imgUrl),
-    ingrediants: () => this.recipe.ingrediants.length === 0
-  };
-
-  async handleSubmit() {
-    const isInvalid = Object.values(this.formErrors).find(f => f());
-    if (isInvalid) {
-      return;
-    }
-    const { id } = Store.state.auth;
-    const credentials = {
-      name: this.recipe.name,
-      description: this.recipe.description,
-      type: this.recipe.type,
-      imgUrl: this.recipe.imgUrl,
-      ingrediants: this.recipe.ingrediants,
-      author: id,
-      _id: this.recipe._id
+<script>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+export default {
+  props: {
+    existingRecipe: {
+      type: Object,
+    },
+  },
+  emits: ['handleSubmit'],
+  setup(props, { emit }) {
+    const store = useStore();
+    const patterns = {
+      oneWord: new RegExp(/^[a-zA-Z0-9]{4,20}$/),
+      email: new RegExp(/^[a-zA-Z0-9_-]+@[a-zA-Z1-9]+\.{1}[a-zA-Z]+$/),
+      description: new RegExp(/^(.{20,200})$/),
+      imgUrl: new RegExp(/^https?:\/\/.*/),
+      productName: new RegExp(/^[a-zA-Z0-9\s]{4,20}$/),
     };
-    this.$emit("handleSubmit", credentials);
-  }
-  handleIngrediant() {
-    if (
-      !Number(this.quantity) ||
-      !this.patterns.productName.test(this.productName)
-    ) {
-      return;
-    }
-    const current = {
-      id: this.recipe.ingrediants.length,
-      quantity: this.quantity + this.picked,
-      productName: this.productName
+    const quantity = ref(null);
+    const productName = ref(null);
+    const picked = ref(null);
+    const recipe = props.existingRecipe
+      ? ref(props.existingRecipe)
+      : ref({
+          name: '',
+          description: '',
+          type: 'Public',
+          imgUrl: '',
+          author: '',
+          ingrediants: [],
+          _id: '',
+        });
+    const formErrors = {
+      name: () => !patterns.oneWord.test(recipe.value.name),
+      description: () => !patterns.description.test(recipe.value.description),
+      imgUrl: () => !patterns.imgUrl.test(recipe.value.imgUrl),
+      ingrediants: () => recipe.value.ingrediants.length === 0,
     };
-    this.recipe.ingrediants.push(current);
-    this.quantity = "";
-    this.productName = "";
-    this.picked = "";
-  }
-  removeIngr(id: string) {
-    this.recipe.ingrediants = this.recipe.ingrediants
-    .filter(ing => Number(ing.id) !== Number(id));
-  }
-}
+
+    const handleSubmit = async () => {
+      const isInvalid = Object.values(formErrors).find((f) => f());
+      if (isInvalid) {
+        return;
+      }
+      const { id } = store.state.auth;
+      const credentials = {
+        name: recipe.value.name,
+        description: recipe.value.description,
+        type: recipe.value.type,
+        imgUrl: recipe.value.imgUrl,
+        ingrediants: recipe.value.ingrediants,
+        author: id,
+        _id: recipe.value._id,
+      };
+      emit('handleSubmit', credentials);
+    };
+    const handleIngrediant = () => {
+      if (
+        !Number(quantity.value) ||
+        !patterns.productName.test(productName.value)
+      ) {
+        return;
+      }
+      const current = {
+        id: recipe.value.ingrediants.length,
+        quantity: quantity.value + picked.value,
+        productName: productName.value,
+      };
+      recipe.value.ingrediants.push(current);
+      quantity.value = '';
+      productName.value = '';
+      picked.value = '';
+    };
+    const removeIngr = (id) => {
+      recipe.value.ingrediants = recipe.value.ingrediants.filter(
+        (ing) => Number(ing.id) !== Number(id)
+      );
+    };
+    return {
+      recipe,
+      formErrors,
+      handleSubmit,
+      handleIngrediant,
+      removeIngr,
+      quantity,
+      picked,
+      productName,
+    };
+  },
+};
 </script>
+
 <style lang="stylus" scoped>
 .ingrediants
   margin 0

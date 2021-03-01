@@ -1,19 +1,12 @@
 import RecipeService from "@/core/services/recipe-service";
 import Router from "@/router/index";
-import { Recipe } from "@/core/models";
-import { ActionTree, GetterTree, MutationTree } from "vuex";
 import rootState from "../index";
 
-interface RecipeState {
-  recipes: Recipe[];
-}
-const state: RecipeState = {
-  recipes: []
-}
-const getters: GetterTree<RecipeState, any> = {
+const state = {};
+const getters = {
   recipes: state => state.recipes
 }
-const actions: ActionTree<RecipeState, any> = {
+const actions = {
   getAllRecipes({ commit }) {
     commit("getAllRecipes");
   },
@@ -28,9 +21,9 @@ const actions: ActionTree<RecipeState, any> = {
   }
 }
 
-const mutations: MutationTree<RecipeState> = {
+const mutations = {
   getAllRecipes: async state => {
-    const res: [] = await RecipeService.getAllRecipes();
+    const res = await RecipeService.getAllRecipes();
     state.recipes = [...res];
   },
   create: async (state, payload) => {
@@ -60,7 +53,7 @@ const mutations: MutationTree<RecipeState> = {
 
 export default {
   namespaced: true,
-  state: state,
+  state,
   getters,
   actions,
   mutations
