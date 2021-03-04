@@ -1,11 +1,13 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <label for="name">What is the name of your recipe?</label>
-    <input
-      type="text"
-      name="name"
-      placeholder="Milkshake"
-      v-model="v$.recipe.name.$model"
+    <BasicInput
+      :inputObj="{
+        type: 'text',
+        name: 'name',
+        placeholder: 'Milkshakre',
+      }"
+      @onInput="v$.recipe.name.$model = $event"
     />
     <InputErrMsgTemp
       :errorsObj="v$.recipe.name.$silentErrors"
@@ -25,12 +27,14 @@
       v-if="v$.recipe.description.$dirty"
     />
     <label for="imgUrl">Cover link</label>
-    <input
-      type="text"
-      name="imgUrl"
-      id="imgUrl"
-      placeholder="https://image-from-another-page.jpeg"
-      v-model="v$.recipe.imgUrl.$model"
+    <BasicInput
+      :inputObj="{
+        type: 'text',
+        name: 'imgUrl',
+        id: 'imgUrl',
+        placeholder: 'https://image-from-another-page.jpeg',
+      }"
+      @onInput="v$.recipe.imgUrl.$model = $event"
     />
     <InputErrMsgTemp
       :errorsObj="v$.recipe.imgUrl.$silentErrors"
@@ -39,12 +43,14 @@
     <div class="ingrediants">
       <form @submit.prevent="handleIngrediant">
         <label for="ingrediants">Ingrediants</label>
-        <input
-          type="number"
-          name="quantity"
-          id="quantity"
-          placeholder="Quantity"
-          v-model="v$.ingredsForm.quantity.$model"
+        <BasicInput
+          :inputObj="{
+            type: 'number',
+            name: 'quantity',
+            id: 'quantity',
+            placeholder: 'Quantity',
+          }"
+          @onInput="v$.ingredsForm.quantity.$model = $event"
         />
         <InputErrMsgTemp
           :errorsObj="v$.ingredsForm.quantity.$silentErrors"
@@ -71,12 +77,14 @@
           :errorsObj="v$.ingredsForm.picked.$silentErrors"
           v-if="v$.ingredsForm.picked.$dirty"
         />
-        <input
-          type="text"
-          name="productName"
-          id="productName"
-          placeholder="Eggs"
-          v-model="v$.ingredsForm.productName.$model"
+        <BasicInput
+          :inputObj="{
+            type: 'text',
+            name: 'productName',
+            id: 'productName',
+            placeholder: 'Eggs',
+          }"
+          @onInput="v$.ingredsForm.productName.$model = $event"
         />
         <InputErrMsgTemp
           :errorsObj="v$.ingredsForm.productName.$silentErrors"
@@ -113,6 +121,7 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
+import BasicInput from '@/components/BasicInput.vue';
 import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
 import {
   required,
@@ -128,7 +137,7 @@ export default {
       type: Object,
     },
   },
-  components: { InputErrMsgTemp },
+  components: { InputErrMsgTemp, BasicInput },
   emits: ['handleSubmit'],
   setup(props, { emit }) {
     const store = useStore();
