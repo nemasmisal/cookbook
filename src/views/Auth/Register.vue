@@ -1,18 +1,26 @@
 <template>
-  <div class="login">
+  <div class="register">
     <ValidationInfo :fields="requarements" />
-    <h1>Please provide your credentials.</h1>
-    <LoginForm />
+    <h3>Provide some info about you so we know you too !</h3>
+    <RegisterForm />
   </div>
 </template>
-
 <script>
-import LoginForm from '@/components/Login-form.vue';
+import RegisterForm from './Register-form.vue';
 import ValidationInfo from '@/components/Validation-info.vue';
 export default {
-  components: { LoginForm, ValidationInfo },
+  components: { RegisterForm, ValidationInfo },
   setup() {
     const requarements = [
+      {
+        name: 'Name',
+        reqs: [
+          'min 4 characters',
+          'max 20 characters',
+          'Only english letters and/or numbers',
+          'No spaces,special characters allowed',
+        ],
+      },
       {
         name: 'Email',
         reqs: [
@@ -37,6 +45,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+h3
+  padding 10px
 form
-  margin-top 15px
+  margin-top 10px
 </style>

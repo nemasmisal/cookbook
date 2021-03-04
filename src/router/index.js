@@ -10,17 +10,17 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    component: () => import("../views/Login.vue")
+    component: () => import("../views/Auth/Login.vue")
   },
   {
     path: "/register",
     name: "Register",
-    component: () => import("../views/Register.vue")
+    component: () => import("../views/Auth/Register.vue")
   },
   {
     path: "/create",
     name: "Create-recipe",
-    component: () => import("../views/Create-recipe.vue")
+    component: () => import("../views/Recipe/Create-recipe.vue")
   },
   {
     path: "/about",
@@ -30,7 +30,7 @@ const routes = [
   {
     path: "/edit/:id",
     name: "Edit-recipe",
-    component: () => import("../views/Edit-recipe.vue")
+    component: () => import("../views/Recipe/Edit-recipe.vue")
   }
 ];
 

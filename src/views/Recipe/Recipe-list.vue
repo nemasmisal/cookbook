@@ -27,9 +27,9 @@
   </transition-group>
 </template>
 <script>
-import ShareboxComponent from '@/components/Sharebox.vue';
-import RevealComponent from '@/components/Reveal.vue';
-import ReviewComponent from '@/components/Review.vue';
+import ShareboxComponent from './Sharebox.vue';
+import RevealComponent from './Reveal.vue';
+import ReviewComponent from './Review.vue';
 import { useStore } from 'vuex';
 export default {
   components: { ShareboxComponent, RevealComponent, ReviewComponent },
