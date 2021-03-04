@@ -1,18 +1,23 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <label for="email">E-mail</label>
-    <input
-      type="email"
-      name="email"
-      placeholder="email@example.com"
-      v-model="v$.emailField.$model"
+    <BasicInput
+      :inputObj="{
+        type: 'email',
+        name: 'email',
+        placeholder: 'email@example.com',
+      }"
+      @onInput="v$.emailField.$model = $event"
     />
     <InputErrMsgTemp
       :errorsObj="v$.emailField.$silentErrors"
       v-if="v$.emailField.$dirty"
     />
     <label for="password">Password</label>
-    <input type="password" name="password" v-model="v$.password.$model" />
+    <BasicInput
+      :inputObj="{ type: 'password', name: 'password', placeholder: '' }"
+      @onInput="v$.password.$model = $event"
+    />
     <InputErrMsgTemp
       :errorsObj="v$.password.$silentErrors"
       v-if="v$.password.$dirty"
@@ -25,6 +30,7 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
 import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
+import BasicInput from '@/components/BasicInput.vue';
 import {
   required,
   email,
@@ -33,7 +39,7 @@ import {
   helpers,
 } from '@vuelidate/validators';
 export default {
-  components: { InputErrMsgTemp },
+  components: { InputErrMsgTemp, BasicInput },
   setup() {
     const store = useStore();
     const emailField = ref('');

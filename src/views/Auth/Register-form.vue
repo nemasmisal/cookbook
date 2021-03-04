@@ -1,45 +1,54 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <label for="name">How should we call you?</label>
-    <input
-      type="text"
-      name="name"
-      placeholder="Currly broccoli?"
-      v-model="v$.form.name.$model"
+    <BasicInput
+      :inputObj="{
+        type: 'text',
+        name: 'name',
+        placeholder: 'Currly broccoli?',
+      }"
+      @onInput="v$.form.name.$model = $event"
     />
     <InputErrMsgTemp
       :errorsObj="v$.form.name.$silentErrors"
       v-if="v$.form.name.$dirty"
     />
     <label for="email">E-Mail</label>
-    <input
-      type="email"
-      name="email"
-      id="email"
-      placeholder="email@example.com"
-      v-model="v$.form.email.$model"
+    <BasicInput
+      :inputObj="{
+        type: 'email',
+        name: 'email',
+        id: 'email',
+        placeholder: 'email@example.com',
+      }"
+      @onInput="v$.form.email.$model = $event"
     />
     <InputErrMsgTemp
       :errorsObj="v$.form.email.$silentErrors"
       v-if="v$.form.email.$dirty"
     />
     <label for="password">Password</label>
-    <input
-      type="password"
-      name="password"
-      id="password"
-      v-model="v$.form.password.$model"
+    <BasicInput
+      :inputObj="{
+        type: 'password',
+        name: 'password',
+        id: 'password',
+        placeholder: '',
+      }"
+      @onInput="v$.form.password.$model = $event"
     />
     <InputErrMsgTemp
       :errorsObj="v$.form.password.$silentErrors"
       v-if="v$.form.password.$dirty"
     />
     <label for="repeatPassword">Repeat password</label>
-    <input
-      type="password"
-      name="repeatPassword"
-      id="repeatPassword"
-      v-model="v$.form.repeatPassword.$model"
+    <BasicInput
+      :inputObj="{
+        type: 'password',
+        name: 'repeatPassword',
+        id: 'repeatPassword',
+      }"
+      @onInput="v$.form.repeatPassword.$model = $event"
     />
     <InputErrMsgTemp
       :errorsObj="v$.form.repeatPassword.$silentErrors"
@@ -53,6 +62,7 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
 import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
+import BasicInput from '@/components/BasicInput.vue';
 import {
   required,
   email,
@@ -62,7 +72,7 @@ import {
   sameAs,
 } from '@vuelidate/validators';
 export default {
-  components: { InputErrMsgTemp },
+  components: { InputErrMsgTemp, BasicInput },
   setup() {
     const store = useStore();
     const form = ref({ name: '', email: '', password: '', repeatPassword: '' });
