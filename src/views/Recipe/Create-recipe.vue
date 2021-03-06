@@ -4,7 +4,7 @@
   <RecipeForm @handleSubmit="registerRecipe" />
 </template>
 <script>
-import RecipeForm from './Recipe-form.vue';
+import RecipeForm from './RecipeForm.vue';
 import ValidationInfo from '@/components/Validation-info.vue';
 import { useStore } from 'vuex';
 export default {

@@ -2,7 +2,7 @@
   <RecipeForm :existingRecipe="recipe" @handleSubmit="updateRecipe" />
 </template>
 <script>
-import RecipeForm from './Recipe-form.vue';
+import RecipeForm from './RecipeForm.vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 export default {

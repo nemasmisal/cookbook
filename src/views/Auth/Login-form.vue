@@ -7,20 +7,22 @@
         name: 'email',
         placeholder: 'email@example.com',
       }"
-      @onInput="v$.emailField.$model = $event"
+      @onInput="v$.form.email.$model = $event"
+      :class="{ valid: v$.form.email.$dirty && !v$.form.email.$invalid }"
     />
     <InputErrMsgTemp
-      :errorsObj="v$.emailField.$silentErrors"
-      v-if="v$.emailField.$dirty"
+      :errorsObj="v$.form.email.$silentErrors"
+      v-if="v$.form.email.$dirty"
     />
     <label for="password">Password</label>
     <BasicInput
       :inputObj="{ type: 'password', name: 'password', placeholder: '' }"
-      @onInput="v$.password.$model = $event"
+      @onInput="v$.form.password.$model = $event"
+      :class="{ valid: v$.form.password.$dirty && !v$.form.password.$invalid }"
     />
     <InputErrMsgTemp
-      :errorsObj="v$.password.$silentErrors"
-      v-if="v$.password.$dirty"
+      :errorsObj="v$.form.password.$silentErrors"
+      v-if="v$.form.password.$dirty"
     />
     <button type="submit" :disabled="v$.$invalid">Login</button>
   </form>
@@ -30,43 +32,35 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
 import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
+import { oneWordPattern } from '@/core/validators/custom-validators.js';
 import BasicInput from '@/components/BasicInput.vue';
-import {
-  required,
-  email,
-  maxLength,
-  minLength,
-  helpers,
-} from '@vuelidate/validators';
+import { required, email, maxLength, minLength } from '@vuelidate/validators';
 export default {
   components: { InputErrMsgTemp, BasicInput },
   setup() {
     const store = useStore();
-    const emailField = ref('');
-    const password = ref('');
-    const passPattern = helpers.withMessage(
-      'Allowed characters: A-Z,0-9',
-      (value) => /^[a-zA-Z0-9]+$/.test(value)
-    );
+    const form = ref({ email: '', password: '' });
     const rules = computed(() => ({
-      emailField: { required, email, $autoDirty: true },
-      password: {
-        required,
-        maxLength: maxLength(21),
-        minLength: minLength(4),
-        passPattern,
+      form: {
+        email: { required, email },
+        password: {
+          required,
+          maxLength: maxLength(21),
+          minLength: minLength(4),
+          oneWordPattern,
+        },
       },
     }));
-    const v$ = useVuelidate(rules, { emailField, password });
+    const v$ = useVuelidate(rules, { form });
     const handleSubmit = () => {
       if (v$.value.$invalid) return;
       const credentials = {
-        email: emailField.value,
-        password: password.value,
+        email: form.value.email,
+        password: form.value.password,
       };
       store.dispatch('auth/login', credentials);
     };
-    return { handleSubmit, v$, emailField, password };
+    return { handleSubmit, form, v$ };
   },
 };
 </script>

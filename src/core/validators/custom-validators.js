@@ -15,9 +15,18 @@ const isAvailable = (params) =>
     isUnique(params)
   );
 
-const usernamePattern = helpers.withMessage(
+const oneWordPattern = helpers.withMessage(
   'Allowed characters: A-Z,0-9',
   (value) => /^[a-zA-Z0-9]+$/.test(value)
 );
 
-export { isAvailable, usernamePattern };
+const twoWordPattern = helpers.withMessage(
+  'Allowed charactersL A-Z,0-9,Space',
+  (value) => /^[a-zA-Z0-9\s]+$/.test(value)
+);
+
+const notEmptyArray = helpers.withMessage(
+  'At least 1 ingrediant must be added',
+  (array) => array.length
+);
+export { isAvailable, oneWordPattern, twoWordPattern, notEmptyArray };

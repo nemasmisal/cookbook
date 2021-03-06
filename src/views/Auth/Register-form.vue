@@ -61,7 +61,7 @@ import useVuelidate from '@vuelidate/core';
 import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
 import {
   isAvailable,
-  usernamePattern,
+  oneWordPattern,
 } from '@/core/validators/custom-validators';
 import BasicInput from '@/components/BasicInput.vue';
 import {
@@ -82,7 +82,7 @@ export default {
           required,
           minLength: minLength(4),
           maxLength: maxLength(20),
-          usernamePattern,
+          oneWordPattern,
           isAvailable: isAvailable('username'),
         },
         email: { required, email, isAvailable: isAvailable('email') },
@@ -90,7 +90,7 @@ export default {
           required,
           maxLength: maxLength(20),
           minLength: minLength(4),
-          usernamePattern,
+          oneWordPattern,
         },
         repeatPassword: { sameAs: sameAs(form.value.password), required },
       },

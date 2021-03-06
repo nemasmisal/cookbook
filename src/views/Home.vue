@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import RecipeListComponent from '@/views/Recipe/Recipe-list.vue';
+import RecipeListComponent from '@/views/Recipe/RecipeList.vue';
 export default {
   components: { RecipeListComponent },
 };

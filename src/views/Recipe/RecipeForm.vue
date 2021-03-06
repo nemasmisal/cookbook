@@ -16,7 +16,6 @@
     <label for="description">Short description</label>
     <textarea
       name="description"
-      id="description"
       cols="30"
       rows="10"
       placeholder="Yammy mmm"
@@ -31,7 +30,6 @@
       :inputObj="{
         type: 'text',
         name: 'imgUrl',
-        id: 'imgUrl',
         placeholder: 'https://image-from-another-page.jpeg',
       }"
       @onInput="v$.recipe.imgUrl.$model = $event"
@@ -40,68 +38,17 @@
       :errorsObj="v$.recipe.imgUrl.$silentErrors"
       v-if="v$.recipe.imgUrl.$dirty"
     />
-    <div class="ingrediants">
-      <form @submit.prevent="handleIngrediant">
-        <label for="ingrediants">Ingrediants</label>
-        <BasicInput
-          :inputObj="{
-            type: 'number',
-            name: 'quantity',
-            id: 'quantity',
-            placeholder: 'Quantity',
-          }"
-          @onInput="v$.ingredsForm.quantity.$model = $event"
-        />
-        <InputErrMsgTemp
-          :errorsObj="v$.ingredsForm.quantity.$silentErrors"
-          v-if="v$.ingredsForm.quantity.$dirty"
-        />
-        <div class="radio">
-          <input
-            type="radio"
-            value="gr"
-            v-model="v$.ingredsForm.picked.$model"
-          />gr
-          <input
-            type="radio"
-            value="kg"
-            v-model="v$.ingredsForm.picked.$model"
-          />kg
-          <input
-            type="radio"
-            value="ml"
-            v-model="v$.ingredsForm.picked.$model"
-          />ml
-        </div>
-        <InputErrMsgTemp
-          :errorsObj="v$.ingredsForm.picked.$silentErrors"
-          v-if="v$.ingredsForm.picked.$dirty"
-        />
-        <BasicInput
-          :inputObj="{
-            type: 'text',
-            name: 'productName',
-            id: 'productName',
-            placeholder: 'Eggs',
-          }"
-          @onInput="v$.ingredsForm.productName.$model = $event"
-        />
-        <InputErrMsgTemp
-          :errorsObj="v$.ingredsForm.productName.$silentErrors"
-          v-if="v$.ingredsForm.productName.$dirty"
-        />
-        <button type="submit">
-          Add new ingrediant
-        </button>
-      </form>
-      <div>
-        <ul>
-          <li v-for="ing in recipe.ingrediants" :key="ing.id">
-            {{ ing.quantity }} : {{ ing.productName }}
-            <button @click="removeIngr(ing.id)">x</button>
-          </li>
-        </ul>
-      </div>
+    <IngrediantsForm
+      :ingrediants="v$.recipe.ingrediants.$model"
+      @addIngrediant="addIngrediant"
+    />
+    <div>
+      <ul>
+        <li v-for="ing in recipe.ingrediants" :key="ing.id">
+          {{ ing.quantity }} : {{ ing.productName }}
+          <button @click="removeIngr(ing.id)">x</button>
+        </li>
+      </ul>
     </div>
     <InputErrMsgTemp
       :errorsObj="v$.recipe.ingrediants.$silentErrors"
@@ -121,13 +68,14 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
+import { notEmptyArray, twoWordPattern } from '@/core/validators/custom-validators';
 import BasicInput from '@/components/BasicInput.vue';
 import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
+import IngrediantsForm from './IngrediantsForm.vue';
 import {
   required,
   minLength,
   maxLength,
-  numeric,
   url,
   helpers,
 } from '@vuelidate/validators';
@@ -137,23 +85,10 @@ export default {
       type: Object,
     },
   },
-  components: { InputErrMsgTemp, BasicInput },
+  components: { InputErrMsgTemp, BasicInput, IngrediantsForm },
   emits: ['handleSubmit'],
   setup(props, { emit }) {
     const store = useStore();
-    const namePattern = helpers.withMessage(
-      'Allowed characters: A-Z,0-9,space',
-      (value) => /^[a-zA-Z0-9\s]+$/.test(value)
-    );
-    const notEmptyArray = helpers.withMessage(
-      'Atleast 1 ingrediant should be added',
-      (array) => array.length > 0
-    );
-    const ingredsForm = ref({
-      quantity: '',
-      productName: '',
-      picked: '',
-    });
 
     const recipe = props.existingRecipe
       ? ref(props.existingRecipe)
@@ -167,17 +102,12 @@ export default {
         });
 
     const rules = computed(() => ({
-      ingredsForm: {
-        quantity: { required, numeric },
-        productName: { required, namePattern },
-        picked: { required },
-      },
       recipe: {
         name: {
           required,
           minLength: minLength(2),
           maxLength: maxLength(20),
-          namePattern,
+          twoWordPattern,
         },
         description: {
           required,
@@ -190,7 +120,7 @@ export default {
       },
     }));
 
-    const v$ = useVuelidate(rules, { ingredsForm, recipe });
+    const v$ = useVuelidate(rules, { recipe });
 
     const handleSubmit = async () => {
       v$.value.recipe.$touch();
@@ -201,25 +131,15 @@ export default {
         description: recipe.value.description,
         type: recipe.value.type,
         imgUrl: recipe.value.imgUrl,
-        ingrediants: recipe.value.ingrediants.$model,
+        ingrediants: recipe.value.ingrediants,
         author: id,
       };
       emit('handleSubmit', credentials);
     };
-    const handleIngrediant = () => {
-      v$.value.ingredsForm.$touch();
-      if (v$.value.ingredsForm.$invalid) return;
-      const current = {
-        id: recipe.value.ingrediants.length,
-        quantity: ingredsForm.value.quantity + ingredsForm.value.picked,
-        productName: ingredsForm.value.productName,
-      };
-      recipe.value.ingrediants.push(current);
-      ingredsForm.value.quantity = '';
-      ingredsForm.value.productName = '';
-      ingredsForm.value.picked = '';
-      v$.value.ingredsForm.$reset();
-      v$.value.recipe.$reset();
+
+    const addIngrediant = (ingrediant) => {
+      v$.value.recipe.ingrediants.$reset();
+      recipe.value.ingrediants.push(ingrediant);
     };
     const removeIngr = (id) => {
       recipe.value.ingrediants = recipe.value.ingrediants.filter(
@@ -229,9 +149,8 @@ export default {
     return {
       v$,
       recipe,
-      ingredsForm,
       handleSubmit,
-      handleIngrediant,
+      addIngrediant,
       removeIngr,
     };
   },
