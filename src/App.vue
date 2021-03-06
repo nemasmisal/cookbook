@@ -63,6 +63,8 @@ form
   text-align center
   width 80%
   max-width 400px
+.valid
+  border 2px solid green
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased

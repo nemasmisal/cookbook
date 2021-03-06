@@ -1,41 +1,38 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <label for="name">How should we call you?</label>
-    <BasicInput
-      :inputObj="{
-        type: 'text',
-        name: 'name',
-        placeholder: 'Currly broccoli?',
-      }"
-      @onInput="v$.form.name.$model = $event"
+    <input
+      type="text"
+      name="name"
+      placeholder="Currly broccoli?"
+      v-model.lazy="v$.form.name.$model"
+      :class="{ valid: v$.form.name.$dirty && !v$.form.name.$invalid }"
     />
     <InputErrMsgTemp
       :errorsObj="v$.form.name.$silentErrors"
-      v-if="v$.form.name.$dirty"
+      v-if="v$.form.name.$dirty && !v$.form.name.$pending"
     />
     <label for="email">E-Mail</label>
-    <BasicInput
-      :inputObj="{
-        type: 'email',
-        name: 'email',
-        id: 'email',
-        placeholder: 'email@example.com',
-      }"
-      @onInput="v$.form.email.$model = $event"
+    <input
+      type="email"
+      name="email"
+      placeholder="email@example.com"
+      v-model.lazy="v$.form.email.$model"
+      :class="{ valid: v$.form.email.$dirty && !v$.form.email.$invalid }"
     />
     <InputErrMsgTemp
       :errorsObj="v$.form.email.$silentErrors"
-      v-if="v$.form.email.$dirty"
+      v-if="v$.form.email.$dirty && !v$.form.email.$pending"
     />
     <label for="password">Password</label>
     <BasicInput
       :inputObj="{
         type: 'password',
         name: 'password',
-        id: 'password',
         placeholder: '',
       }"
       @onInput="v$.form.password.$model = $event"
+      :class="{ valid: v$.form.password.$dirty && !v$.form.password.$invalid }"
     />
     <InputErrMsgTemp
       :errorsObj="v$.form.password.$silentErrors"
@@ -46,9 +43,9 @@
       :inputObj="{
         type: 'password',
         name: 'repeatPassword',
-        id: 'repeatPassword',
       }"
       @onInput="v$.form.repeatPassword.$model = $event"
+      :class="{ valid: v$.form.repeatPassword.$dirty && !v$.form.repeatPassword.$invalid }"
     />
     <InputErrMsgTemp
       :errorsObj="v$.form.repeatPassword.$silentErrors"
@@ -62,13 +59,16 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
 import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
+import {
+  isAvailable,
+  usernamePattern,
+} from '@/core/validators/custom-validators';
 import BasicInput from '@/components/BasicInput.vue';
 import {
   required,
   email,
   maxLength,
   minLength,
-  helpers,
   sameAs,
 } from '@vuelidate/validators';
 export default {
@@ -76,19 +76,21 @@ export default {
   setup() {
     const store = useStore();
     const form = ref({ name: '', email: '', password: '', repeatPassword: '' });
-    const oneWordPattern = helpers.withMessage(
-      'Allowed characters: A-Z,0-9',
-      (value) => /^[a-zA-Z0-9]+$/.test(value)
-    );
     const rules = computed(() => ({
       form: {
-        name: { required, oneWordPattern },
-        email: { required, email },
+        name: {
+          required,
+          minLength: minLength(4),
+          maxLength: maxLength(20),
+          usernamePattern,
+          isAvailable: isAvailable('username'),
+        },
+        email: { required, email, isAvailable: isAvailable('email') },
         password: {
           required,
           maxLength: maxLength(20),
           minLength: minLength(4),
-          oneWordPattern,
+          usernamePattern,
         },
         repeatPassword: { sameAs: sameAs(form.value.password), required },
       },
@@ -101,7 +103,7 @@ export default {
         email: form.value.email,
         password: form.value.password,
       };
-      store.dispatch('register', credentials);
+      store.dispatch('auth/register', credentials);
     };
     return { handleSubmit, form, v$ };
   },

@@ -25,6 +25,9 @@ const actions = {
   register({ commit }, payload) {
     commit('register', payload);
   },
+  isAvailable({ commit }, payload) {
+    commit('isAvailable', payload);
+  },
 };
 
 // mutations
@@ -46,12 +49,15 @@ const mutations = {
   },
   register: async (state, payload) => {
     const res = await AuthService.register(payload);
-    if (!res) {
-      return;
-    }
+    if (!res) return;
     state = { ...res };
     rootState.dispatch('msg/globalMsg', { msg: 'Welcome' });
     Router.push('/');
+  },
+  isAvailable: async (_, payload) => {
+    const res = await AuthService.isAvailable(payload);
+    if (!res) return;
+    return res;
   },
 };
 
