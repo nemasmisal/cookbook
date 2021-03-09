@@ -49,6 +49,16 @@ const routes = [
     },
     component: () => import('../views/Recipe/EditRecipe.vue'),
   },
+  ,
+  {
+    path: '/profile/',
+    name: 'Profile',
+    beforeEnter: (to, from, next) => {
+      if (store.state.auth.id) return next();
+      next({ path: '/login' });
+    },
+    component: () => import('../views/User/Profile.vue'),
+  },
 ];
 
 const router = createRouter({

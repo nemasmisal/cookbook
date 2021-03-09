@@ -1,8 +1,9 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link>
-    <template v-if="id()">
+    <template v-if="id">
       <router-link to="/create">Create</router-link>
+      <router-link to="/profile">Profile</router-link>
       <router-link to="/" @click="handleLogout">Logout</router-link>
     </template>
     <template v-else>
@@ -13,6 +14,7 @@
   </div>
 </template>
 <script>
+import { computed } from 'vue-demi';
 import { useStore } from 'vuex';
 export default {
   setup() {
@@ -20,7 +22,7 @@ export default {
     const handleLogout = () => {
       store.dispatch('auth/logout');
     };
-    const id = () => store.state.auth.id;
+    const id = computed(() => store.state.auth.id);
     return { handleLogout, id };
   },
 };

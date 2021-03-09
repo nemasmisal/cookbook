@@ -7,32 +7,15 @@
       <h2>Share your favorite recipe !</h2>
       <ul>
         <li>
-          <a
-            :href="
-              'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/' +
-                recipeId
-            "
-          >
+          <a :href="hrefs.fb + recipeId">
             <i class="material-icons">facebook</i>Facebook</a
           >
         </li>
         <li>
-          <a
-            :href="
-              'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/' +
-                recipeId +
-                '&text='
-            "
-            >Twitter</a
-          >
+          <a :href="hrefs.twit + recipeId + '&text='">Twitter</a>
         </li>
         <li>
-          <a
-            :href="
-              'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/' +
-                recipeId +
-                '&media=&description='
-            "
+          <a :href="hrefs.pint + recipeId + '&media=&description='"
             >Pinterest</a
           >
         </li>
@@ -46,11 +29,19 @@ import { ref } from 'vue';
 export default {
   props: { recipeId: { type: String } },
   setup() {
+    const hrefs = {
+      fb:
+        'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/',
+      twit:
+        'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/',
+      pint:
+        'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/',
+    };
     const isVissible = ref(false);
     const toggleSharebox = () => {
       isVissible.value = !isVissible.value;
     };
-    return { isVissible, toggleSharebox };
+    return { isVissible, toggleSharebox, hrefs };
   },
 };
 </script>
@@ -78,4 +69,6 @@ export default {
   padding 11px
 a
   color black
+li
+  display inline
 </style>

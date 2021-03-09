@@ -4,6 +4,7 @@ import rootState from '../index';
 
 const state = {
   recipes: [],
+  recipesByAuthor: [],
   totalRecipes: null,
   totalPages: null,
 };
@@ -11,6 +12,7 @@ const getters = {
   recipes: (state) => state.recipes,
   totalRecipes: (state) => state.totalRecipes,
   totalPages: (state) => state.totalPages,
+  recipesByAuthor: (state) => state.recipesByAuthor
 };
 const actions = {
   getRecipes({ commit }, payload) {
@@ -24,6 +26,9 @@ const actions = {
   },
   remove({ commit }, payload) {
     commit('remove', payload);
+  },
+  recipesByAuthor({ commit }, payload) {
+    commit('recipesByAuthor', payload);
   },
 };
 
@@ -51,12 +56,15 @@ const mutations = {
   },
   remove: async (state, payload) => {
     const res = await RecipeService.remove(payload);
-    if (!res) {
-      return;
-    }
+    if (!res) return;
     rootState.commit('msg/globalMsg', { msg: 'Recipe removed!' });
     state.recipes = state.recipes.filter((r) => r._id !== payload.id);
   },
+  recipesByAuthor: async (state, payload) => {
+    const res = await RecipeService.recipesByAuthor(payload);
+    if(!res) return;
+    state.recipesByAuthor = [...res];
+  }
 };
 
 export default {

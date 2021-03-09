@@ -13,5 +13,8 @@ class RecipeService {
   remove(body) {
     return BaseFetch.baseHttp(this.RECIPE_URL + 'remove', 'delete', body);
   }
+  recipesByAuthor(query) {
+    return BaseFetch.baseHttp(this.RECIPE_URL + 'recipesByAuthor', 'get', null, query)
+  }
 }
 export default new RecipeService();

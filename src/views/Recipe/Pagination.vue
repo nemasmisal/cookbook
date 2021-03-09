@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 export default {
@@ -56,12 +56,13 @@ export default {
     };
     watch(totalPages, createPagesNumbers);
     watch(currentPage, goToPage);
+    onMounted(createPagesNumbers);
     return { pagesNumbers, setPageNumber, totalPages, pageAction };
   },
 };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 li
   display inline
   padding 10px 5px 0 5px
