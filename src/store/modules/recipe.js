@@ -1,36 +1,44 @@
-import RecipeService from "@/core/services/recipe-service";
-import Router from "@/router/index";
-import rootState from "../index";
+import RecipeService from '@/core/services/recipe-service';
+import Router from '@/router/index';
+import rootState from '../index';
 
-const state = {};
+const state = {
+  recipes: [],
+  totalRecipes: null,
+  totalPages: null,
+};
 const getters = {
-  recipes: state => state.recipes
-}
+  recipes: (state) => state.recipes,
+  totalRecipes: (state) => state.totalRecipes,
+  totalPages: (state) => state.totalPages,
+};
 const actions = {
-  getAllRecipes({ commit }) {
-    commit("getAllRecipes");
+  getRecipes({ commit }, payload) {
+    commit('getRecipes', payload);
   },
   create({ commit }, payload) {
-    commit("create", payload);
+    commit('create', payload);
   },
   update({ commit }, payload) {
-    commit("update", payload);
+    commit('update', payload);
   },
   remove({ commit }, payload) {
-    commit("remove", payload);
-  }
-}
+    commit('remove', payload);
+  },
+};
 
 const mutations = {
-  getAllRecipes: async state => {
-    const res = await RecipeService.getAllRecipes();
-    state.recipes = [...res];
+  getRecipes: async (state, payload) => {
+    const res = await RecipeService.getAllRecipes(payload);
+    state.recipes = [...res.recipes];
+    state.totalPages = res.totalPages;
+    state.totalRecipes = res.totalRecipes;
   },
   create: async (state, payload) => {
     const res = await RecipeService.create(payload);
-    rootState.commit("msg/globalMsg", { msg: "Recipe created!" });
+    rootState.commit('msg/globalMsg', { msg: 'Recipe created!' });
     state.recipes = [...state.recipes, res];
-    Router.push("/");
+    Router.push('/');
   },
   update: async (state, payload) => {
     const res = await RecipeService.update(payload);
@@ -38,23 +46,23 @@ const mutations = {
       return;
     }
     state.recipes = [...state.recipes, res];
-    rootState.commit("msg/globalMsg", { msg: "Recipe updated!" });
-    Router.push("/");
+    rootState.commit('msg/globalMsg', { msg: 'Recipe updated!' });
+    Router.push('/');
   },
   remove: async (state, payload) => {
     const res = await RecipeService.remove(payload);
     if (!res) {
       return;
     }
-    rootState.commit("msg/globalMsg", { msg: "Recipe removed!" });
-    state.recipes = state.recipes.filter(r => r._id !== payload.id);
-  }
-}
+    rootState.commit('msg/globalMsg', { msg: 'Recipe removed!' });
+    state.recipes = state.recipes.filter((r) => r._id !== payload.id);
+  },
+};
 
 export default {
   namespaced: true,
   state,
   getters,
   actions,
-  mutations
-}
+  mutations,
+};

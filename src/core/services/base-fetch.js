@@ -1,6 +1,6 @@
 import store from '@/store/';
 class BaseFetch {
-  BASE_URL = '/api/';
+  BASE_URL = 'http://localhost:8080/api/';
   headers = (body, method) => {
     return {
       method: method.toUpperCase(),
@@ -11,10 +11,12 @@ class BaseFetch {
       body: JSON.stringify(body),
     };
   };
-  async baseHttp(endpoint, method, body) {
+  async baseHttp(endpoint, method, body, query) {
     try {
+      const url = new URL(this.BASE_URL + endpoint);
+      query ? (url.search = new URLSearchParams(query)) : null;
       const _res = await fetch(
-        this.BASE_URL + endpoint,
+        url,
         body ? this.headers(body, method) : undefined
       );
       const res = await _res.json();

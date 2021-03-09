@@ -1,8 +1,8 @@
 import BaseFetch from './base-fetch';
 class RecipeService {
   RECIPE_URL = 'recipe/';
-  getAllRecipes() {
-    return BaseFetch.baseHttp(this.RECIPE_URL + 'allRecipes', 'get', null);
+  getAllRecipes(query) {
+    return BaseFetch.baseHttp(this.RECIPE_URL + 'allRecipes', 'get', null, query);
   }
   create(body) {
     return BaseFetch.baseHttp(this.RECIPE_URL + 'create', 'post', body);

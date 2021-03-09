@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import LoginForm from './Login-form.vue';
+import LoginForm from './LoginForm.vue';
 import ValidationInfo from '@/components/Validation-info.vue';
 export default {
   components: { LoginForm, ValidationInfo },

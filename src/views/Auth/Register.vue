@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-import RegisterForm from './Register-form.vue';
+import RegisterForm from './RegisterForm.vue';
 import ValidationInfo from '@/components/Validation-info.vue';
 export default {
   components: { RegisterForm, ValidationInfo },

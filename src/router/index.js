@@ -33,7 +33,7 @@ const routes = [
       if (store.state.auth.id) return next();
       next({ path: '/login' });
     },
-    component: () => import('../views/Recipe/Create-recipe.vue'),
+    component: () => import('../views/Recipe/CreateRecipe.vue'),
   },
   {
     path: '/about',

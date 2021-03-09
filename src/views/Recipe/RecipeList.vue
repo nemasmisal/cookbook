@@ -1,6 +1,6 @@
 <template>
   <transition-group tag="div" name="list">
-    <div class="card" v-for="recipe in recipes()" :key="recipe._id">
+    <div class="card" v-for="recipe in recipes" :key="recipe._id">
       <div class="card-title">{{ recipe.name }}</div>
       <div class="card-image">
         <img :src="recipe.imgUrl" />
@@ -9,7 +9,7 @@
         <p>Author: {{ recipe.author.username }}</p>
         <ShareboxComponent :recipeId="recipe._id" />
         <RevealComponent :recipe="recipe" />
-        <template v-if="username() === recipe.author.username">
+        <template v-if="username === recipe.author.username">
           <router-link
             :to="{ name: 'Edit-recipe', params: { id: recipe._id } }"
           >
@@ -25,24 +25,39 @@
       </div>
     </div>
   </transition-group>
+  <Pagination />
 </template>
 <script>
 import ShareboxComponent from './Sharebox.vue';
 import RevealComponent from './Reveal.vue';
 import ReviewComponent from './Review.vue';
+import Pagination from './Pagination.vue';
 import { useStore } from 'vuex';
+import { computed, watch, ref } from 'vue';
+import { useRoute } from 'vue-router';
 export default {
-  components: { ShareboxComponent, RevealComponent, ReviewComponent },
+  components: {
+    ShareboxComponent,
+    RevealComponent,
+    ReviewComponent,
+    Pagination,
+  },
   setup() {
     const store = useStore();
-    store.dispatch('recipe/getAllRecipes');
+    const route = useRoute();
 
+    watch(
+      () => route.query,
+      ({ page }) =>
+        page ? store.dispatch('recipe/getRecipes', { page, limit: 5 }) : null
+    );
+   
+    store.dispatch('recipe/getRecipes', { page: 1, limit: 5 });
+    const recipes = computed(() => store.getters['recipe/recipes']);
     const removeRecipe = (id) => {
       store.dispatch('recipe/remove', { id });
     };
-    const recipes = () => store.state.recipe.recipes;
-
-    const username = () => store.state.auth.username;
+    const username = ref(store.state.auth.username);
     return { recipes, username, removeRecipe };
   },
 };
