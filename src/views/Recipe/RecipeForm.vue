@@ -1,13 +1,11 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <label for="name">What is the name of your recipe?</label>
-    <BasicInput
-      :inputObj="{
-        type: 'text',
-        name: 'name',
-        placeholder: 'Milkshakre',
-      }"
-      @onInput="v$.recipe.name.$model = $event"
+    <input
+      type="text"
+      name="name"
+      placeholder="Milkshakre"
+      v-model="v$.recipe.name.$model"
     />
     <InputErrMsgTemp
       :errorsObj="v$.recipe.name.$silentErrors"
@@ -26,13 +24,11 @@
       v-if="v$.recipe.description.$dirty"
     />
     <label for="imgUrl">Cover link</label>
-    <BasicInput
-      :inputObj="{
-        type: 'text',
-        name: 'imgUrl',
-        placeholder: 'https://image-from-another-page.jpeg',
-      }"
-      @onInput="v$.recipe.imgUrl.$model = $event"
+    <input
+      type="text"
+      name="imgUrl"
+      placeholder="https://image-from-another-page.jpeg"
+      v-model="v$.recipe.imgUrl.$model"
     />
     <InputErrMsgTemp
       :errorsObj="v$.recipe.imgUrl.$silentErrors"
@@ -68,24 +64,20 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
-import { notEmptyArray, twoWordPattern } from '@/core/validators/custom-validators';
-import BasicInput from '@/components/BasicInput.vue';
+import {
+  notEmptyArray,
+  twoWordPattern,
+} from '@/core/validators/custom-validators';
 import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
 import IngrediantsForm from './IngrediantsForm.vue';
-import {
-  required,
-  minLength,
-  maxLength,
-  url,
-  helpers,
-} from '@vuelidate/validators';
+import { required, minLength, maxLength, url } from '@vuelidate/validators';
 export default {
   props: {
     existingRecipe: {
       type: Object,
     },
   },
-  components: { InputErrMsgTemp, BasicInput, IngrediantsForm },
+  components: { InputErrMsgTemp, IngrediantsForm },
   emits: ['handleSubmit'],
   setup(props, { emit }) {
     const store = useStore();
@@ -99,6 +91,7 @@ export default {
           imgUrl: '',
           author: '',
           ingrediants: [],
+          _id: '',
         });
 
     const rules = computed(() => ({
@@ -133,12 +126,13 @@ export default {
         imgUrl: recipe.value.imgUrl,
         ingrediants: recipe.value.ingrediants,
         author: id,
+        _id: recipe.value._id,
       };
       emit('handleSubmit', credentials);
     };
-
     const addIngrediant = (ingrediant) => {
       v$.value.recipe.ingrediants.$reset();
+      v$.value.recipe.ingrediants.$touch();
       recipe.value.ingrediants.push(ingrediant);
     };
     const removeIngr = (id) => {

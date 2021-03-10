@@ -25,13 +25,10 @@
       v-if="v$.form.email.$dirty && !v$.form.email.$pending"
     />
     <label for="password">Password</label>
-    <BasicInput
-      :inputObj="{
-        type: 'password',
-        name: 'password',
-        placeholder: '',
-      }"
-      @onInput="v$.form.password.$model = $event"
+    <input
+      type="password"
+      name="password"
+      v-model="v$.form.password.$model"
       :class="{ valid: v$.form.password.$dirty && !v$.form.password.$invalid }"
     />
     <InputErrMsgTemp
@@ -39,13 +36,14 @@
       v-if="v$.form.password.$dirty"
     />
     <label for="repeatPassword">Repeat password</label>
-    <BasicInput
-      :inputObj="{
-        type: 'password',
-        name: 'repeatPassword',
+    <input
+      type="password"
+      name="repeatPassword"
+      v-model="v$.form.repeatPassword.$model"
+      :class="{
+        valid:
+          v$.form.repeatPassword.$dirty && !v$.form.repeatPassword.$invalid,
       }"
-      @onInput="v$.form.repeatPassword.$model = $event"
-      :class="{ valid: v$.form.repeatPassword.$dirty && !v$.form.repeatPassword.$invalid }"
     />
     <InputErrMsgTemp
       :errorsObj="v$.form.repeatPassword.$silentErrors"
@@ -63,7 +61,6 @@ import {
   isAvailable,
   oneWordPattern,
 } from '@/core/validators/custom-validators';
-import BasicInput from '@/components/BasicInput.vue';
 import {
   required,
   email,
@@ -72,7 +69,7 @@ import {
   sameAs,
 } from '@vuelidate/validators';
 export default {
-  components: { InputErrMsgTemp, BasicInput },
+  components: { InputErrMsgTemp },
   setup() {
     const store = useStore();
     const form = ref({ name: '', email: '', password: '', repeatPassword: '' });

@@ -1,6 +1,6 @@
 import store from '@/store/';
 class BaseFetch {
-  BASE_URL = 'http://localhost:8080/api/';
+  BASE_URL = 'http://localhost:8081/api/';
   headers = (body, method) => {
     return {
       method: method.toUpperCase(),
@@ -28,7 +28,9 @@ class BaseFetch {
       }
       return res;
     } catch (err) {
-      console.log(err);
+      store.dispatch('msg/globalError', {
+        msg: 'something went wrong :/',
+      });
     }
   }
 }

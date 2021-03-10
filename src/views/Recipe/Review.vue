@@ -16,6 +16,7 @@
           <form @keypress.enter="addReview()">
             <label>Short review, symbols left: {{ symbolsLeft() }}</label>
             <textarea maxlength="60" v-model="textArea"></textarea>
+            <p>Press ENTER to SUBMIT</p>
           </form>
         </template>
         <button class="iconBtn" @click="toggleReview">

@@ -1,13 +1,11 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <label for="email">E-mail</label>
-    <BasicInput
-      :inputObj="{
-        type: 'email',
-        name: 'email',
-        placeholder: 'email@example.com',
-      }"
-      @onInput="v$.form.email.$model = $event"
+    <input
+      type="email"
+      name="email"
+      placeholder="email@example.com"
+      v-model="v$.form.email.$model"
       :class="{ valid: v$.form.email.$dirty && !v$.form.email.$invalid }"
     />
     <InputErrMsgTemp
@@ -15,9 +13,10 @@
       v-if="v$.form.email.$dirty"
     />
     <label for="password">Password</label>
-    <BasicInput
-      :inputObj="{ type: 'password', name: 'password', placeholder: '' }"
-      @onInput="v$.form.password.$model = $event"
+    <input
+      type="password"
+      name="password"
+      v-model="v$.form.password.$model"
       :class="{ valid: v$.form.password.$dirty && !v$.form.password.$invalid }"
     />
     <InputErrMsgTemp
@@ -33,10 +32,9 @@ import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
 import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
 import { oneWordPattern } from '@/core/validators/custom-validators.js';
-import BasicInput from '@/components/BasicInput.vue';
 import { required, email, maxLength, minLength } from '@vuelidate/validators';
 export default {
-  components: { InputErrMsgTemp, BasicInput },
+  components: { InputErrMsgTemp },
   setup() {
     const store = useStore();
     const form = ref({ email: '', password: '' });
