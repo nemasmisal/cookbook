@@ -17,10 +17,6 @@
         <input type="radio" value="kg" v-model="v$.form.unit.$model" />kg
         <input type="radio" value="ml" v-model="v$.form.unit.$model" />ml
       </div>
-      <InputErrMsgTemp
-        :errorsObj="v$.form.unit.$silentErrors"
-        v-if="v$.form.unit.$dirty"
-      />
       <input
           type="text"
           name="prodtName"
@@ -60,10 +56,12 @@ export default {
       form: {
         quantity: { required, numeric },
         productName: { required, twoWordPattern },
-        unit: { required },
+        unit : {}
       },
     }));
     const addIngrediant = () => {
+      v$.value.form.$touch();
+      if(v$.value.form.$invalid) return
       const ingrediant = {
         id: props.ingrediants.length,
         quantity: form.value.quantity + form.value.unit,

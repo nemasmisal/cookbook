@@ -1,54 +1,56 @@
 <template>
-  <h3>Public Recipes</h3>
-  <ul>
-    <li v-for="recipe in publicRecipes" :key="recipe._id">{{ recipe.name }}</li>
-  </ul>
-  <h3>Private Recipes</h3>
-  <li v-for="recipe in privateRecipes" :key="recipe._id">{{ recipe.name }}</li>
+  <h1>Select Recipes Type</h1>
+  <h3 @click="showRecipes('public')">Public Recipes</h3>
+  <h3 @click="showRecipes('private')">Private Recipes</h3>
+  <UserRecipes :recipes="recipes" />
 </template>
 
 <script>
 import { computed, ref, watch } from 'vue';
+import UserRecipes from './UserRecipes.vue';
 import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+
 export default {
+  components: { UserRecipes },
   setup() {
     const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
     const author = ref(store.state.auth.id);
     store.dispatch('recipe/recipesByAuthor', { author: author.value });
-    const recipes = computed(() => store.getters['recipe/recipesByAuthor']);
-    const publicRecipes = ref([]);
-    const privateRecipes = ref([]);
-    const splitRecipes = (recipes) => {
-      const separatedRecipes = recipes.reduce(
-        (agg, curr) => {
-          curr.type.toLowerCase() === 'public'
-            ? agg.publicRecipes.push(curr)
-            : agg.privateRecipes.push(curr);
-          return agg;
-        },
-        { publicRecipes: [], privateRecipes: [] }
+
+    const allRecipes = computed(() => store.getters['recipe/recipesByAuthor']);
+    const recipes = ref([]);
+    watch(
+      () => route.params,
+      ({ category }) => {
+        category === 'private'
+          ? splitRecipes('private')
+          : splitRecipes('public');
+      }
+    );
+    const splitRecipes = (type) => {
+      recipes.value = allRecipes.value.filter(
+        (r) => r.type == type
       );
-      publicRecipes.value = [...separatedRecipes.publicRecipes];
-      privateRecipes.value = [...separatedRecipes.privateRecipes];
     };
-    watch(recipes, splitRecipes);
-    return { publicRecipes, privateRecipes };
+    const showRecipes = (type) => {
+      router.push({ params: { category: type } });
+    };
+    return { recipes, showRecipes };
   },
 };
 </script>
 
 <style lang="stylus" scoped>
+h1
+  margin 20px
 h3
-  margin 5px
+  margin 10px
   padding 5px
-li
-  list-style decimal
-  color #2c3e50
-  text-align start
-  padding 5px 20px
-  margin 0 auto
-  font-size 15px
-  max-width 70%
-li:nth-child(even)
-  background #e5e4e2
+  display inline-block
+  &:hover
+    cursor pointer
+    color #ff6347
 </style>

@@ -7,12 +7,12 @@
       <h3>Description:</h3>
       <p>{{ recipe.description }}</p>
       <h3>Ingrediants:</h3>
-      <ul>
+      <ol>
         <li v-for="ing in recipe.ingrediants" :key="ing.id">
-          <span class="quantity">{{ ing.quantity }}</span> :
+          <span class="quantity">{{ ing.quantity }}</span>
           {{ ing.productName }}
         </li>
-      </ul>
+      </ol>
       <button class="iconBtn" @click="toggleReveal()">
         <i class="material-icons">close</i>
       </button>
@@ -25,14 +25,20 @@ export default {
   props: { recipe: { type: Object } },
   setup() {
     const isVissible = ref(false);
+    const isActive = ref(false);
     const toggleReveal = () => {
       isVissible.value = !isVissible.value;
     };
-    return { isVissible, toggleReveal };
+    return { isVissible, toggleReveal, isActive };
   },
 };
 </script>
 <style lang="stylus" scoped>
+li
+  text-align start
+  list-style decimal
+  padding-left 10px
+  margin-left 10px
 .reveal-enter-from
   transform translateY(100%)
 .reveal-enter-to
@@ -59,4 +65,6 @@ export default {
   display grid
 .quantity
   color red
+.green
+  background  darkseagreen
 </style>

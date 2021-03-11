@@ -28,7 +28,7 @@ const routes = [
   },
   {
     path: '/create',
-    name: 'Create-recipe',
+    name: 'CreateRecipe',
     beforeEnter: (to, from, next) => {
       if (store.state.auth.id) return next();
       next({ path: '/login' });
@@ -42,7 +42,7 @@ const routes = [
   },
   {
     path: '/edit/:id',
-    name: 'Edit-recipe',
+    name: 'EditRecipe',
     beforeEnter: (to, from, next) => {
       if (store.state.auth.id) return next();
       next({ path: '/login' });
@@ -51,13 +51,23 @@ const routes = [
   },
   ,
   {
-    path: '/profile/',
+    path: '/profile/:category?',
     name: 'Profile',
     beforeEnter: (to, from, next) => {
       if (store.state.auth.id) return next();
       next({ path: '/login' });
     },
     component: () => import('../views/User/Profile.vue'),
+    children: [
+      {
+        path: 'public',
+        component: () => import('../views/User/UserRecipes.vue'),
+      },
+      {
+        path: 'private',
+        component: () => import('../views/User/UserRecipes.vue'),
+      },
+    ],
   },
 ];
 

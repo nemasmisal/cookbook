@@ -2,6 +2,7 @@ import { helpers } from '@vuelidate/validators';
 import AuthService from '../services/auth-service';
 
 const isUnique = (params) => async (credentials) => {
+  if(credentials === '') return false
   const { isAvailabe } = await AuthService.isAvailable({
     key: params,
     value: credentials,

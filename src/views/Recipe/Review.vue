@@ -49,7 +49,7 @@ export default {
       });
     };
     const symbolsLeft = () => {
-      return 60 - Number(textArea.value.length);
+      return 60 - textArea.value.length;
     };
 
     const toggleReview = () => {

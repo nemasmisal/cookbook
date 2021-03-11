@@ -66,6 +66,12 @@ export default {
 li
   display inline
   padding 10px 5px 0 5px
+  &:hover
+    cursor pointer
+button
+  &:hover
+    cursor pointer
+    color #2c3e50
 ul
   margin 20px auto
   max-width 450px

@@ -11,7 +11,7 @@
         <RevealComponent :recipe="recipe" />
         <template v-if="username === recipe.author.username">
           <router-link
-            :to="{ name: 'Edit-recipe', params: { id: recipe._id } }"
+            :to="{ name: 'EditRecipe', params: { id: recipe._id } }"
           >
             <i class="material-icons">mode_edit</i>
           </router-link>

@@ -2,15 +2,17 @@
   <div id="nav">
     <router-link to="/">Home</router-link>
     <template v-if="id">
-      <router-link to="/create">Create</router-link>
-      <router-link to="/profile">Profile</router-link>
+      <router-link :to="{ name: 'CreateRecipe' }">Create</router-link>
+      <router-link :to="{ name: 'Profile' }"
+        >Profile</router-link
+      >
       <router-link to="/" @click="handleLogout">Logout</router-link>
     </template>
     <template v-else>
-      <router-link to="/login">Login</router-link>
-      <router-link to="/register">Register</router-link>
+      <router-link :to="{ name: 'Login' }">Login</router-link>
+      <router-link :to="{ name: 'Register' }">Register</router-link>
     </template>
-    <router-link to="/about">About</router-link>
+    <router-link :to="{ name: 'About' }">About</router-link>
   </div>
 </template>
 <script>
@@ -32,4 +34,6 @@ export default {
 #nav
  background #ff6347
  padding 0.5em
+a:hover
+    color #e5e4e2
 </style>
