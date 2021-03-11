@@ -8,7 +8,12 @@
       <p>{{ recipe.description }}</p>
       <h3>Ingrediants:</h3>
       <ol>
-        <li v-for="ing in recipe.ingrediants" :key="ing.id">
+        <li
+          v-for="ing in recipe.ingrediants"
+          :key="ing.id"
+          :class="{ green: isMarked(ing.id) }"
+          @click="addToMarked(ing.id)"
+        >
           <span class="quantity">{{ ing.quantity }}</span>
           {{ ing.productName }}
         </li>
@@ -25,16 +30,22 @@ export default {
   props: { recipe: { type: Object } },
   setup() {
     const isVissible = ref(false);
-    const isActive = ref(false);
+    const marked = ref(new Set());
+    const addToMarked = (id) => {
+      marked.value.has(id) ? marked.value.delete(id) : marked.value.add(id);
+    };
+    const isMarked = (id) => marked.value.has(id);
     const toggleReveal = () => {
       isVissible.value = !isVissible.value;
+      !isVissible.value ? marked.value.clear() : null;
     };
-    return { isVissible, toggleReveal, isActive };
+    return { isVissible, toggleReveal, addToMarked, isMarked };
   },
 };
 </script>
 <style lang="stylus" scoped>
 li
+  cursor pointer
   text-align start
   list-style decimal
   padding-left 10px
