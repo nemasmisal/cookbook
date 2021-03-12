@@ -35,7 +35,7 @@ export default {
     const store = useStore();
     store.dispatch('reviews/getReviews', { recipeId: props.recipeId });
     const reviews = computed(() => store.getters['reviews/recipeReviews'](props.recipeId));
-    const userId = computed(() => store.state.auth.id); 
+    const userId = computed(() => store.getters['auth/id']); 
     const isVissible = ref(false);
     const textArea = ref('');
     const canWriteReview = computed(

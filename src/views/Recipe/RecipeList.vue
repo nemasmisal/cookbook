@@ -33,7 +33,7 @@ import RevealComponent from './Reveal.vue';
 import ReviewComponent from './Review.vue';
 import Pagination from './Pagination.vue';
 import { useStore } from 'vuex';
-import { computed, watch, ref } from 'vue';
+import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 export default {
   components: {
@@ -57,7 +57,7 @@ export default {
     const removeRecipe = (id) => {
       store.dispatch('recipe/remove', { id });
     };
-    const username = ref(store.state.auth.username);
+    const username = computed(() => store.getters['auth/username']);
     return { recipes, username, removeRecipe };
   },
 };

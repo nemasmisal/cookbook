@@ -2,60 +2,63 @@ import AuthService from '@/core/services/auth-service';
 import Router from '@/router/index';
 import rootState from '../index';
 
-const initialState = {
-  username: '',
-  id: '',
-  email: '',
+const state = {
+  username: null,
+  id: null,
+  email: null,
 };
-const state = initialState;
 
-// getters
 const getters = {
   auth: (state) => state,
+  id: (state) => state.id,
+  email: (state) => state.email,
+  username: (state) => state.username,
 };
 
-// actions
 const actions = {
-  login({ commit }, payload) {
-    commit('login', payload);
-  },
-  logout({ commit }) {
-    commit('logout');
-  },
-  register({ commit }, payload) {
-    commit('register', payload);
-  },
-};
-
-// mutations
-const mutations = {
-  login: async (state, payload) => {
+  async login({ commit }, payload) {
     const res = await AuthService.login(payload);
-    if (!res) {
-      return;
-    }
-    state.username = res.username;
-    state.id = res.id;
-    state.email = res.email;
+    if (!res) return;
+    commit('login', res);
     rootState.dispatch('msg/globalMsg', { msg: 'Logged in.' });
     Router.push('/');
   },
-  logout: async (state) => {
+  async logout({ commit }) {
     await AuthService.logout();
-    state = { ...initialState };
+    commit('logout');
+    rootState.dispatch('msg/globalMsg', { msg: 'Logged out.' });
+    Router.push('/');
   },
-  register: async (state, payload) => {
+  async register({ commit }, payload) {
     const res = await AuthService.register(payload);
     if (!res) return;
-    state = { ...res };
+    commit('register', res);
     rootState.dispatch('msg/globalMsg', { msg: 'Welcome' });
     Router.push('/');
   },
 };
 
+const mutations = {
+  login: (state, payload) => {
+    state.username = payload.username;
+    state.id = payload.id;
+    state.email = payload.email;
+  },
+  register: (state, payload) => {
+    state.username = payload.username;
+    state.id = payload.id;
+    state.email = payload.email;
+  },
+  logout: (state) => {
+    state.username = null;
+    state.id = null;
+    state.email = null;
+  },
+};
+
 export default {
   namespaced: true,
-  state: state,
+  state,
   getters,
   actions,
   mutations,

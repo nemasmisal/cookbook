@@ -1,4 +1,4 @@
-const msgState = {
+const state = {
   msg: '',
   err: '',
 };
@@ -35,7 +35,7 @@ const actions = {
 
 export default {
   namespaced: true,
-  state: msgState,
+  state,
   getters,
   actions,
   mutations,

@@ -17,7 +17,7 @@ class BaseFetch {
       query ? (url.search = new URLSearchParams(query)) : null;
       const _res = await fetch(
         url,
-        body ? this.headers(body, method) : undefined
+        body ? this.headers(body, method) : null
       );
       const res = await _res.json();
       if (!_res.ok) {

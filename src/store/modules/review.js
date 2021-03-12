@@ -9,28 +9,23 @@ const getters = {
   },
 };
 const mutations = {
-  getReviews: async (state, { recipeId }) => {
-    if (state.hasOwnProperty(recipeId)) {
-      return;
-    }
-    const reviews = await ReviewService.getReviews({ recipeId });
+  getReviews: (state, { recipeId, reviews }) => {
     state[recipeId] = [...reviews];
   },
-  addReview: async (state, payload) => {
-    const reviews = await ReviewService.addReview(payload);
-    if (!reviews) {
-      return;
-    }
-    state[payload.recipeId] = [...reviews];
-    rootState.dispatch('msg/globalMsg', { msg: 'Review added' });
+  addReview: (state, { recipeId, reviews }) => {
+    state[recipeId] = [...reviews];
   },
 };
 const actions = {
-  getReviews({ commit }, payload) {
-    commit('getReviews', payload);
+  async getReviews({ commit }, { recipeId }) {
+    const reviews = await ReviewService.getReviews({ recipeId });
+    commit('getReviews', { recipeId, reviews });
   },
-  addReview({ commit }, payload) {
-    commit('addReview', payload);
+  async addReview({ commit }, payload) {
+    const reviews = await ReviewService.addReview(payload);
+    if (!reviews) return;
+    commit('addReview', { recipeId: payload.recipeId, reviews });
+    rootState.dispatch('msg/globalMsg', { msg: 'Review added' });
   },
 };
 

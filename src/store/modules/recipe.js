@@ -12,59 +12,59 @@ const getters = {
   recipes: (state) => state.recipes,
   totalRecipes: (state) => state.totalRecipes,
   totalPages: (state) => state.totalPages,
-  recipesByAuthor: (state) => state.recipesByAuthor
+  recipesByAuthor: (state) => state.recipesByAuthor,
 };
 const actions = {
-  getRecipes({ commit }, payload) {
-    commit('getRecipes', payload);
+  async getRecipes({ commit }, payload) {
+    const res = await RecipeService.getAllRecipes(payload);
+    commit('getRecipes', res);
   },
-  create({ commit }, payload) {
-    commit('create', payload);
+  async create({ commit }, payload) {
+    const res = await RecipeService.create(payload);
+    if (!res) return;
+    commit('create', res);
+    rootState.commit('msg/globalMsg', { msg: 'Recipe created!' });
+    Router.push('/');
   },
-  update({ commit }, payload) {
-    commit('update', payload);
+  async update({ commit }, payload) {
+    const res = await RecipeService.update(payload);
+    if (!res) return;
+    commit('update', res);
+    rootState.commit('msg/globalMsg', { msg: 'Recipe updated!' });
+    Router.push('/');
   },
-  remove({ commit }, payload) {
-    commit('remove', payload);
+  async remove({ commit }, payload) {
+    const res = await RecipeService.remove(payload);
+    if (!res) return;
+    commit('remove', res);
+    rootState.commit('msg/globalMsg', { msg: 'Recipe removed!' });
   },
-  recipesByAuthor({ commit }, payload) {
-    commit('recipesByAuthor', payload);
+  async recipesByAuthor({ commit }, payload) {
+    const res = await RecipeService.recipesByAuthor(payload);
+    if (!res) return;
+    commit('recipesByAuthor', res);
   },
 };
 
 const mutations = {
-  getRecipes: async (state, payload) => {
-    const res = await RecipeService.getAllRecipes(payload);
-    state.recipes = [...res.recipes];
-    state.totalPages = res.totalPages;
-    state.totalRecipes = res.totalRecipes;
+  getRecipes: (state, payload) => {
+    state.recipes = [...payload.recipes];
+    state.totalPages = payload.totalPages;
+    state.totalRecipes = payload.totalRecipes;
   },
-  create: async (state, payload) => {
-    const res = await RecipeService.create(payload);
-    rootState.commit('msg/globalMsg', { msg: 'Recipe created!' });
-    state.recipes = [...state.recipes, res];
-    Router.push('/');
+  create: (state, payload) => {
+    state.recipes = [...state.recipes, payload];
   },
-  update: async (state, payload) => {
-    const res = await RecipeService.update(payload);
-    if (!res) {
-      return;
-    }
-    state.recipes = [...state.recipes, res];
-    rootState.commit('msg/globalMsg', { msg: 'Recipe updated!' });
-    Router.push('/');
+  update: (state, payload) => {
+    state.recipes = [...state.recipes, payload];
+    
   },
-  remove: async (state, payload) => {
-    const res = await RecipeService.remove(payload);
-    if (!res) return;
-    rootState.commit('msg/globalMsg', { msg: 'Recipe removed!' });
-    state.recipes = state.recipes.filter((r) => r._id !== payload.id);
+  remove: (state, payload) => {
+    state.recipes = state.recipes.filter((r) => r._id !== payload._id);
   },
   recipesByAuthor: async (state, payload) => {
-    const res = await RecipeService.recipesByAuthor(payload);
-    if(!res) return;
-    state.recipesByAuthor = [...res];
-  }
+    state.recipesByAuthor = [...payload];
+  },
 };
 
 export default {

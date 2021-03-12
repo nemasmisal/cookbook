@@ -3,10 +3,8 @@
     <router-link to="/">Home</router-link>
     <template v-if="id">
       <router-link :to="{ name: 'CreateRecipe' }">Create</router-link>
-      <router-link :to="{ name: 'Profile' }"
-        >Profile</router-link
-      >
-      <router-link to="/" @click="handleLogout">Logout</router-link>
+      <router-link :to="{ name: 'Profile' }">Profile</router-link>
+      <a @click="handleLogout">Logout</a>
     </template>
     <template v-else>
       <router-link :to="{ name: 'Login' }">Login</router-link>
@@ -24,7 +22,7 @@ export default {
     const handleLogout = () => {
       store.dispatch('auth/logout');
     };
-    const id = computed(() => store.state.auth.id);
+    const id = computed(() => store.getters['auth/id']);
     return { handleLogout, id };
   },
 };
