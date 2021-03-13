@@ -3,9 +3,9 @@
     <form @submit.prevent="addIngrediant">
       <label for="ingrediants">Ingrediants</label>
       <input
-          type="number"
-          name="quantity"
-          placeholder="Quantity"
+        type="number"
+        name="quantity"
+        placeholder="Quantity"
         v-model="v$.form.quantity.$model"
       />
       <InputErrMsgTemp
@@ -18,9 +18,9 @@
         <input type="radio" value="ml" v-model="v$.form.unit.$model" />ml
       </div>
       <input
-          type="text"
-          name="prodtName"
-          placeholder="Eggs"
+        type="text"
+        name="prodtName"
+        placeholder="Eggs"
         v-model="v$.form.productName.$model"
       />
       <InputErrMsgTemp
@@ -54,26 +54,26 @@ export default {
     const form = ref({ quantity: '', productName: '', unit: '' });
     const rules = computed(() => ({
       form: {
-        quantity: { required, numeric },
+        quantity: { numeric },
+        unit: {},
         productName: { required, twoWordPattern },
-        unit : {}
       },
     }));
     const addIngrediant = () => {
       v$.value.form.$touch();
-      if(v$.value.form.$invalid) return
+      if (v$.value.form.$invalid) return;
       const ingrediant = {
         id: props.ingrediants.length,
         quantity: form.value.quantity + form.value.unit,
         productName: form.value.productName,
       };
-      emit('addIngrediant', ingrediant)
+      emit('addIngrediant', ingrediant);
       v$.value.form.$reset();
       form.value.quantity = '';
       form.value.productName = '';
       form.value.unit = '';
     };
-    
+
     const v$ = useVuelidate(rules, { form });
     return { addIngrediant, form, v$ };
   },

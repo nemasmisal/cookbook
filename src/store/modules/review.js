@@ -4,9 +4,7 @@ import rootState from '../index';
 const state = {};
 
 const getters = {
-  recipeReviews(state) {
-    return (recipeId) => state[recipeId];
-  },
+  recipeReviews: (state) => (recipeId) => state[recipeId],
 };
 const mutations = {
   getReviews: (state, { recipeId, reviews }) => {

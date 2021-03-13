@@ -1,7 +1,7 @@
 <template>
   <h1>Select Recipes Type</h1>
-  <h3 @click="showRecipes('public')">Public Recipes</h3>
-  <h3 @click="showRecipes('private')">Private Recipes</h3>
+  <h3 @click="routeParams('public')">Public Recipes</h3>
+  <h3 @click="routeParams('private')">Private Recipes</h3>
   <UserRecipes :recipes="recipes" />
 </template>
 
@@ -17,7 +17,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const author = ref(store.state.auth.id);
+    const author = computed(() => store.state.auth.id);
     store.dispatch('recipe/recipesByAuthor', { author: author.value });
 
     const allRecipes = computed(() => store.getters['recipe/recipesByAuthor']);
@@ -26,19 +26,17 @@ export default {
       () => route.params,
       ({ category }) => {
         category === 'private'
-          ? splitRecipes('private')
-          : splitRecipes('public');
+          ? getRecipesByType('private')
+          : getRecipesByType('public');
       }
     );
-    const splitRecipes = (type) => {
-      recipes.value = allRecipes.value.filter(
-        (r) => r.type == type
-      );
+    const getRecipesByType = (type) => {
+      recipes.value = allRecipes.value.filter((r) => r.type == type);
     };
-    const showRecipes = (type) => {
+    const routeParams = (type) => {
       router.push({ params: { category: type } });
     };
-    return { recipes, showRecipes };
+    return { recipes, routeParams };
   },
 };
 </script>

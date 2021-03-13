@@ -7,17 +7,13 @@
       <h2>Share your favorite recipe !</h2>
       <ul>
         <li>
-          <a :href="hrefs.fb + recipeId">
-            <i class="material-icons">facebook</i>Facebook</a
-          >
+          <a :href="hrefs.fb"> Facebook</a>
         </li>
         <li>
-          <a :href="hrefs.twit + recipeId + '&text='">Twitter</a>
+          <a :href="hrefs.twit">Twitter</a>
         </li>
         <li>
-          <a :href="hrefs.pint + recipeId + '&media=&description='"
-            >Pinterest</a
-          >
+          <a :href="hrefs.pint">Pinterest</a>
         </li>
       </ul>
       <button @click="toggleSharebox()">Close</button>
@@ -28,14 +24,19 @@
 import { ref } from 'vue';
 export default {
   props: { recipeId: { type: String } },
-  setup() {
+  setup(props) {
     const hrefs = {
       fb:
-        'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/',
+        'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/' +
+        props.recipeId,
       twit:
-        'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/',
+        'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/' +
+        props.recipeId +
+        '&text=',
       pint:
-        'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/',
+        'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/' +
+        props.recipeId +
+        '&media=&description=',
     };
     const isVissible = ref(false);
     const toggleSharebox = () => {

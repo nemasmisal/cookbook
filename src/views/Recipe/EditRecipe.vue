@@ -11,7 +11,7 @@ export default {
     const router = useRouter();
     const store = useStore();
     const { id } = router.currentRoute.value.params;
-    const recipe = store.state.recipe.recipes.find((r) => r._id === id);
+    const recipe = store.getters['recipe/recipeById'](id);
     const updateRecipe = (payload) => {
       store.dispatch('recipe/update', payload);
     };

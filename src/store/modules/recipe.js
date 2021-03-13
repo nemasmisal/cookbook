@@ -13,6 +13,7 @@ const getters = {
   totalRecipes: (state) => state.totalRecipes,
   totalPages: (state) => state.totalPages,
   recipesByAuthor: (state) => state.recipesByAuthor,
+  recipeById: (state) => (id) => state.recipes.find((r) => r._id === id),
 };
 const actions = {
   async getRecipes({ commit }, payload) {
@@ -57,7 +58,6 @@ const mutations = {
   },
   update: (state, payload) => {
     state.recipes = [...state.recipes, payload];
-    
   },
   remove: (state, payload) => {
     state.recipes = state.recipes.filter((r) => r._id !== payload._id);

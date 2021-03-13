@@ -41,7 +41,7 @@
     <div>
       <ul>
         <li v-for="ing in recipe.ingrediants" :key="ing.id">
-          {{ ing.quantity }} : {{ ing.productName }}
+          {{ ing.quantity }} {{ ing.productName }}
           <button @click="removeIngr(ing.id)">x</button>
         </li>
       </ul>
@@ -118,14 +118,14 @@ export default {
     const handleSubmit = async () => {
       v$.value.recipe.$touch();
       if (v$.value.recipe.$invalid) return;
-      const { id } = store.state.auth;
+      const id = computed(() => store.getters['auth/id']);
       const credentials = {
         name: recipe.value.name,
         description: recipe.value.description,
         type: recipe.value.type,
         imgUrl: recipe.value.imgUrl,
         ingrediants: recipe.value.ingrediants,
-        author: id,
+        author: id.value,
         _id: recipe.value._id,
       };
       emit('handleSubmit', credentials);
