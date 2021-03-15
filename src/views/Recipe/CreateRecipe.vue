@@ -1,7 +1,9 @@
 <template>
-  <ValidationInfo :fields="requarements" />
-  <h1>Share your tasty ideas with others!</h1>
-  <RecipeForm @handleSubmit="registerRecipe" />
+  <div>
+    <ValidationInfo :fields="requarements" />
+    <h1>Share your tasty ideas with others!</h1>
+    <RecipeForm @handleSubmit="registerRecipe" />
+  </div>
 </template>
 <script>
 import RecipeForm from './RecipeForm.vue';

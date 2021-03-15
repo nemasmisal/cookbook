@@ -1,8 +1,10 @@
 <template>
-  <h1>Select Recipes Type</h1>
-  <h3 @click="routeParams('public')">Public Recipes</h3>
-  <h3 @click="routeParams('private')">Private Recipes</h3>
-  <UserRecipes :recipes="recipes" />
+  <div>
+    <h1>Select Recipes Type</h1>
+    <h3 @click="routeParams('public')">Public Recipes</h3>
+    <h3 @click="routeParams('private')">Private Recipes</h3>
+    <UserRecipes :recipes="recipes" />
+  </div>
 </template>
 
 <script>

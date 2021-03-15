@@ -73,12 +73,12 @@ form
   opacity 0
   transition translateY(-100px)
 .route-enter-active
-  transition  all 0.6s ease-out
+  transition  all 0.4s ease-out
 .route-leave-to
   opacity  0
   transform  translateY(100px)
 .route-leave-active
-  transition all 0.6s ease-in
+  transition all 0.4s ease-in
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
