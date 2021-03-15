@@ -1,7 +1,11 @@
 <template>
   <Navbar />
   <Toast />
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition name="route" mode="out-in">
+      <component :is="Component"></component>
+    </transition>
+  </router-view>
 </template>
 <script>
 import Navbar from '@/components/Navbar.vue';
@@ -65,6 +69,16 @@ form
   max-width 400px
 .valid
   border 2px solid green
+.route-enter-from
+  opacity 0
+  transition translateY(-100px)
+.route-enter-active
+  transition  all 0.6s ease-out
+.route-leave-to
+  opacity  0
+  transform  translateY(100px)
+.route-leave-active
+  transition all 0.6s ease-in
 #app
   font-family Avenir, Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
