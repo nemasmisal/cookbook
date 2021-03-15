@@ -1,18 +1,16 @@
 <template>
-  <transition-group tag="div" name="list">
+  <transition-group appear tag="div" name="list">
     <div class="card" v-for="recipe in recipes" :key="recipe._id">
       <div class="card-title">{{ recipe.name }}</div>
       <div class="card-image">
-        <img :src="recipe.imgUrl" />
+        <img :src="recipe.imgUrl" loading="lazy" />
       </div>
       <div class="card-content">
         <p>Author: {{ recipe.author.username }}</p>
         <ShareboxComponent :recipeId="recipe._id" />
         <RevealComponent :recipe="recipe" />
         <template v-if="username === recipe.author.username">
-          <router-link
-            :to="{ name: 'EditRecipe', params: { id: recipe._id } }"
-          >
+          <router-link :to="{ name: 'EditRecipe', params: { id: recipe._id } }">
             <i class="material-icons">mode_edit</i>
           </router-link>
           <button class="iconBtn" @click="removeRecipe(recipe._id)">
@@ -51,13 +49,14 @@ export default {
       ({ page }) =>
         page ? store.dispatch('recipe/getRecipes', { page, limit: 5 }) : null
     );
-   
+
     store.dispatch('recipe/getRecipes', { page: 1, limit: 5 });
     const recipes = computed(() => store.getters['recipe/recipes']);
     const removeRecipe = (id) => {
       store.dispatch('recipe/remove', { id });
     };
     const username = computed(() => store.getters['auth/username']);
+
     return { recipes, username, removeRecipe };
   },
 };
@@ -95,12 +94,12 @@ export default {
   color none
   :hover
     cursor pointer
-  .list-enter-from
-    opaciti 0
-    transform scale(0.6)
-  .list-enter-to
-    opacity 1
-    transform scale(1)
-  .list-enter-active
-    transition all 1s ease
+.list-enter-from
+  opacity 0
+  transform scale(0.6)
+.list-enter-to
+  opacity 1
+  transform scale(1)
+.list-enter-active
+  transition all 1s ease
 </style>
