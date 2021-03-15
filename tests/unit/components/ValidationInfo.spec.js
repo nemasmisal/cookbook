@@ -1,13 +1,38 @@
 import { shallowMount } from '@vue/test-utils';
 import ValidationInfo from '@/components/Validation-info.vue';
 
-describe('Testing component method toggleReveal', () => {
-  it('renders props.msg when passed', () => {
-    const fields = { name: 'test name', req: ['1', 2] };
-    const wrapper = shallowMount(ValidationInfo, {
+describe('E2E testing', () => {
+  let fields;
+  let wrapper;
+  beforeEach(() => {
+    fields = [{ name: 'test name', reqs: ['first req', 'second req'] }];
+    wrapper = shallowMount(ValidationInfo, {
       props: { fields },
     });
-    wrapper.vm.togglereveal();
-    expect(wrapper.text()).toMatch(fields);
+  });
+  describe('Testing component props', () => {
+    it('Should accept/use passed props', () => {
+      expect(wrapper.vm.fields).toMatchObject(fields);
+    });
+    it('Should have inital reveal value to false', () => {
+      expect(wrapper.vm.reveal).toBeFalsy();
+    });
+  });
+  describe('Testing component methods', () => {
+    it('Should set reveal value to its oposite', async () => {
+      expect(wrapper.vm.reveal).toBeFalsy();
+      await wrapper.vm.toggleReveal();
+      expect(wrapper.vm.reveal).toBeTruthy();
+      await wrapper.vm.toggleReveal();
+      expect(wrapper.vm.reveal).toBeFalsy();
+    });
+  });
+  describe('Testing component functionallity from DOM event', () => {
+    it('Should render reveal after click then hide it after another', async () => {
+      await wrapper.find('button').trigger('click');
+      expect(wrapper.element).toMatchSnapshot();
+      await wrapper.find('button').trigger('click');
+      expect(wrapper.element).toMatchSnapshot();
+    });
   });
 });
