@@ -1,15 +1,15 @@
 <template>
-  <div class="register">
-    <ValidationInfo :fields="requarements" />
+  <div>
+    <InputReqs :fields="requarements" />
     <h3>Provide some info about you so we know you too !</h3>
     <RegisterForm />
   </div>
 </template>
 <script>
 import RegisterForm from './RegisterForm.vue';
-import ValidationInfo from '@/components/Validation-info.vue';
+import InputReqs from '@/components/InputReqs.vue';
 export default {
-  components: { RegisterForm, ValidationInfo },
+  components: { RegisterForm, InputReqs },
   setup() {
     const requarements = [
       {

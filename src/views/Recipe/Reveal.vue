@@ -1,6 +1,6 @@
 <template>
   <button class="iconBtn">
-    <i class="large material-icons" @click="toggleReveal()">more_vert</i>
+    <i class="material-icons" @click="toggleReveal()">more_vert</i>
   </button>
   <transition name="reveal">
     <div class="card-reveal" v-if="isVissible">

@@ -8,7 +8,7 @@
         placeholder="Quantity"
         v-model="v$.form.quantity.$model"
       />
-      <InputErrMsgTemp
+      <ErrorMsg
         :errorsObj="v$.form.quantity.$silentErrors"
         v-if="v$.form.quantity.$dirty"
       />
@@ -23,7 +23,7 @@
         placeholder="Eggs"
         v-model="v$.form.productName.$model"
       />
-      <InputErrMsgTemp
+      <ErrorMsg
         :errorsObj="v$.form.productName.$silentErrors"
         v-if="v$.form.productName.$dirty"
       />
@@ -39,7 +39,7 @@ import { computed, ref } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { twoWordPattern } from '@/core/validators/custom-validators';
 import { required, numeric } from '@vuelidate/validators';
-import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
+import ErrorMsg from '@/components/ErrorMsg.vue';
 
 export default {
   props: {
@@ -48,7 +48,7 @@ export default {
       required: true,
     },
   },
-  components: { InputErrMsgTemp },
+  components: { ErrorMsg },
   emits: ['addIngrediant'],
   setup(props, { emit }) {
     const form = ref({ quantity: '', productName: '', unit: '' });

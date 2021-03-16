@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <div class="jumbotron">
+  <div>
+    <div>
       <img src="../assets/home-title-365x252.jpg" />
       <h1>Open your Cookbook and turn your wishes true</h1>
       <h2>Top Recipes</h2>

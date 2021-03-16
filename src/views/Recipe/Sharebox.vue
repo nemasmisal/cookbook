@@ -1,6 +1,6 @@
 <template>
   <button class="iconBtn" @click="toggleSharebox()">
-    <i class="large material-icons">share</i>
+    <i class="material-icons">share</i>
   </button>
   <transition name="share">
     <div v-if="isVissible" class="share">

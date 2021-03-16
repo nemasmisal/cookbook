@@ -7,7 +7,7 @@
       placeholder="Milkshakre"
       v-model="v$.recipe.name.$model"
     />
-    <InputErrMsgTemp
+    <ErrorMsg
       :errorsObj="v$.recipe.name.$silentErrors"
       v-if="v$.recipe.name.$dirty"
     />
@@ -19,7 +19,7 @@
       placeholder="Yammy mmm"
       v-model="v$.recipe.description.$model"
     ></textarea>
-    <InputErrMsgTemp
+    <ErrorMsg
       :errorsObj="v$.recipe.description.$silentErrors"
       v-if="v$.recipe.description.$dirty"
     />
@@ -30,7 +30,7 @@
       placeholder="https://image-from-another-page.jpeg"
       v-model="v$.recipe.imgUrl.$model"
     />
-    <InputErrMsgTemp
+    <ErrorMsg
       :errorsObj="v$.recipe.imgUrl.$silentErrors"
       v-if="v$.recipe.imgUrl.$dirty"
     />
@@ -46,7 +46,7 @@
         </li>
       </ul>
     </div>
-    <InputErrMsgTemp
+    <ErrorMsg
       :errorsObj="v$.recipe.ingrediants.$silentErrors"
       v-if="v$.recipe.ingrediants.$dirty"
     />
@@ -68,7 +68,7 @@ import {
   notEmptyArray,
   twoWordPattern,
 } from '@/core/validators/custom-validators';
-import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
+import ErrorMsg from '@/components/ErrorMsg.vue';
 import IngrediantsForm from './IngrediantsForm.vue';
 import { required, minLength, maxLength, url } from '@vuelidate/validators';
 export default {
@@ -77,7 +77,7 @@ export default {
       type: Object,
     },
   },
-  components: { InputErrMsgTemp, IngrediantsForm },
+  components: { ErrorMsg, IngrediantsForm },
   emits: ['handleSubmit'],
   setup(props, { emit }) {
     const store = useStore();

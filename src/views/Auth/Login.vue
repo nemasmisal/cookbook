@@ -1,6 +1,6 @@
 <template>
-  <div class="login">
-    <ValidationInfo :fields="requarements" />
+  <div>
+    <InputReqs :fields="requarements" />
     <h1>Please provide your credentials.</h1>
     <LoginForm />
   </div>
@@ -8,9 +8,9 @@
 
 <script>
 import LoginForm from './LoginForm.vue';
-import ValidationInfo from '@/components/Validation-info.vue';
+import InputReqs from '@/components/InputReqs.vue';
 export default {
-  components: { LoginForm, ValidationInfo },
+  components: { LoginForm, InputReqs },
   setup() {
     const requarements = [
       {

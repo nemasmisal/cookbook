@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import ValidationInfo from '@/components/Validation-info.vue';
+import ValidationInfo from '@/components/ValidationInfo.vue';
 
 describe('E2E testing', () => {
   let fields;

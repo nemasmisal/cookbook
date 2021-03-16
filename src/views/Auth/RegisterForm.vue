@@ -8,7 +8,7 @@
       v-model.lazy="v$.form.name.$model"
       :class="{ valid: v$.form.name.$dirty && !v$.form.name.$invalid }"
     />
-    <InputErrMsgTemp
+    <ErrorMsg
       :errorsObj="v$.form.name.$silentErrors"
       v-if="v$.form.name.$dirty && !v$.form.name.$pending"
     />
@@ -20,7 +20,7 @@
       v-model.lazy="v$.form.email.$model"
       :class="{ valid: v$.form.email.$dirty && !v$.form.email.$invalid }"
     />
-    <InputErrMsgTemp
+    <ErrorMsg
       :errorsObj="v$.form.email.$silentErrors"
       v-if="v$.form.email.$dirty && !v$.form.email.$pending"
     />
@@ -31,7 +31,7 @@
       v-model="v$.form.password.$model"
       :class="{ valid: v$.form.password.$dirty && !v$.form.password.$invalid }"
     />
-    <InputErrMsgTemp
+    <ErrorMsg
       :errorsObj="v$.form.password.$silentErrors"
       v-if="v$.form.password.$dirty"
     />
@@ -45,7 +45,7 @@
           v$.form.repeatPassword.$dirty && !v$.form.repeatPassword.$invalid,
       }"
     />
-    <InputErrMsgTemp
+    <ErrorMsg
       :errorsObj="v$.form.repeatPassword.$silentErrors"
       v-if="v$.form.repeatPassword.$dirty"
     />
@@ -56,7 +56,7 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import useVuelidate from '@vuelidate/core';
-import InputErrMsgTemp from '@/components/Input-err-msg-temp.vue';
+import ErrorMsg from '@/components/ErrorMsg.vue';
 import {
   isAvailable,
   oneWordPattern,
@@ -69,7 +69,7 @@ import {
   sameAs,
 } from '@vuelidate/validators';
 export default {
-  components: { InputErrMsgTemp },
+  components: { ErrorMsg },
   setup() {
     const store = useStore();
     const form = ref({ name: '', email: '', password: '', repeatPassword: '' });

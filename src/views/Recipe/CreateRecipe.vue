@@ -1,16 +1,16 @@
 <template>
   <div>
-    <ValidationInfo :fields="requarements" />
+    <InputReqs :fields="requarements" />
     <h1>Share your tasty ideas with others!</h1>
     <RecipeForm @handleSubmit="registerRecipe" />
   </div>
 </template>
 <script>
 import RecipeForm from './RecipeForm.vue';
-import ValidationInfo from '@/components/Validation-info.vue';
+import InputReqs from '@/components/InputReqs.vue';
 import { useStore } from 'vuex';
 export default {
-  components: { RecipeForm, ValidationInfo },
+  components: { RecipeForm, InputReqs },
   setup() {
     const store = useStore();
     const requarements = [
@@ -36,7 +36,7 @@ export default {
         name: 'Type',
         reqs: [
           'Public - everyone can read it',
-          'Private - only you can see it',
+          'Private - only for you',
         ],
       },
     ];

@@ -2,10 +2,10 @@
   <div class="activator">
     <button @click="toggleReveal">
       Need help?
-      <i class="large material-icons">mode_comment</i>
+      <i class="material-icons">mode_comment</i>
     </button>
   </div>
-  <transition name="validation-info">
+  <transition name="drop">
     <div class="info" v-if="reveal">
       <template v-for="field in fields" :key="field">
         <h2>{{ field.name }}</h2>
@@ -30,17 +30,17 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-.validation-info-enter-from
+.drop-enter-from
   transform translateY(-100%)
-.validation-info-enter-to
+.drop-enter-to
   transform translateY(0%)
-.validation-info-enter-active
+.drop-enter-active
   transition all 1s ease
-.validation-info-leave-from
+.drop-leave-from
   transform translateY(0%)
-.validation-info-leave-to
+.drop-leave-to
   transform translateY(-100%)
-.validation-info-leave-active
+.drop-leave-active
   transition all 1s ease
 .info
   position relative
@@ -71,4 +71,6 @@ li
       border none
       color #2c3e50
       padding 0
+      &:hover
+        cursor pointer
 </style>

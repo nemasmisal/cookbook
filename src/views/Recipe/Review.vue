@@ -1,6 +1,6 @@
 <template>
   <button class="iconBtn" @click="toggleReview()">
-    <i class="large material-icons">star_border</i>
+    <i class="material-icons">star_border</i>
   </button>
   <transition name="reviews">
     <template v-if="isVissible">
