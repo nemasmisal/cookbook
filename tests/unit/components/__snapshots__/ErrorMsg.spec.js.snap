@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`E2E testing Testing component rendering Should have expected HTML structure 1`] = `
+<div
+  data-v-app=""
+>
+  
+  <div
+    class="error"
+  >
+    first error msg
+  </div>
+  <div
+    class="error"
+  >
+    second error msg
+  </div>
+  
+</div>
+`;

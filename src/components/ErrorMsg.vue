@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="error"
-    v-for="error of errorsObj"
-    :key="error.$message"
-  >
+  <div class="error" v-for="error of errorsObj" :key="error.$message">
     {{ error.$message }}
   </div>
 </template>

@@ -1,12 +1,12 @@
 import { shallowMount } from '@vue/test-utils';
-import ValidationInfo from '@/components/ValidationInfo.vue';
+import InputReqs from '@/components/InputReqs.vue';
 
 describe('E2E testing', () => {
   let fields;
   let wrapper;
   beforeEach(() => {
     fields = [{ name: 'test name', reqs: ['first req', 'second req'] }];
-    wrapper = shallowMount(ValidationInfo, {
+    wrapper = shallowMount(InputReqs, {
       props: { fields },
     });
   });
