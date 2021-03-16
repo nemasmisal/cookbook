@@ -1,30 +1,23 @@
 <template>
   <transition name="msg">
-    <div v-if="message()" class="msg toast">
-      {{ message() }}
+    <div v-if="message" class="msg toast">
+      {{ message }}
     </div>
   </transition>
   <transition name="err">
-    <div v-if="err()" class="err toast">
-      {{ err() }}
+    <div v-if="err" class="err toast">
+      {{ err }}
     </div>
   </transition>
 </template>
 <script>
+import { computed } from 'vue-demi';
 import { useStore } from 'vuex';
 export default {
-  props: { msg: { type: String } },
   setup() {
     const store = useStore();
-    const message = () => {
-      setTimeout(() => {
-        store.dispatch('msg/clearMsg');
-      }, 1500);
-      return store.state.msg.msg;
-    };
-    const err = () => {
-      return store.state.msg.err;
-    };
+    const message = computed(() => store.getters['msg/msg']);
+    const err = computed(() => store.getters['msg/err']);
     return { message, err };
   },
 };

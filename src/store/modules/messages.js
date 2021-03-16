@@ -3,30 +3,34 @@ const state = {
   err: '',
 };
 
-const getters = {};
+const getters = {
+  msg: (state) => state.msg,
+  err: (state) => state.err,
+};
 const mutations = {
   globalMsg: (state, { msg }) => {
     state.msg = msg;
-    setTimeout(() => {
-      state.msg = '';
-    }, 2000);
   },
   globalError: (state, { msg }) => {
     state.err = msg;
-    setTimeout(() => {
-      state.err = '';
-    }, 2000);
   },
   clearMsg: (state) => {
     state.msg = '';
+    state.err = '';
   },
 };
 const actions = {
   globalMsg({ commit }, payload) {
     commit('globalMsg', payload);
+    setTimeout(() => {
+      commit('clearMsg');
+    }, 2000);
   },
   globalError({ commit }, payload) {
     commit('globalError', payload);
+    setTimeout(() => {
+      commit('clearMsg');
+    }, 2000);
   },
   clearMsg({ commit }) {
     commit('clearMsg');
