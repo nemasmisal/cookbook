@@ -87,7 +87,7 @@ export default {
       : ref({
           name: '',
           description: '',
-          type: 'Public',
+          type: 'public',
           imgUrl: '',
           author: '',
           ingrediants: [],
