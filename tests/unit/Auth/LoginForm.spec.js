@@ -29,9 +29,6 @@ describe('LoginForm component tests', () => {
   });
   describe('Testing component methods', () => {
     it('Should call handleSubmit after submiting the form', async () => {
-      const [emailInput, passInput] = wrapper.findAll('input');
-      await emailInput.setValue('test@test.com');
-      await passInput.setValue('test');
       wrapper.vm.v$.$invalid = false;
       wrapper.vm.handleSubmit();
       expect(authState.actions.login).toHaveBeenCalled();
