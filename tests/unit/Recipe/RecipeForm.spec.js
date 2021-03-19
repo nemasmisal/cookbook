@@ -3,16 +3,17 @@ import RecipeForm from '@/views/Recipe/RecipeForm.vue';
 import { createStore } from 'vuex';
 
 describe('RecipeForm component tests', () => {
-  let wrapper, store, authState;
-  const recipe = {
-    name: 'testName',
-    description: 'test description',
-    type: 'private',
-    imgUrl: 'http://test',
-    ingrediants: [{ id: 1, id: 2, id: 3 }],
-    _id: 'testId',
-  };
+  let wrapper, store, authState, recipe;
+
   beforeEach(() => {
+    recipe = {
+      name: 'testName',
+      description: 'test description',
+      type: 'private',
+      imgUrl: 'http://test',
+      ingrediants: [{ id: 1 }, { id: 2 }],
+      _id: 'testId',
+    };
     authState = {
       namespaced: true,
       getters: {
@@ -33,7 +34,7 @@ describe('RecipeForm component tests', () => {
       expect(wrapper.vm.recipe.description).toBe('test description');
       expect(wrapper.vm.recipe.type).toBe('private');
       expect(wrapper.vm.recipe.imgUrl).toBe('http://test');
-      expect(wrapper.vm.recipe.ingrediants).toEqual([{ id: 1, id: 2, id: 3 }]);
+      expect(wrapper.vm.recipe.ingrediants).toEqual([{ id: 1 }, { id: 2 }]);
       expect(wrapper.vm.recipe._id).toBe('testId');
     });
     it('Should bind input to the props', async () => {
@@ -54,11 +55,9 @@ describe('RecipeForm component tests', () => {
       expect(wrapper.vm.recipe.ingrediants).toContain('test ingrediant');
     });
     it('Should remove ingrediant from ingrediants array', () => {
-      wrapper.vm.addIngrediant({ id: 1 });
-      wrapper.vm.addIngrediant({ id: 2 });
-      wrapper.vm.addIngrediant({ id: 3 });
+      expect(wrapper.vm.recipe.ingrediants).toEqual([{ id: 1 }, { id: 2 }]);
       wrapper.vm.removeIngr(2);
-      expect(wrapper.vm.recipe.ingrediants).not.toContainEqual({ id: 2 });
+      expect(wrapper.vm.recipe.ingrediants).toEqual([{ id: 1 }]);
     });
     /* because of the validations, comment "if statement" to pass the test */
     it('Should emit event after handleSubmit have been called', () => {
