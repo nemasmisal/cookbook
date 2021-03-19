@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import Toast from '@/components/Toast.vue';
 import { createStore } from 'vuex';
 
-describe('E2E testing', () => {
+describe('Toast component tests', () => {
   let wrapper, store, msgState;
   beforeEach(() => {
     msgState = {

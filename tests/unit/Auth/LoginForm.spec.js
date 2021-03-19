@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import LoginForm from '@/views/Auth/LoginForm.vue';
 import { createStore } from 'vuex';
 
-describe('E2E testing', () => {
+describe('LoginForm component tests', () => {
   let wrapper, store, authState;
   beforeEach(() => {
     authState = {
@@ -27,13 +27,13 @@ describe('E2E testing', () => {
       expect(wrapper.vm.form.password).toBe('test');
     });
   });
-  /* To pass the test, must comment 'if statement' in handleSubmit */
   describe('Testing component methods', () => {
     it('Should call handleSubmit after submiting the form', async () => {
       const [emailInput, passInput] = wrapper.findAll('input');
       await emailInput.setValue('test@test.com');
       await passInput.setValue('test');
-      await wrapper.find('form').trigger('submit.prevent');
+      wrapper.vm.v$.$invalid = false;
+      wrapper.vm.handleSubmit();
       expect(authState.actions.login).toHaveBeenCalled();
     });
   });

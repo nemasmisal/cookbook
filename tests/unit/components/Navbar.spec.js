@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import Navbar from '@/components/Navbar.vue';
 import { createStore } from 'vuex';
-describe('E2E testing', () => {
+describe('Navbar component tests', () => {
   let wrapper, store, authState;
   beforeEach(() => {
     authState = {
@@ -30,8 +30,8 @@ describe('E2E testing', () => {
     });
   });
   describe('Testing component methods', () => {
-    it('Should trigger handleLogout method after DOM click event', () => {
-      wrapper.find('a').trigger('click');
+    it('Should dispatch action if handleLogout method is called', () => {
+      wrapper.vm.handleLogout();
       expect(authState.actions.logout).toHaveBeenCalled();
     });
   });

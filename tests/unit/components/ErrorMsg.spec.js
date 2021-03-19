@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import ErrorMsg from '@/components/ErrorMsg.vue';
 
-describe('E2E testing', () => {
+describe('ErrorMsg component tests', () => {
   let errorsObj = [];
   let wrapper;
   beforeEach(() => {

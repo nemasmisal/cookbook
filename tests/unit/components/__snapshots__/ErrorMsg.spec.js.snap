@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`E2E testing Testing component rendering Should have expected HTML structure 1`] = `
+exports[`ErrorMsg component tests Testing component rendering Should have expected HTML structure 1`] = `
 <div
   data-v-app=""
 >
