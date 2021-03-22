@@ -27,17 +27,27 @@
   </transition>
 </template>
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 export default {
   props: { recipeId: { type: String, required: true } },
   setup(props) {
     const store = useStore();
-    store.dispatch('reviews/getReviews', { recipeId: props.recipeId });
-    const reviews = computed(() => store.getters['reviews/recipeReviews'](props.recipeId));
-    const userId = computed(() => store.getters['auth/id']); 
+
+    const reviews = computed(() =>
+      store.getters['reviews/recipeReviews'](props.recipeId) || []
+    );
+    const userId = computed(() => store.getters['auth/id']);
     const isVissible = ref(false);
     const textArea = ref('');
+    watch(
+      () => isVissible.value,
+      (value) => {
+        if (value) {
+          store.dispatch('reviews/getReviews', { recipeId: props.recipeId });
+        }
+      }
+    );
     const canWriteReview = computed(
       () => !reviews.value.find((r) => r.author._id === userId.value)
     );

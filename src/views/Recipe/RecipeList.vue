@@ -3,7 +3,11 @@
     <div class="card" v-for="recipe in recipes" :key="recipe._id">
       <div class="card-title">{{ recipe.name }}</div>
       <div class="card-image">
-        <img :src="recipe.imgUrl" loading="lazy" />
+        <router-link
+          :to="{ name: 'DetailsRecipe', params: { id: recipe._id } }"
+        >
+          <img :src="recipe.imgUrl" loading="lazy" />
+        </router-link>
       </div>
       <div class="card-content">
         <p>Author: {{ recipe.author.username }}</p>

@@ -17,7 +17,7 @@ const getters = {
 };
 const actions = {
   async getRecipes({ commit }, payload) {
-    const res = (await RecipeService.getAllRecipes(payload));
+    const res = await RecipeService.getAllRecipes(payload);
     if (!res) return;
     commit('getRecipes', res);
   },
@@ -46,6 +46,11 @@ const actions = {
     if (!res) return;
     commit('recipesByAuthor', res);
   },
+  async recipeById({ commit }, payload) {
+    const res = await RecipeService.recipeById(payload);
+    if (!res) return;
+    commit('recipeById', res);
+  },
 };
 
 const mutations = {
@@ -63,8 +68,11 @@ const mutations = {
   remove: (state, payload) => {
     state.recipes = state.recipes.filter((r) => r._id !== payload._id);
   },
-  recipesByAuthor: async (state, payload) => {
+  recipesByAuthor: (state, payload) => {
     state.recipesByAuthor = [...payload];
+  },
+  recipeById: (state, payload) => {
+    state.recipes = [...state.recipes, payload];
   },
 };
 

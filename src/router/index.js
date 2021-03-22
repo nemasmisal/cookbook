@@ -49,7 +49,11 @@ const routes = [
     },
     component: () => import('../views/Recipe/EditRecipe.vue'),
   },
-  ,
+  {
+    path: '/details/:id',
+    name: 'DetailsRecipe',
+    component: () => import('../views/Recipe/RecipeDetails.vue'),
+  },
   {
     path: '/profile/:category?',
     name: 'Profile',

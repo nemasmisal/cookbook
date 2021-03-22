@@ -16,5 +16,8 @@ class RecipeService {
   recipesByAuthor(query) {
     return BaseFetch.baseHttp(this.RECIPE_URL + 'recipesByAuthor', 'get', null, query)
   }
+  recipeById(query) {
+    return BaseFetch.baseHttp(this.RECIPE_URL + 'recipeById', 'get', null, query)
+  }
 }
 export default new RecipeService();
