@@ -17,7 +17,8 @@ const getters = {
 };
 const actions = {
   async getRecipes({ commit }, payload) {
-    const res = await RecipeService.getAllRecipes(payload);
+    const res = (await RecipeService.getAllRecipes(payload));
+    if (!res) return;
     commit('getRecipes', res);
   },
   async create({ commit }, payload) {

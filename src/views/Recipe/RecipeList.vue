@@ -1,5 +1,5 @@
 <template>
-  <transition-group appear tag="div" name="list">
+  <transition-group appear tag="div" name="list" v-if="recipes.length">
     <div class="card" v-for="recipe in recipes" :key="recipe._id">
       <div class="card-title">{{ recipe.name }}</div>
       <div class="card-image">
@@ -23,6 +23,7 @@
       </div>
     </div>
   </transition-group>
+  <template v-else><h1>No recipes yet..</h1></template>
   <Pagination />
 </template>
 <script>

@@ -2,8 +2,8 @@
   <div>
     <div>
       <img src="../assets/home-title-365x252.jpg" />
-      <h1>Open your Cookbook and turn your wishes true</h1>
-      <h2>Top Recipes</h2>
+      <h2>Open your Cookbook and turn your wishes true</h2>
+      <h3>Top Recipes</h3>
     </div>
     <RecipeListComponent />
   </div>
