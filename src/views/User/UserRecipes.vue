@@ -1,6 +1,10 @@
 <template>
   <ol>
-    <li v-for="recipe in recipes" :key="recipe._id">{{ recipe.name }}</li>
+    <li v-for="recipe in recipes" :key="recipe._id">
+      <router-link :to="{ name: 'DetailsRecipe', params: { id: recipe._id } }">
+        {{ recipe.name }}
+      </router-link>
+    </li>
   </ol>
 </template>
 
