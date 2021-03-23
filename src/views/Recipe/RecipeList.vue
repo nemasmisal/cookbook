@@ -38,7 +38,7 @@ import Pagination from './Pagination.vue';
 import { useStore } from 'vuex';
 import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useRemoveRecipe } from '@/composables/';
+import { useRemoveRecipe } from '@/composables';
 export default {
   components: {
     ShareboxComponent,

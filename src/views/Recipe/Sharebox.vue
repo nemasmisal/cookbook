@@ -22,22 +22,11 @@
 </template>
 <script>
 import { ref } from 'vue';
+import { useHrefs } from '@/composables';
 export default {
   props: { recipeId: { type: String } },
   setup(props) {
-    const hrefs = {
-      fb:
-        'https://www.facebook.com/sharer.php?u=http://localhost:8080/recipe/details/' +
-        props.recipeId,
-      twit:
-        'https://twitter.com/intent/tweet?url=http://localhost:8080/recipe/details/' +
-        props.recipeId +
-        '&text=',
-      pint:
-        'https://pinterest.com/pin/create/button/?url=http://localhost:8080/recipe/details/' +
-        props.recipeId +
-        '&media=&description=',
-    };
+    const { hrefs } = useHrefs(props.recipeId);
     const isVissible = ref(false);
     const toggleSharebox = () => {
       isVissible.value = !isVissible.value;
@@ -69,7 +58,7 @@ export default {
   margin 0 auto
   padding 11px
 a
-  color black
+  color #ff6347
 li
   display inline
 </style>

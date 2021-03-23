@@ -11,13 +11,13 @@
           <h2>Share your favorite recipe !</h2>
           <ul>
             <li>
-              <a href="/"> Facebook</a>
+              <a :href="hrefs.fb"> Facebook</a>
             </li>
             <li>
-              <a href="">Twitter</a>
+              <a :href="hrefs.twit">Twitter</a>
             </li>
             <li>
-              <a href="">Pinterest</a>
+              <a :href="hrefs.pint">Pinterest</a>
             </li>
           </ul>
         </div>
@@ -73,6 +73,7 @@ import {
   useAddReview,
   useCanWriteReview,
   useSymbolsLeft,
+  useHrefs,
 } from '@/composables';
 export default {
   setup() {
@@ -94,6 +95,7 @@ export default {
     const { addReview } = useAddReview(store, textArea, id, userId);
     const { canWriteReview } = useCanWriteReview(reviews, userId);
     const { symbolsLeft } = useSymbolsLeft(textArea);
+    const { hrefs } = useHrefs(id);
 
     return {
       recipe,
@@ -105,6 +107,7 @@ export default {
       textArea,
       username,
       removeRecipe,
+      hrefs,
     };
   },
 };
@@ -113,6 +116,7 @@ export default {
 <style lang="stylus" scoped>
 .card
   max-width 650px
+  margin-bottom 40px
 h2,
 h3
   margin 5px
