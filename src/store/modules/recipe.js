@@ -25,21 +25,22 @@ const actions = {
     const res = await RecipeService.create(payload);
     if (!res) return;
     commit('create', res);
-    rootState.commit('msg/globalMsg', { msg: 'Recipe created!' });
+    rootState.dispatch('msg/globalMsg', { msg: 'Recipe created!' });
     Router.push('/');
   },
   async update({ commit }, payload) {
     const res = await RecipeService.update(payload);
     if (!res) return;
     commit('update', res);
-    rootState.commit('msg/globalMsg', { msg: 'Recipe updated!' });
+    rootState.dispatch('msg/globalMsg', { msg: 'Recipe updated!' });
     Router.push('/');
   },
   async remove({ commit }, payload) {
     const res = await RecipeService.remove(payload);
     if (!res) return;
     commit('remove', res);
-    rootState.commit('msg/globalMsg', { msg: 'Recipe removed!' });
+    rootState.dispatch('msg/globalMsg', { msg: 'Recipe removed!' });
+    Router.push('/');
   },
   async recipesByAuthor({ commit }, payload) {
     const res = await RecipeService.recipesByAuthor(payload);
