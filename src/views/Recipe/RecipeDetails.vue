@@ -68,45 +68,43 @@
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
+import {
+  useRemoveRecipe,
+  useAddReview,
+  useCanWriteReview,
+  useSymbolsLeft,
+} from '@/composables';
 export default {
   setup() {
     const route = useRoute();
     const store = useStore();
-    const { id } = route.params;
-    store.dispatch('recipe/recipeById', { id });
-    const recipe = computed(() => store.getters['recipe/recipeById'](id) || null);
     const username = computed(() => store.getters['auth/username']);
     const userId = computed(() => store.getters['auth/id']);
     const textArea = ref('');
-    const reviews = computed(() =>
-      store.getters['reviews/recipeReviews'](recipe._id) || []
+    const { id } = route.params;
+    store.dispatch('recipe/recipeById', { id });
+    store.dispatch('reviews/getReviews', { id });
+    const recipe = computed(
+      () => store.getters['recipe/recipeById'](id) || null
     );
-    const canWriteReview = computed(
-      () => !reviews.value.find((r) => r.author._id === userId.value)
+    const reviews = computed(
+      () => store.getters['reviews/recipeReviews'](id) || []
     );
-    const removeRecipe = (id) => {
-      store.dispatch('recipe/remove', { id });
-    };
-    const addReview = () => {
-      store.dispatch('reviews/addReview', {
-        review: textArea.value,
-        recipeId: recipe._id,
-        author: userId.value,
-      });
-    };
-    const symbolsLeft = () => {
-      return 60 - textArea.value.length;
-    };
+    const { removeRecipe } = useRemoveRecipe();
+    const { addReview } = useAddReview(store, textArea, id, userId);
+    const { canWriteReview } = useCanWriteReview(reviews, userId);
+    const { symbolsLeft } = useSymbolsLeft(textArea);
+
     return {
       recipe,
       userId,
-      username,
-      removeRecipe,
       addReview,
       symbolsLeft,
       reviews,
       canWriteReview,
       textArea,
+      username,
+      removeRecipe,
     };
   },
 };

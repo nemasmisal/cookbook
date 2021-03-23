@@ -38,6 +38,7 @@ import Pagination from './Pagination.vue';
 import { useStore } from 'vuex';
 import { computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useRemoveRecipe } from '@/composables/';
 export default {
   components: {
     ShareboxComponent,
@@ -48,7 +49,7 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
-
+    const { removeRecipe } = useRemoveRecipe();
     watch(
       () => route.query,
       ({ page }) =>
@@ -57,9 +58,6 @@ export default {
 
     store.dispatch('recipe/getRecipes', { page: 1, limit: 5 });
     const recipes = computed(() => store.getters['recipe/recipes']);
-    const removeRecipe = (id) => {
-      store.dispatch('recipe/remove', { id });
-    };
     const username = computed(() => store.getters['auth/username']);
 
     return { recipes, username, removeRecipe };

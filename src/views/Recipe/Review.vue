@@ -29,42 +29,32 @@
 <script>
 import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
+import { useAddReview, useCanWriteReview, useSymbolsLeft } from '@/composables';
 export default {
   props: { recipeId: { type: String, required: true } },
   setup(props) {
     const store = useStore();
-
-    const reviews = computed(() =>
-      store.getters['reviews/recipeReviews'](props.recipeId) || []
+    const reviews = computed(
+      () => store.getters['reviews/recipeReviews'](props.recipeId) || []
     );
     const userId = computed(() => store.getters['auth/id']);
     const isVissible = ref(false);
     const textArea = ref('');
+    const { addReview } = useAddReview(store, textArea, props.recipeId, userId);
+    const { canWriteReview } = useCanWriteReview(reviews, userId);
+    const { symbolsLeft } = useSymbolsLeft(textArea);
+    const toggleReview = () => {
+      isVissible.value = !isVissible.value;
+    };
+
     watch(
       () => isVissible.value,
       (value) => {
         if (value) {
-          store.dispatch('reviews/getReviews', { recipeId: props.recipeId });
+          store.dispatch('reviews/getReviews', { id: props.recipeId });
         }
       }
     );
-    const canWriteReview = computed(
-      () => !reviews.value.find((r) => r.author._id === userId.value)
-    );
-    const addReview = () => {
-      store.dispatch('reviews/addReview', {
-        review: textArea.value,
-        recipeId: props.recipeId,
-        author: userId.value,
-      });
-    };
-    const symbolsLeft = () => {
-      return 60 - textArea.value.length;
-    };
-
-    const toggleReview = () => {
-      isVissible.value = !isVissible.value;
-    };
     return {
       reviews,
       textArea,

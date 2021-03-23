@@ -4,7 +4,7 @@ import rootState from '../index';
 const state = {};
 
 const getters = {
-  recipeReviews: (state) => (recipeId) => state[recipeId],
+  recipeReviews: (state) => (recipeId) => state[recipeId] || [],
 };
 const mutations = {
   getReviews: (state, { recipeId, reviews }) => {
@@ -15,9 +15,9 @@ const mutations = {
   },
 };
 const actions = {
-  async getReviews({ commit }, { recipeId }) {
-    const reviews = await ReviewService.getReviews({ recipeId });
-    commit('getReviews', { recipeId, reviews });
+  async getReviews({ commit }, { id }) {
+    const reviews = await ReviewService.getReviews({ id });
+    commit('getReviews', { recipeId: id, reviews });
   },
   async addReview({ commit }, payload) {
     const reviews = await ReviewService.addReview(payload);
