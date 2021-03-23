@@ -19,6 +19,8 @@
         <li>Vuelidate/validators 2.0 alpha.12</li>
         <li>Core-Js 3.6</li>
         <li>Stylus</li>
+        <li>Vue Test-Utils 2.0</li>
+        <li>Vue-Jest 5.0</li>
       </ul>
     </div>
   </div>

@@ -1,6 +1,6 @@
 import store from '@/store/';
 class BaseFetch {
-  BASE_URL = 'http://localhost:8081/api/';
+  BASE_URL = 'http://nemasmisal.online:8080/api/';
   headers = (body, method) => {
     return {
       method: method.toUpperCase(),

@@ -38,4 +38,4 @@ npm run test:unit
 
 ## API setup
 
-Can be found in my github account, following the same procedures 
+Don`t need to do anything, the project will automaticly connect to the API hosted on the web.
