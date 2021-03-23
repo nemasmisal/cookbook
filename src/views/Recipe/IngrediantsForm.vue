@@ -63,7 +63,7 @@ export default {
       v$.value.form.$touch();
       if (v$.value.form.$invalid) return;
       const ingrediant = {
-        id: props.ingrediants.length,
+        id: Date.now(),
         quantity: form.value.quantity + form.value.unit,
         productName: form.value.productName,
       };

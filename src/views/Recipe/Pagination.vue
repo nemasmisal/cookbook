@@ -4,8 +4,8 @@
     <li @click="pageAction.previous">
       <i class="material-icons">chevron_left</i>
     </li>
-    <li v-for="pageNumber in pagesNumbers" :key="pageNumber">
-      <button @click="setPageNumber(pageNumber)">{{ pageNumber }}</button>
+    <li v-for="page in totalPages" :key="page">
+      <button @click="setPage(page)">{{ page }}</button>
     </li>
     <li @click="pageAction.next">
       <i class="material-icons">chevron_right</i>
@@ -15,16 +15,23 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, ref, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 export default {
   setup() {
     const router = useRouter();
+    const route = useRoute();
     const store = useStore();
     const totalPages = computed(() => store.getters['recipe/totalPages']);
-    const pagesNumbers = ref([]);
     const currentPage = ref(1);
+    watch(
+      () => route.query,
+      ({ page }) => {
+        if (!page || isNaN(page) || page > totalPages.value) return;
+        currentPage.value = Number(page);
+      }
+    );
     const pageAction = {
       next() {
         if (currentPage.value === totalPages.value) return;
@@ -44,20 +51,12 @@ export default {
     const goToPage = () => {
       router.push({ query: { page: currentPage.value } });
     };
-    const setPageNumber = (pageNumber) => {
-      if (!pageNumber || pageNumber > Number(totalPages.value)) return;
-      currentPage.value = Number(pageNumber);
+    const setPage = (page) => {
+      if (!page || isNaN(page) || Number(page) > Number(totalPages.value)) return;
+      currentPage.value = Number(page);
     };
-    const createPagesNumbers = () => {
-      pagesNumbers.value = Array(Number(totalPages.value))
-        .fill()
-        .map((_, i) => Number(totalPages.value) - i)
-        .reverse();
-    };
-    watch(totalPages, createPagesNumbers);
     watch(currentPage, goToPage);
-    onMounted(createPagesNumbers);
-    return { pagesNumbers, setPageNumber, totalPages, pageAction };
+    return { setPage, totalPages, pageAction };
   },
 };
 </script>

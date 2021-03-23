@@ -1,6 +1,6 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link>
+    <router-link :to="{ name: 'Home', query: { page: 1 } }">Home</router-link>
     <template v-if="id">
       <router-link :to="{ name: 'CreateRecipe' }">Create</router-link>
       <router-link :to="{ name: 'Profile' }">Profile</router-link>
