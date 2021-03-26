@@ -1,8 +1,3 @@
-const sheetCacheName = 'google-fonts-stylesheets';
-const fontCacheName = 'google-fonts-webfonts';
-const maxAgeSeconds = 60 * 60 * 24 * 30;
-const maxEntries = 30;
-
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 
 workbox.setConfig({
@@ -14,7 +9,7 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 workbox.routing.registerRoute(
   ({ url }) => url.origin === 'https://fonts.googleapis.com',
   new workbox.strategies.StaleWhileRevalidate({
-    cacheName: sheetCacheName,
+    cacheName: 'google-fonts-stylesheets',
   })
 );
 
@@ -22,14 +17,29 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
   ({ url }) => url.origin === 'https://fonts.gstatic.com',
   new workbox.strategies.CacheFirst({
-    cacheName: fontCacheName,
+    cacheName: 'google-fonts-webfonts',
     plugins: [
       new workbox.expiration.Plugin({
-        maxEntries,
-        maxAgeSeconds
+        maxEntries: 30,
+        maxAgeSeconds: 60 * 60 * 24 * 30,
       }),
     ],
     method: 'GET',
     cacheableResponse: { status: [0, 200] },
+  })
+);
+
+//Cahce the recipes data with a network-first strategy for 5 minutes.
+workbox.routing.registerRoute(
+  ({ url }) => url.pathname === '/api/recipe/allRecipes',
+  new workbox.strategies.NetworkFirst({
+    networkTimeoutSeconds: 3,
+    cacheName: 'recipes',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 50,
+        maxAgeSeconds: 5 * 60,
+      }),
+    ],
   })
 );
