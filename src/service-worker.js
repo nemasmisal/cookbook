@@ -29,7 +29,7 @@ workbox.routing.registerRoute(
   })
 );
 
-//Cahce the recipes data with a network-first strategy for 5 minutes.
+//Cache the recipes data with a network-first strategy for 5 minutes.
 workbox.routing.registerRoute(
   ({ url }) => url.pathname === '/api/recipe/allRecipes',
   new workbox.strategies.NetworkFirst({
@@ -38,6 +38,21 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxEntries: 50,
+        maxAgeSeconds: 5 * 60,
+      }),
+    ],
+  })
+);
+
+//Cache the reviews data with network-first strategy for 5 minutes.
+workbox.routing.registerRoute(
+  ({ url }) => url.pathname === '/api/review/reviews',
+  new workbox.strategies.NetworkFirst({
+    networkTimeoutSeconds: 3,
+    cacheName: 'reviews',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 20,
         maxAgeSeconds: 5 * 60,
       }),
     ],
