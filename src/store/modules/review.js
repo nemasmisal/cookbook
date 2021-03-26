@@ -17,6 +17,7 @@ const mutations = {
 const actions = {
   async getReviews({ commit }, { id }) {
     const reviews = await ReviewService.getReviews({ id });
+    if (!reviews) return;
     commit('getReviews', { recipeId: id, reviews });
   },
   async addReview({ commit }, payload) {
